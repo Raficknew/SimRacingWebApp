@@ -1,13 +1,13 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]/route";
-import Testing from "./components/test";
+import GithubLog from "./components/atoms/LoginButtons/GithubLog";
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
   return (
-    <div>
+    <div className="flex w-screen h-screen justify-center items-center">
       {session && "Welcome " + session?.user?.name}
-      <Testing session={session} />
+      <GithubLog session={session} />
     </div>
   );
 }
