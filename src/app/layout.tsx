@@ -22,7 +22,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <SessionProvider>
-          <div className="h-screen">
+          <div>
             <Navbar />
             <main className="bg-[#303030] h-full">{children}</main>
           </div>
