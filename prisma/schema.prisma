@@ -14,13 +14,14 @@ datasource db {
 }
 
 model Race {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  name      String
-  circuit   String
-  raceDate  DateTime
-  userId    String?  @db.ObjectId
-  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  createdAt DateTime @default(now())
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String
+  circuit     String
+  raceDate    String
+  userId      String?  @db.ObjectId
+  user        User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
 
   @@map("races")
 }
