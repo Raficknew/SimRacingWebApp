@@ -24,24 +24,25 @@ export default async function Home() {
               variant: "outline",
               className: "self-end flex",
             })}
-            href={"/create-event"}
+            href={"/create-race"}
           >
             <Flag className="w-4 h-4" />
-            <p className="pl-2">Create Event</p>
+            <p className="pl-2">Create Race</p>
           </Link>
         )}
-        <div className="flex flex-col self-stretch items-center gap-5">
-          <div className=" bg-gray-400 h-[93px] self-stretch">
-            <p className="text-black h-3 w-3">{races[0].name}</p>
-            <p className="text-black h-3 w-3">{races[0].circuit}</p>
-            <p>{races[0].user?.name}</p>
+        {races.length > 0 ? (
+          <div className="flex flex-col self-stretch items-center gap-5">
+            {races.map((race) => (
+              <div key={race.id} className=" bg-gray-400 h-[93px] self-stretch">
+                <p className="text-black h-3 w-3">{race.name}</p>
+                <p className="text-black h-3 w-3">{race.circuit}</p>
+                <p>{race.user?.name}</p>
+              </div>
+            ))}
           </div>
-          <div className="flex bg-gray-400 h-[93px] self-stretch"></div>
-          <div className="flex bg-gray-400 h-[93px] self-stretch"></div>
-          <div className="flex bg-gray-400 h-[93px] self-stretch"></div>
-          <div className="flex bg-gray-400 h-[93px] self-stretch"></div>
-          <div className="flex bg-gray-400 h-[93px] self-stretch"></div>
-        </div>
+        ) : (
+          "No races yet"
+        )}
       </div>
     </div>
   );
