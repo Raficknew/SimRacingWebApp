@@ -62,25 +62,48 @@ const CreateEventPage = async () => {
   return (
     <>
       <Navbar />
-      <form action={addRace}>
-        <Label htmlFor="name">Race Name</Label>
-        <Input required name="name" placeholder="Race Name" type="text" />
+      <div className="flex flex-col self-stretch items-center gap-5 pt-52 max-w-[814px]">
+        <form action={addRace}>
+          <Label htmlFor="name">Race Name</Label>
+          <Input
+            required
+            name="name"
+            placeholder="Race Name"
+            type="text"
+            className="self-stretch"
+          />
 
-        <Label htmlFor="circuit">Circuit</Label>
-        <Input required name="circuit" placeholder="Circuit" type="text" />
+          <Label htmlFor="circuit">Circuit</Label>
+          <Input
+            required
+            name="circuit"
+            placeholder="Circuit"
+            type="text"
+            className="self-stretch"
+          />
 
-        <Label htmlFor="raceDate">Race Date</Label>
-        <Input required name="raceDate" placeholder="Race Date" type="date" />
+          <Label htmlFor="raceDate">Race Date</Label>
+          <Input
+            required
+            name="raceDate"
+            placeholder="Race Date"
+            type="date"
+            className="self-stretch"
+          />
 
-        <Label htmlFor="description">Description</Label>
-        <Textarea
-          required
-          name="description"
-          placeholder="Description"
-          id="description"
-        />
-        <Button type="submit">Submit</Button>
-      </form>
+          <Label htmlFor="description">Description</Label>
+          <Textarea
+            required
+            name="description"
+            placeholder="Description"
+            id="description"
+            className="self-stretch"
+          />
+          <Button type="submit" className="self-stretch">
+            Submit
+          </Button>
+        </form>
+      </div>
     </>
   );
 };

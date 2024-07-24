@@ -5,6 +5,7 @@ import Link from "next/link";
 import prisma from "@/lib/db/prisma";
 import { buttonVariants } from "@/components/ui/button";
 import { Flag } from "lucide-react";
+import RaceCard from "./components/molecules/RaceCard/RaceCard";
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
@@ -17,7 +18,7 @@ export default async function Home() {
   return (
     <div>
       <Navbar />
-      <div className="flex flex-col items-center px-8 pt-20 gap-3">
+      <div className="flex flex-col px-8 pt-20 gap-3">
         {session && (
           <Link
             className={buttonVariants({
@@ -33,11 +34,14 @@ export default async function Home() {
         {races.length > 0 ? (
           <div className="flex flex-col self-stretch items-center gap-5">
             {races.map((race) => (
-              <div key={race.id} className=" bg-gray-400 h-[93px] self-stretch">
-                <p className="text-black h-3 w-3">{race.name}</p>
-                <p className="text-black h-3 w-3">{race.circuit}</p>
-                <p>{race.user?.name}</p>
-              </div>
+              <RaceCard
+                key={race.id}
+                author={race.user?.name}
+                authorPicture={race.user?.image}
+                name={race.name}
+                circuit={race.circuit}
+                startTime={race.raceDate}
+              />
             ))}
           </div>
         ) : (
