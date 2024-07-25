@@ -25,7 +25,7 @@ export default async function Home() {
               variant: "outline",
               className: "self-end flex",
             })}
-            href={"/create-race"}
+            href={"/races/create-race"}
           >
             <Flag className="w-4 h-4" />
             <p className="pl-2">Create Race</p>
@@ -36,6 +36,7 @@ export default async function Home() {
             {races.map((race) => (
               <RaceCard
                 key={race.id}
+                id={race.id}
                 author={race.user?.name}
                 authorPicture={race.user?.image}
                 name={race.name}
