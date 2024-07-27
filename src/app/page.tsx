@@ -37,8 +37,8 @@ export default async function Home() {
               <RaceCard
                 key={race.id}
                 id={race.id}
-                author={race.user?.name}
-                authorPicture={race.user?.image}
+                author={race.user?.name!}
+                authorPicture={race.user?.image!}
                 name={race.name}
                 circuit={race.circuit}
                 startTime={race.raceDate}
