@@ -1,21 +1,20 @@
-"use Client";
+"use client";
 
 import { Button } from "@/components/ui/button";
 import { Trash } from "lucide-react";
 
 interface DeleteRaceButtonProps {
   raceID: string;
+  DeleteRace: (raceID: string) => Promise<void>;
 }
 
-const DeleteRace = async (raceID: string) => {
-  "use server";
-  console.log(raceID);
-};
-
-const DeleteRaceButton: React.FC<DeleteRaceButtonProps> = ({ raceID }) => {
+const DeleteRaceButton: React.FC<DeleteRaceButtonProps> = ({
+  raceID,
+  DeleteRace,
+}) => {
   return (
     <Button
-      onClick={() => DeleteRace(raceID)}
+      onClick={async () => await DeleteRace(raceID)}
       className="bg-red-400 text-white cursor-pointer hover:bg-red-500"
     >
       <Trash className="w-4 h-4" />
