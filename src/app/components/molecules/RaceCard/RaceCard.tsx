@@ -1,7 +1,9 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Clock2, Map, User } from "lucide-react";
+import Link from "next/link";
 
 interface RaceCardProps {
+  id: string;
   name: string;
   circuit: string;
   author: string;
@@ -15,9 +17,13 @@ const RaceCard: React.FC<RaceCardProps> = ({
   circuit,
   name,
   startTime,
+  id,
 }) => {
   return (
-    <div className="self-stretch bg-slate-400 p-3 rounded-lg text-white max-w-[814px] min-w-[200px]">
+    <Link
+      href={"races/" + id}
+      className="self-stretch bg-slate-400 p-3 rounded-lg text-white max-w-[814px] min-w-[200px]"
+    >
       <div className="flex justify-end items-center gap-2">
         <p>{author}</p>
         <Avatar>
@@ -40,7 +46,7 @@ const RaceCard: React.FC<RaceCardProps> = ({
           <p>{startTime}</p>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

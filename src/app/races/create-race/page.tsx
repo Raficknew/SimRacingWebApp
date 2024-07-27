@@ -1,6 +1,6 @@
 import { getServerSession } from "next-auth";
-import Navbar from "../components/organizms/Navbar/Navbar";
-import { authOptions } from "../api/auth/[...nextauth]/route";
+import Navbar from "../../components/organizms/Navbar/Navbar";
+import { authOptions } from "../../api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 import prisma from "@/lib/db/prisma";
 import { Button } from "@/components/ui/button";
