@@ -18,6 +18,7 @@ model Race {
   name        String
   description String
   circuit     String
+  series      String
   raceDate    String
   raceHour    String
   userId      String?  @db.ObjectId

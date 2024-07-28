@@ -7,6 +7,7 @@ interface RaceCardProps {
   id: string;
   name: string;
   circuit: string;
+  series: string;
   author: string;
   authorPicture: string;
   hour: string;
@@ -17,6 +18,7 @@ const RaceCard: React.FC<RaceCardProps> = ({
   author,
   authorPicture,
   circuit,
+  series,
   name,
   hour,
   date,
@@ -25,13 +27,20 @@ const RaceCard: React.FC<RaceCardProps> = ({
   return (
     <Link
       href={"races/" + id}
-      className="self-stretch bg-slate-400 p-3 rounded-lg text-white max-w-[814px] min-w-[200px]"
+      className="self-stretch bg-slate-400 p-1 rounded-lg text-white max-w-[814px] min-w-[200px]"
     >
       <div className="flex self-stretch justify-between items-center">
-        <Badge>zebys spierdalal</Badge>
+        {series === "GT3 HYPERCAR" ? (
+          <div className="flex items-center gap-2">
+            <Badge>GT3</Badge>
+            <Badge>HYPERCAR</Badge>
+          </div>
+        ) : (
+          <Badge>{series}</Badge>
+        )}
         <div className="flex justify-end items-center gap-2">
-          <p>{author}</p>
-          <Avatar>
+          <p className="text-sm">{author}</p>
+          <Avatar className="h-9 w-9">
             <AvatarImage src={authorPicture} />
             <AvatarFallback>
               <User className="h-4 w-4" />
@@ -40,7 +49,7 @@ const RaceCard: React.FC<RaceCardProps> = ({
         </div>
       </div>
       <div className="mb-4 self-stretch">
-        <p>{name}</p>
+        <p className="text-2xl">{name}</p>
       </div>
       <div className="flex gap-2 self-stretch flex-wrap">
         <div className="flex gap-1 items-center">
