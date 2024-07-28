@@ -34,15 +34,23 @@ async function addRace(formData: FormData) {
       const name = formData.get("name")?.toString();
       const circuit = formData.get("circuit")?.toString();
       const raceDate = formData.get("raceDate")?.toString();
+      const raceHour = formData.get("raceHour")?.toString();
       const description = formData.get("description")?.toString();
       const userId = id.toString();
 
-      if (!name || !description || !circuit || !raceDate || !userId) {
+      if (
+        !name ||
+        !description ||
+        !circuit ||
+        !raceDate ||
+        !raceHour ||
+        !userId
+      ) {
         throw new Error("Missing required fields");
       }
 
       await prisma.race.create({
-        data: { name, description, circuit, raceDate, userId },
+        data: { name, description, circuit, raceDate, raceHour, userId },
       });
 
       redirect("/");
@@ -88,6 +96,15 @@ const CreateEventPage = async () => {
             name="raceDate"
             placeholder="Race Date"
             type="date"
+            className="self-stretch"
+          />
+
+          <Label htmlFor="raceHour">Race Hour</Label>
+          <Input
+            required
+            name="raceHour"
+            placeholder="Race Hour"
+            type="time"
             className="self-stretch"
           />
 

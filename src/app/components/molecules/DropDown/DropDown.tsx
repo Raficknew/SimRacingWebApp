@@ -7,14 +7,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  Gamepad2,
-  Home,
-  Settings,
-  Trophy,
-  TrophyIcon,
-  User,
-} from "lucide-react";
+import { Gamepad2, Home, Settings, TrophyIcon, User } from "lucide-react";
 import Link from "next/link";
 import LoginButton from "../../atoms/LoginButtons/Loginbutton";
 import { Session } from "next-auth";
@@ -80,7 +73,7 @@ const DropDown: React.FC<DropDownProps> = ({ session }) => {
             </DropdownMenuItem>
             <DropdownMenuItem>
               <Link
-                href={"/settings"}
+                href={"/profile/settings"}
                 className="flex justify-center text-[#F6F6F6] items-center hover:text-red-400"
               >
                 <Settings className="mr-2 h-4 w-4 " />

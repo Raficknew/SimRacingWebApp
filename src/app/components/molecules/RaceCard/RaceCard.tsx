@@ -1,6 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Clock2, Map, User } from "lucide-react";
 import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
 
 interface RaceCardProps {
   id: string;
@@ -8,7 +9,8 @@ interface RaceCardProps {
   circuit: string;
   author: string;
   authorPicture: string;
-  startTime: string;
+  hour: string;
+  date: string;
 }
 
 const RaceCard: React.FC<RaceCardProps> = ({
@@ -16,7 +18,8 @@ const RaceCard: React.FC<RaceCardProps> = ({
   authorPicture,
   circuit,
   name,
-  startTime,
+  hour,
+  date,
   id,
 }) => {
   return (
@@ -24,14 +27,17 @@ const RaceCard: React.FC<RaceCardProps> = ({
       href={"races/" + id}
       className="self-stretch bg-slate-400 p-3 rounded-lg text-white max-w-[814px] min-w-[200px]"
     >
-      <div className="flex justify-end items-center gap-2">
-        <p>{author}</p>
-        <Avatar>
-          <AvatarImage src={authorPicture} />
-          <AvatarFallback>
-            <User className="h-4 w-4" />
-          </AvatarFallback>
-        </Avatar>
+      <div className="flex self-stretch justify-between items-center">
+        <Badge>zebys spierdalal</Badge>
+        <div className="flex justify-end items-center gap-2">
+          <p>{author}</p>
+          <Avatar>
+            <AvatarImage src={authorPicture} />
+            <AvatarFallback>
+              <User className="h-4 w-4" />
+            </AvatarFallback>
+          </Avatar>
+        </div>
       </div>
       <div className="mb-4 self-stretch">
         <p>{name}</p>
@@ -43,7 +49,8 @@ const RaceCard: React.FC<RaceCardProps> = ({
         </div>
         <div className="flex gap-1 items-center">
           <Clock2 className="h-4 w-4" />
-          <p>{startTime}</p>
+          <p>{hour}</p>
+          <p>{date.split("-").reverse().join("-")}</p>
         </div>
       </div>
     </Link>

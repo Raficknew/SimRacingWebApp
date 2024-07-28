@@ -41,7 +41,8 @@ export default async function Home() {
                 authorPicture={race.user?.image!}
                 name={race.name}
                 circuit={race.circuit}
-                startTime={race.raceDate}
+                hour={race.raceHour}
+                date={race.raceDate}
               />
             ))}
           </div>
