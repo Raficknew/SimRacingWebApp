@@ -31,7 +31,7 @@ const RaceCard: React.FC<RaceCardProps> = ({
     >
       <div className="flex self-stretch justify-between items-center">
         {series === "GT3 HYPERCAR" ? (
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
             <Badge>GT3</Badge>
             <Badge>HYPERCAR</Badge>
           </div>
