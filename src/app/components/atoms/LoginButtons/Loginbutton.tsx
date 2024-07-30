@@ -3,9 +3,9 @@ import { Session } from "next-auth";
 import { signIn, signOut } from "next-auth/react";
 import { LogIn, LogOut } from "lucide-react";
 
-interface LoginbuttonProps {
+type LoginbuttonProps = {
   session: Session | null;
-}
+};
 
 const LoginButton: React.FC<LoginbuttonProps> = ({ session }) => {
   const user = session?.user;

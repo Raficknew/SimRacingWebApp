@@ -1,36 +1,27 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]/route";
 import Navbar from "./components/organizms/Navbar/Navbar";
-import Link from "next/link";
 import prisma from "@/lib/db/prisma";
-import { buttonVariants } from "@/components/ui/button";
-import { Flag } from "lucide-react";
 import RaceCard from "./components/molecules/RaceCard/RaceCard";
+import CreateRaceButton from "./components/atoms/CreateRaceButton/CreateRaceButton";
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
   const races = await prisma.race.findMany({
     orderBy: { id: "desc" },
+    take: 5,
     include: {
       user: true,
     },
   });
+
+  // ? live events
+
   return (
-    <div>
+    <div className="h-screen">
       <Navbar />
       <div className="flex flex-col px-8 pt-20 gap-3">
-        {session && (
-          <Link
-            className={buttonVariants({
-              variant: "outline",
-              className: "self-end flex",
-            })}
-            href={"/races/create-race"}
-          >
-            <Flag className="w-4 h-4" />
-            <p className="pl-2">Create Race</p>
-          </Link>
-        )}
+        {session && <CreateRaceButton />}
         {races.length > 0 ? (
           <div className="flex flex-col self-stretch items-center gap-5">
             {races.map((race) => (
@@ -41,7 +32,9 @@ export default async function Home() {
                 authorPicture={race.user?.image!}
                 name={race.name}
                 circuit={race.circuit}
-                startTime={race.raceDate}
+                series={race.series}
+                hour={race.raceHour}
+                date={race.raceDate}
               />
             ))}
           </div>

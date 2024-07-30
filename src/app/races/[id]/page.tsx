@@ -6,11 +6,11 @@ import { authOptions } from "../../api/auth/[...nextauth]/route";
 import DeleteRaceButton from "../../components/atoms/DeleteRaceButton/DeleteRaceButton";
 import { DeleteRace } from "./actions";
 
-interface RacePageProps {
+type RacePageProps = {
   params: {
     id: string;
   };
-}
+};
 
 const getRace = cache(async (id: string) => {
   const race = await prisma.race.findUnique({
@@ -29,6 +29,7 @@ const RacePage: React.FC<RacePageProps> = async ({ params: { id } }) => {
     <div>
       <p>{race?.name}</p>
       <p>{race?.circuit}</p>
+      <p>{race?.series}</p>
       <p>{race?.user?.email}</p>
       {session?.user?.email == race?.user?.email && (
         <DeleteRaceButton

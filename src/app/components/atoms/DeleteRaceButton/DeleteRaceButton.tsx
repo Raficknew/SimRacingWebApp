@@ -3,10 +3,10 @@
 import { Button } from "@/components/ui/button";
 import { Trash } from "lucide-react";
 
-interface DeleteRaceButtonProps {
+type DeleteRaceButtonProps = {
   raceID: string;
   DeleteRace: (raceID: string) => Promise<void>;
-}
+};
 
 const DeleteRaceButton: React.FC<DeleteRaceButtonProps> = ({
   raceID,
