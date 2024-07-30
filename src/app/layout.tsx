@@ -22,8 +22,8 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <SessionProvider>
-          <div className="flex flex-col w-screen h-screen ">
-            <main className="bg-[#303030] w-screen h-full ">{children}</main>
+          <div className="flex flex-col">
+            <main className="bg-[#303030]">{children}</main>
           </div>
         </SessionProvider>
       </body>

@@ -6,11 +6,11 @@ import {
 } from "@/components/ui/tooltip";
 import Link from "next/link";
 
-interface NavbarlinkProps {
+type NavbarlinkProps = {
   icon: React.ReactNode;
   link: string;
   title: string;
-}
+};
 
 const Navbarlink: React.FC<NavbarlinkProps> = ({ link, icon, title }) => {
   return (

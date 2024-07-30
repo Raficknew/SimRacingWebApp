@@ -6,11 +6,11 @@ import { authOptions } from "../../api/auth/[...nextauth]/route";
 import DeleteRaceButton from "../../components/atoms/DeleteRaceButton/DeleteRaceButton";
 import { DeleteRace } from "./actions";
 
-interface RacePageProps {
+type RacePageProps = {
   params: {
     id: string;
   };
-}
+};
 
 const getRace = cache(async (id: string) => {
   const race = await prisma.race.findUnique({

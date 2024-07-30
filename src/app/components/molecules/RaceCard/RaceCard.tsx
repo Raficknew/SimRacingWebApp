@@ -3,7 +3,7 @@ import { Clock2, Map, User } from "lucide-react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 
-interface RaceCardProps {
+type RaceCardProps = {
   id: string;
   name: string;
   circuit: string;
@@ -12,7 +12,7 @@ interface RaceCardProps {
   authorPicture: string;
   hour: string;
   date: string;
-}
+};
 
 const RaceCard: React.FC<RaceCardProps> = ({
   author,
