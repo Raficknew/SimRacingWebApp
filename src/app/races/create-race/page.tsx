@@ -1,5 +1,5 @@
 import { getServerSession } from "next-auth";
-import Navbar from "../../components/organizms/Navbar/Navbar";
+import Navbar from "../../../components/organizms/Navbar/Navbar";
 import { authOptions } from "../../api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 import prisma from "@/lib/db/prisma";
@@ -38,7 +38,8 @@ async function addRace(formData: FormData) {
     if (user) {
       const id = user?.id;
 
-      const name = formData.get("name")?.toString();
+      let name = formData.get("name")?.toString()!;
+      name = name?.charAt(0).toUpperCase() + name?.slice(1).toLowerCase();
       const circuit = formData.get("circuit")?.toString();
       const series = formData.get("series")?.toString();
       const raceDate = formData.get("raceDate")?.toString();

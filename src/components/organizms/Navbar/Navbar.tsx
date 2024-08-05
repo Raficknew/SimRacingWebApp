@@ -12,7 +12,7 @@ const Navbar: React.FC = async () => {
         <p>Logo</p>
         <div className="flex gap-10">
           <Navbarlink link="/" icon={<Home />} title="Home" />
-          <Navbarlink link="/races" icon={<Gamepad2 />} title="Races" />
+          <Navbarlink link="/races/search" icon={<Gamepad2 />} title="Races" />
           <Navbarlink
             link="/championships"
             icon={<Trophy />}

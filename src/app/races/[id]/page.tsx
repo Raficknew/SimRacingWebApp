@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
 import { cache } from "react";
 import { authOptions } from "../../api/auth/[...nextauth]/route";
-import DeleteRaceButton from "../../components/atoms/DeleteRaceButton/DeleteRaceButton";
+import DeleteRaceButton from "../../../components/atoms/DeleteRaceButton/DeleteRaceButton";
 import { DeleteRace } from "./actions";
 
 type RacePageProps = {

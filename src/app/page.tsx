@@ -1,9 +1,9 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]/route";
-import Navbar from "./components/organizms/Navbar/Navbar";
+import Navbar from "../components/organizms/Navbar/Navbar";
 import prisma from "@/lib/db/prisma";
-import RaceCard from "./components/molecules/RaceCard/RaceCard";
-import CreateRaceButton from "./components/atoms/CreateRaceButton/CreateRaceButton";
+import RaceCard from "../components/molecules/RaceCard/RaceCard";
+import CreateRaceButton from "../components/atoms/CreateRaceButton/CreateRaceButton";
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
