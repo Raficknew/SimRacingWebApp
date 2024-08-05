@@ -86,9 +86,9 @@ const CreateEventPage = async () => {
   }
 
   return (
-    <>
+    <div className="flex flex-col w-screen h-screen">
       <Navbar />
-      <div className="flex flex-col self-stretch items-center gap-5 pt-52 max-w-[814px]">
+      <div className="flex justify-center pt-20">
         <form action={addRace}>
           <Label htmlFor="name">Race Name</Label>
           <Input
@@ -151,7 +151,7 @@ const CreateEventPage = async () => {
           </Button>
         </form>
       </div>
-    </>
+    </div>
   );
 };
 

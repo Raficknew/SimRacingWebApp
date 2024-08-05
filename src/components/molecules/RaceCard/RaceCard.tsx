@@ -12,6 +12,7 @@ type RaceCardProps = {
   authorPicture: string;
   hour: string;
   date: string;
+  href: string;
 };
 
 const RaceCard: React.FC<RaceCardProps> = ({
@@ -23,10 +24,11 @@ const RaceCard: React.FC<RaceCardProps> = ({
   hour,
   date,
   id,
+  href,
 }) => {
   return (
     <Link
-      href={id}
+      href={href + id}
       className="self-stretch bg-slate-400 p-1 rounded-lg text-white max-w-[814px] min-w-[200px]"
     >
       <div className="flex self-stretch justify-between items-center">

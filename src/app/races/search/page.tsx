@@ -48,6 +48,7 @@ async function RaceFind({
                   series={race.series}
                   hour={race.raceHour}
                   date={race.raceDate}
+                  href=""
                 />
               ))}
             </ScrollArea>

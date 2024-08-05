@@ -2,6 +2,7 @@
 
 import { Input } from "@/components/ui/input";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
+import { useDebouncedCallback } from "use-debounce";
 
 interface SearchBarProps {
   placeholder: string;
@@ -11,7 +12,9 @@ const SearchBar: React.FC<SearchBarProps> = ({ placeholder }) => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
-  function handleSearch(term: string) {
+  const handleSearch = useDebouncedCallback((term) => {
+    console.log(`Searching... ${term}`);
+
     const params = new URLSearchParams(searchParams);
     if (term) {
       params.set("query", term);
@@ -19,7 +22,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ placeholder }) => {
       params.delete("query");
     }
     replace(`${pathname}?${params.toString()}`);
-  }
+  }, 300);
 
   return (
     <div>
