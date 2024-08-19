@@ -25,12 +25,16 @@ const RacePage: React.FC<RacePageProps> = async ({ params: { id } }) => {
   const session = await getServerSession(authOptions);
   const race = await getRace(id);
 
+
   return (
     <div>
       <p>{race?.name}</p>
       <p>{race?.circuit}</p>
       <p>{race?.series}</p>
       <p>{race?.user?.email}</p>
+      <div>{race?.participants.map((p) => (
+        <p key={""}>{p}</p>
+      ))}</div>
       {session?.user?.email == race?.user?.email && (
         <DeleteRaceButton
           key={race?.id}

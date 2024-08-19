@@ -16,7 +16,8 @@ async function RaceFind({
   };
 }) {
   const session = await getServerSession(authOptions);
-  const query = searchParams?.query || "";
+  let query = searchParams?.query || "";
+  query =  query?.charAt(0).toUpperCase() + query?.slice(1).toLowerCase();
   const races = await prisma.race.findMany({
     orderBy: { id: "desc" },
     include: {
