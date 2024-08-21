@@ -16,14 +16,13 @@ async function RaceFind({
   };
 }) {
   const session = await getServerSession(authOptions);
-  let query = searchParams?.query || "";
-  query =  query?.charAt(0).toUpperCase() + query?.slice(1).toLowerCase();
+  const query = searchParams?.query || "";
   const races = await prisma.race.findMany({
     orderBy: { id: "desc" },
     include: {
       user: true,
     },
-    where: { name: { startsWith: query } },
+    where: { name: { startsWith: query, mode: "insensitive" } },
   });
 
   return (
