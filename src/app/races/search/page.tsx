@@ -22,7 +22,7 @@ async function RaceFind({
     include: {
       user: true,
     },
-    where: { name: { startsWith: query, mode: "insensitive" } },
+    where: { name: { contains: query, mode: "insensitive" } },
   });
 
   return (

@@ -14,6 +14,10 @@ export default async function Home() {
       user: true,
     },
   });
+  const invites = await prisma.invite.findMany({
+    where: { userEmail: session?.user?.email! },
+    include: { race: true },
+  });
 
   // ? live events
 
@@ -21,7 +25,14 @@ export default async function Home() {
     <div className="h-screen">
       <Navbar />
       <div className="flex flex-col px-8 pt-20 gap-3 justify-center">
-        {session && <CreateRaceButton />}
+        {session && (
+          <div className="flex flex-col ">
+            {invites.map((invite) => (
+              <p key={invite.userEmail}>{invite.race.name}</p>
+            ))}
+            <CreateRaceButton />
+          </div>
+        )}
         {races.length > 0 ? (
           <div className="flex flex-col self-stretch justify-center items-center gap-5">
             {races.map((race) => (
