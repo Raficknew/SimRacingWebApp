@@ -4,6 +4,8 @@ import Navbar from "../components/organizms/Navbar/Navbar";
 import prisma from "@/lib/db/prisma";
 import RaceCard from "../components/molecules/RaceCard/RaceCard";
 import CreateRaceButton from "../components/atoms/CreateRaceButton/CreateRaceButton";
+import Invite from "../components/atoms/Invite/Invite";
+import { DeleteInvite } from "./actions";
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
@@ -26,10 +28,17 @@ export default async function Home() {
       <Navbar />
       <div className="flex flex-col px-8 pt-20 gap-3 justify-center">
         {session && (
-          <div className="flex flex-col ">
-            {invites.map((invite) => (
-              <p key={invite.userEmail}>{invite.race.name}</p>
-            ))}
+          <div className="flex flex-col">
+            <div className="flex flex-col gap-2 max-w-[600px]">
+              {invites.map((invite) => (
+                <Invite
+                  key={invite.userEmail}
+                  inviteId={invite.id}
+                  raceName={invite.race.name}
+                  DeleteInvite={DeleteInvite}
+                />
+              ))}
+            </div>
             <CreateRaceButton />
           </div>
         )}
