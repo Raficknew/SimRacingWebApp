@@ -11,11 +11,18 @@ export const DeleteRace = async (raceID: string) => {
 };
 
 export const CreateInvite = async (userEmail: string, raceId: string) => {
-  await prisma.invite.create({
-    data: {
-      userEmail,
-      raceId,
-    },
-  });
+  const race = await prisma.race.findUnique({ where: { id: raceId } });
+
+  const isUserInEvent = race?.participants.includes(userEmail);
+
+  if (!isUserInEvent) {
+    await prisma.invite.create({
+      data: {
+        userEmail,
+        raceId,
+      },
+    });
+  }
+
   revalidatePath("/races/[id]");
 };

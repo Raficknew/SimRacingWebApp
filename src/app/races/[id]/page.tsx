@@ -22,6 +22,15 @@ const getRace = cache(async (id: string) => {
   return race;
 });
 
+const getParticipant = cache(async (mail: string) => {
+  const user = await prisma.user.findUnique({ where: { email: mail } });
+
+  if (!user) notFound;
+
+  const participant = user?.name;
+  return participant;
+});
+
 const RacePage: React.FC<RacePageProps> = async ({ params: { id } }) => {
   const session = await getServerSession(authOptions);
   const race = await getRace(id);
@@ -34,7 +43,7 @@ const RacePage: React.FC<RacePageProps> = async ({ params: { id } }) => {
       <p>{race?.user?.email}</p>
       <div>
         {race?.participants.map((p) => (
-          <p key={""}>{p}</p>
+          <p key={""}>{getParticipant(p)}</p>
         ))}
       </div>
       {session?.user?.email == race?.user?.email && (

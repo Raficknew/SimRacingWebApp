@@ -5,7 +5,7 @@ import prisma from "@/lib/db/prisma";
 import RaceCard from "../components/molecules/RaceCard/RaceCard";
 import CreateRaceButton from "../components/atoms/CreateRaceButton/CreateRaceButton";
 import Invite from "../components/atoms/Invite/Invite";
-import { DeleteInvite } from "./actions";
+import { AcceptInvite, DeleteInvite } from "./actions";
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
@@ -35,6 +35,9 @@ export default async function Home() {
                   key={invite.userEmail}
                   inviteId={invite.id}
                   raceName={invite.race.name}
+                  raceId={invite.raceId}
+                  userEmail={invite.userEmail}
+                  AcceptInvite={AcceptInvite}
                   DeleteInvite={DeleteInvite}
                 />
               ))}
