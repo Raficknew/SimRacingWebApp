@@ -22,10 +22,22 @@ model Race {
   raceDate    String
   raceHour    String
   userId      String?  @db.ObjectId
+  participants String[]
   user        User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt   DateTime @default(now())
+  invites Invite[]
 
   @@map("races")
+}
+
+model Invite {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  raceId      String   @db.ObjectId
+  userEmail   String  
+  race        Race     @relation(fields: [raceId], references: [id], onDelete: Cascade)
+  user        User?    @relation(fields: [userEmail], references: [email], onDelete: Cascade)
+
+  @@map("invites")
 }
 
 model Account {
@@ -67,6 +79,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   races         Race[]
+  invites       Invite[]
 
   @@map("users")
 }
