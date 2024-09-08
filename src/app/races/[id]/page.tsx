@@ -6,6 +6,7 @@ import { authOptions } from "../../api/auth/[...nextauth]/route";
 import DeleteRaceButton from "../../../components/atoms/DeleteRaceButton/DeleteRaceButton";
 import { CreateInvite, DeleteRace } from "./actions";
 import InviteBar from "@/src/components/molecules/InviteBar/Invitebar";
+import RaceResultDialog from "@/src/components/organizms/RaceResultDialog/RaceResultDialog";
 
 type RacePageProps = {
   params: {
@@ -53,7 +54,11 @@ const RacePage: React.FC<RacePageProps> = async ({ params: { id } }) => {
             raceID={race?.id!}
             DeleteRace={DeleteRace}
           />
-          <InviteBar CreateInvite={CreateInvite} raceId={race?.id!} />
+          {race?.status !== "ended" ? (
+            <InviteBar CreateInvite={CreateInvite} raceId={race?.id!} />
+          ) : (
+            <RaceResultDialog key={race.id} raceId={race.id} />
+          )}
         </div>
       )}
     </div>

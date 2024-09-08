@@ -22,7 +22,8 @@ model Race {
   raceDate    String
   raceHour    String
   userId      String?  @db.ObjectId
-  participants String[]
+  participants  String[]
+  status       String
   user        User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt   DateTime @default(now())
   invites Invite[]
