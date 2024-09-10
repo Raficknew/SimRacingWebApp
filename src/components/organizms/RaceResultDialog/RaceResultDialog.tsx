@@ -3,12 +3,11 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { getRace } from "./actions";
+import { getParticipantsNames, getRace, setResults } from "./actions";
 import RaceParticipants from "./RaceParticipants/RaceParticipants";
 
 interface RaceResultDialogProps {
@@ -19,6 +18,10 @@ const RaceResultDialog: React.FC<RaceResultDialogProps> = async ({
   raceId,
 }) => {
   const race = await getRace(raceId);
+  const participantsNames = await getParticipantsNames(
+    race?.participants ?? []
+  );
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -32,7 +35,14 @@ const RaceResultDialog: React.FC<RaceResultDialogProps> = async ({
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
-          <RaceParticipants participantsList={race?.participants!} />
+          <RaceParticipants
+            key={race?.id}
+            raceId={race?.id!}
+            setResults={setResults}
+            participantsList={Object.entries(participantsNames).map(
+              ([mail, name]) => name ?? mail
+            )}
+          />
         </div>
       </DialogContent>
     </Dialog>

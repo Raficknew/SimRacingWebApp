@@ -5,11 +5,15 @@ import { DialogFooter } from "@/components/ui/dialog";
 import { useRef, useState } from "react";
 
 interface RaceParticipantsProps {
+  raceId: string;
   participantsList: string[];
+  setResults: (raceID: string, participants: string[]) => Promise<void>;
 }
 
 const RaceParticipants: React.FC<RaceParticipantsProps> = ({
+  raceId,
   participantsList,
+  setResults,
 }) => {
   const [participants, SetParticipants] = useState(participantsList);
   const dragParticipant = useRef<number>(0);
@@ -51,7 +55,9 @@ const RaceParticipants: React.FC<RaceParticipantsProps> = ({
         ))}
       </div>
       <DialogFooter>
-        <Button onClick={() => console.log(participants)}>Zapisz</Button>
+        <Button onClick={() => setResults(raceId, participantsList)}>
+          Zapisz
+        </Button>
       </DialogFooter>
     </>
   );

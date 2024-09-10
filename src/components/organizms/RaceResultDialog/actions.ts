@@ -1,22 +1,35 @@
 "use server";
 import prisma from "@/lib/db/prisma";
-import { notFound } from "next/navigation";
+import { revalidatePath } from "next/cache";
+import { notFound, redirect } from "next/navigation";
 import { cache } from "react";
 
 export const getRace = cache(async (id: string) => {
   const race = await prisma.race.findUnique({
     where: { id },
-    include: { user: true },
   });
   if (!race) notFound;
   return race;
 });
 
-export const getParticipant = cache(async (mail: string) => {
-  const user = await prisma.user.findUnique({ where: { email: mail } });
+export const getParticipantsNames = cache(async (mails: string[]) => {
+  const users = await prisma.user.findMany({ where: { email: { in: mails } } });
 
-  if (!user) notFound;
+  let response: Record<string, string | null> = {};
 
-  const participant = user?.name;
-  return participant;
+  for (const mail of mails) {
+    response[mail] = users.find((u) => u.email === mail)?.name ?? null;
+  }
+
+  return response;
 });
+
+export const setResults = async (raceID: string, participants: string[]) => {
+  await prisma.race.update({
+    where: { id: raceID },
+    data: { results: { set: participants } },
+  });
+
+  revalidatePath(`/races/${raceID}`);
+  redirect(`/races/${raceID}`);
+};

@@ -14,19 +14,20 @@ datasource db {
 }
 
 model Race {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  name        String
-  description String
-  circuit     String
-  series      String
-  raceDate    String
-  raceHour    String
-  userId      String?  @db.ObjectId
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  description   String
+  circuit       String
+  series        String
+  raceDate      String
+  raceHour      String
+  userId        String?  @db.ObjectId
   participants  String[]
-  status       String
-  user        User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  createdAt   DateTime @default(now())
-  invites Invite[]
+  status        String
+  results       String[]
+  user          User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt     DateTime @default(now())
+  invites       Invite[]
 
   @@map("races")
 }
