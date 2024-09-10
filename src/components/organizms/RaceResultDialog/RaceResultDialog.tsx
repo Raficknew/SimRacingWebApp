@@ -8,8 +8,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import RaceResultDialogButton from "./RaceResultDialogButton/RaceResultDialogButton";
-import { getParticipant, getRace } from "./actions";
+import { getRace } from "./actions";
+import RaceParticipants from "./RaceParticipants/RaceParticipants";
 
 interface RaceResultDialogProps {
   raceId: string;
@@ -32,17 +32,8 @@ const RaceResultDialog: React.FC<RaceResultDialogProps> = async ({
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
-          {race?.participants.map((p, index) => (
-            <div className="flex justify-between w-full" key={index.toString()}>
-              <p>{index + 1}</p>
-              <p>{p}</p>
-              <p>Fastest lap ?</p>
-            </div>
-          ))}
+          <RaceParticipants participantsList={race?.participants!} />
         </div>
-        <DialogFooter>
-          <RaceResultDialogButton />
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
