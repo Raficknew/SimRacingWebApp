@@ -52,7 +52,6 @@ const RacePage: React.FC<RacePageProps> = async ({ params: { id } }) => {
           <p>{race?.name}</p>
           <p>{race?.circuit}</p>
           <p>{race?.series}</p>
-          <p>{race?.user?.email}</p>
           {session?.user?.email == race?.user?.email && (
             <div>
               <DeleteRaceButton

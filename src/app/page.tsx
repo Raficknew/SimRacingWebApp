@@ -57,7 +57,7 @@ export default async function Home() {
                 circuit={race.circuit}
                 series={race.series}
                 hour={race.raceHour}
-                date={race.raceDate}
+                date={race.raceDate.toLocaleDateString()}
                 href="/races/"
               />
             ))}
