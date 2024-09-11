@@ -19,7 +19,7 @@ model Race {
   description   String
   circuit       String
   series        String
-  raceDate      String
+  raceDate      DateTime
   raceHour      String
   userId        String?  @db.ObjectId
   participants  String[]
