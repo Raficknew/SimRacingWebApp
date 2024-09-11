@@ -6,6 +6,7 @@ import { authOptions } from "../../api/auth/[...nextauth]/route";
 import DeleteRaceButton from "../../../components/atoms/DeleteRaceButton/DeleteRaceButton";
 import { CreateInvite, DeleteRace } from "./actions";
 import InviteBar from "@/src/components/molecules/InviteBar/Invitebar";
+import RaceResultDialog from "@/src/components/organizms/RaceResultDialog/RaceResultDialog";
 
 type RacePageProps = {
   params: {
@@ -37,24 +38,38 @@ const RacePage: React.FC<RacePageProps> = async ({ params: { id } }) => {
 
   return (
     <div>
-      <p>{race?.name}</p>
-      <p>{race?.circuit}</p>
-      <p>{race?.series}</p>
-      <p>{race?.user?.email}</p>
-      <div>
-        {race?.participants.map((p) => (
-          <p key={""}>{getParticipant(p)}</p>
-        ))}
-      </div>
-      {session?.user?.email == race?.user?.email && (
+      {race?.results.length! > 1 ? (
         <div>
-          <DeleteRaceButton
-            key={race?.id}
-            raceID={race?.id!}
-            DeleteRace={DeleteRace}
-          />
-          <InviteBar CreateInvite={CreateInvite} raceId={race?.id!} />
+          <p>Wyścig się zakończył</p>
+          {race?.results.map((person, index) => (
+            <p key={index.toString()}>
+              {index + 1} {person}
+            </p>
+          ))}
         </div>
+      ) : (
+        <>
+          <p>{race?.name}</p>
+          <p>{race?.circuit}</p>
+          <p>{race?.series}</p>
+          <p>{race?.user?.email}</p>
+          {session?.user?.email == race?.user?.email && (
+            <div>
+              <DeleteRaceButton
+                key={race?.id}
+                raceID={race?.id!}
+                DeleteRace={DeleteRace}
+              />
+              {race?.status !== "ended" ? (
+                <InviteBar CreateInvite={CreateInvite} raceId={race?.id!} />
+              ) : (
+                race.results.length == 0 && (
+                  <RaceResultDialog key={race.id} raceId={race.id} />
+                )
+              )}
+            </div>
+          )}
+        </>
       )}
     </div>
   );

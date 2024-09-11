@@ -46,6 +46,7 @@ async function addRace(formData: FormData) {
       const raceHour = formData.get("raceHour")?.toString();
       const description = formData.get("description")?.toString();
       const userId = id.toString();
+      const status = "None";
 
       if (
         !name ||
@@ -68,6 +69,7 @@ async function addRace(formData: FormData) {
           raceDate,
           raceHour,
           userId,
+          status,
         },
       });
 
