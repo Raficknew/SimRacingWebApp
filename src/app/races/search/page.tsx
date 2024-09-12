@@ -22,7 +22,7 @@ async function RaceFind({
   const races = await prisma.race.findMany({
     orderBy: { id: "desc" },
     include: {
-      user: true,
+      user: { select: { name: true, image: true } },
     },
     where: { name: { contains: query, mode: "insensitive" } },
   });

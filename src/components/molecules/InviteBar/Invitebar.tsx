@@ -1,7 +1,20 @@
 "use client";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { redirect } from "next/navigation";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
+
+const formSchema = z.object({
+  userEmail: z.string().min(2).max(50),
+});
 
 type InviteBarProps = {
   raceId: string;
@@ -9,21 +22,35 @@ type InviteBarProps = {
 };
 
 const InviteBar: React.FC<InviteBarProps> = ({ CreateInvite, raceId }) => {
-  const handlesubmit = async (formData: FormData) => {
-    const userEmail = formData.get("email")?.toString()!;
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    CreateInvite(values.userEmail, raceId);
+  }
 
-    if (!userEmail || !raceId) throw new Error("Missing Email");
-
-    await CreateInvite(userEmail, raceId);
-
-    redirect(`/races/${raceId}`);
-  };
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      userEmail: "",
+    },
+  });
 
   return (
-    <form action={handlesubmit} className="flex">
-      <Input required type="email" placeholder="invite" name="email" />
-      <Button>Send</Button>
-    </form>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="flex">
+        <FormField
+          control={form.control}
+          name="userEmail"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input placeholder="invite" type="email" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button type="submit">Submit</Button>
+      </form>
+    </Form>
   );
 };
 
