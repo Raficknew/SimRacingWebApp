@@ -1,7 +1,7 @@
 "use server";
 
 import { getServerSession } from "next-auth";
-import { authOptions } from "../../api/auth/[...nextauth]/route";
+import { authOptions } from "@/src/app/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 import prisma from "@/lib/db/prisma";
 
@@ -20,31 +20,30 @@ export async function createRace(
 
   const useremail = session.user?.email;
 
-  if (useremail) {
-    const user = await prisma.user.findUnique({
-      where: { email: useremail },
-    });
+  if (!useremail) return;
 
-    if (user) {
-      const id = user?.id;
-      const userId = id.toString();
+  const user = await prisma.user.findUnique({
+    where: { email: useremail },
+  });
 
-      await prisma.race.create({
-        data: {
-          name,
-          description,
-          circuit,
-          series,
-          raceDate,
-          raceHour,
-          userId,
-          status,
-        },
-      });
+  if (!user) return;
 
-      redirect("/");
+  const userId = user.id;
 
-      // ! toast to add
-    }
-  }
+  await prisma.race.create({
+    data: {
+      name,
+      description,
+      circuit,
+      series,
+      raceDate,
+      raceHour,
+      userId,
+      status,
+    },
+  });
+
+  redirect("/");
+
+  // ! toast to add
 }

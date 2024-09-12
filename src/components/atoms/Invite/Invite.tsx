@@ -1,11 +1,10 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { type Invite } from "@prisma/client";
 
 interface InviteProps {
+  invite: Invite;
   raceName: string;
-  inviteId: string;
-  raceId: string;
-  userEmail: string;
   DeleteInvite: (inviteId: string) => Promise<void>;
   AcceptInvite: (
     raceId: string,
@@ -15,10 +14,8 @@ interface InviteProps {
 }
 
 const Invite: React.FC<InviteProps> = ({
+  invite,
   raceName,
-  inviteId,
-  raceId,
-  userEmail,
   AcceptInvite,
   DeleteInvite,
 }) => {
@@ -27,11 +24,13 @@ const Invite: React.FC<InviteProps> = ({
       <p className="text-sm">{raceName}</p>
       <div className="*:text-xs *:p-2 *:mr-2">
         <Button
-          onClick={async () => await AcceptInvite(raceId, userEmail, inviteId)}
+          onClick={async () =>
+            await AcceptInvite(invite.raceId, invite.userEmail, invite.id)
+          }
         >
           Accept
         </Button>
-        <Button onClick={async () => await DeleteInvite(inviteId)}>
+        <Button onClick={async () => await DeleteInvite(invite.id)}>
           Decline
         </Button>
       </div>

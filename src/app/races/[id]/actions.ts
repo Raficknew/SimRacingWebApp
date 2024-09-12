@@ -7,25 +7,26 @@ import { cache } from "react";
 
 export const DeleteRace = async (raceID: string) => {
   await prisma.race.delete({ where: { id: raceID } });
-  revalidatePath("/races/[id]");
+  revalidatePath(`/races/${raceID}`);
   redirect("/");
 };
 
-const getRace = cache(async (id: string) => {
+export const getRace = cache(async (id: string) => {
   const race = await prisma.race.findUnique({
     where: { id },
     include: { user: true },
   });
-  if (!race) notFound;
+  if (!race) notFound();
   return race;
 });
 
-export const CreateInvite = async (userEmail: string, raceId: string) => {
-  const race = await prisma.race.findUnique({ where: { id: raceId } });
+export const CreateInvite = cache(async (userEmail: string, raceId: string) => {
+  const race = await prisma.race.findUnique({
+    where: { id: raceId },
+    include: { invites: { select: { userEmail: true } } },
+  });
 
-  const isUserInEvent = race?.participants.includes(userEmail);
-
-  if (isUserInEvent) return;
+  race?.invites.userEmail;
 
   await prisma.invite.create({
     data: {
@@ -34,5 +35,5 @@ export const CreateInvite = async (userEmail: string, raceId: string) => {
     },
   });
 
-  revalidatePath("/races/[id]");
-};
+  revalidatePath(`/races/${raceId}`);
+});

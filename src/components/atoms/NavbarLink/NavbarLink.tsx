@@ -24,7 +24,7 @@ const Navbarlink: React.FC<NavbarlinkProps> = ({ link, icon, title }) => {
             {icon}
           </Link>
         </TooltipTrigger>
-        <TooltipContent className="bg-[#303030] border-white">
+        <TooltipContent className="border-white">
           <p className="text-red-400 ">{title}</p>
         </TooltipContent>
       </Tooltip>

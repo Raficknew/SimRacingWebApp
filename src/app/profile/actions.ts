@@ -6,8 +6,8 @@ import prisma from "@/lib/db/prisma";
 
 export const DeleteInvite = async (inviteId: string) => {
   await prisma.invite.delete({ where: { id: inviteId } });
-  revalidatePath("/");
-  redirect("/");
+  revalidatePath("/profile");
+  redirect("/profile");
 };
 
 export const AcceptInvite = async (
@@ -24,5 +24,5 @@ export const AcceptInvite = async (
     });
   }
   await DeleteInvite(inviteId);
-  revalidatePath("/");
+  revalidatePath("/profile");
 };

@@ -1,44 +1,27 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Clock2, Map, User } from "lucide-react";
-import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
+import { type Race } from "@prisma/client";
 
 type RaceCardProps = {
-  id: string;
-  name: string;
-  circuit: string;
-  series: string;
+  race: Race;
   author: string;
   authorPicture: string;
-  hour: string;
-  date: string;
-  href: string;
 };
 
-const RaceCard: React.FC<RaceCardProps> = ({
-  author,
-  authorPicture,
-  circuit,
-  series,
-  name,
-  hour,
-  date,
-  id,
-  href,
-}) => {
+const RaceCard: React.FC<RaceCardProps> = ({ race, author, authorPicture }) => {
+  const dayjs = require("dayjs");
+
   return (
-    <Link
-      href={href + id}
-      className="self-stretch bg-slate-400 p-1 rounded-lg text-white max-w-[814px] min-w-[200px]"
-    >
+    <div>
       <div className="flex self-stretch justify-between items-center">
-        {series === "GT3 HYPERCAR" ? (
+        {race.series === "GT3 HYPERCAR" ? (
           <div className="flex items-center gap-1">
             <Badge>GT3</Badge>
             <Badge>HYPERCAR</Badge>
           </div>
         ) : (
-          <Badge>{series}</Badge>
+          <Badge>{race.series}</Badge>
         )}
         <div className="flex justify-end items-center gap-2">
           <p className="text-sm">{author}</p>
@@ -51,20 +34,20 @@ const RaceCard: React.FC<RaceCardProps> = ({
         </div>
       </div>
       <div className="mb-4 self-stretch">
-        <p className="text-2xl">{name}</p>
+        <p className="text-2xl">{race.name}</p>
       </div>
       <div className="flex gap-2 self-stretch flex-wrap">
         <div className="flex gap-1 items-center">
           <Map className="h-4 w-4" />
-          <p>{circuit}</p>
+          <p>{race.circuit}</p>
         </div>
         <div className="flex gap-1 items-center">
           <Clock2 className="h-4 w-4" />
-          <p>{hour}</p>
-          <p>{date.split("-").reverse().join("-")}</p>
+          <p>{race.raceHour}</p>
+          <p>{dayjs(race.raceDate).format("DD MMM YYYY")}</p>
         </div>
       </div>
-    </Link>
+    </div>
   );
 };
 
