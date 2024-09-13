@@ -4,15 +4,16 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/src/app/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 import prisma from "@/lib/db/prisma";
+import { Series, Status } from "@prisma/client";
 
 export async function createRace(
   name: string,
   description: string,
   circuit: string,
-  series: string,
+  series: Series,
   raceDate: string,
   raceHour: string,
-  status: string
+  status: Status
 ) {
   const session = await getServerSession(authOptions);
 
@@ -29,6 +30,9 @@ export async function createRace(
   if (!user) return;
 
   const userId = user.id;
+
+  if (!name || !description || !circuit || !series || !raceDate || !raceHour)
+    return;
 
   await prisma.race.create({
     data: {

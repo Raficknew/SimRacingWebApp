@@ -30,33 +30,43 @@ import { format, startOfDay } from "date-fns";
 import { cn } from "@/lib/utils";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
+import { Series, Status } from "@prisma/client";
 
-enum status {
-  wait = "waiting",
-  end = "ended",
+enum messages {
+  short = "Wartość jest za krótka",
+  long = "Wartość jest za długa",
+  date = "Nie wybrano daty",
+  hour = "Nie wybrano godziny",
 }
 
 const formSchema = z.object({
-  name: z.string().min(2).max(20),
-  description: z.string().min(10).max(100),
-  circuit: z.string().min(2).max(40),
-  series: z.string(),
-  raceDate: z.date(),
-  raceHour: z.string(),
-  status: z.string(),
+  name: z
+    .string()
+    .min(2, { message: messages.short })
+    .max(20, { message: messages.long }),
+  description: z
+    .string()
+    .min(10, { message: messages.short })
+    .max(100, { message: messages.long }),
+  circuit: z
+    .string()
+    .min(2, { message: messages.short })
+    .max(40, { message: messages.long }),
+  series: z.nativeEnum(Series),
+  raceDate: z.date({ message: messages.date }),
+  raceHour: z.string({ message: messages.hour }),
+  status: z.nativeEnum(Status),
 });
-
-type formData = z.infer<typeof formSchema>;
 
 interface RaceFormProps {
   createRace: (
     name: string,
     description: string,
     circuit: string,
-    series: string,
+    series: Series,
     raceDate: string,
     raceHour: string,
-    status: string
+    status: Status
   ) => Promise<void>;
 }
 
@@ -67,8 +77,7 @@ const RaceForm: React.FC<RaceFormProps> = ({ createRace }) => {
       name: "",
       description: "",
       circuit: "",
-      series: "",
-      status: status.wait,
+      status: Status.before,
     },
   });
 
@@ -138,10 +147,12 @@ const RaceForm: React.FC<RaceFormProps> = ({ createRace }) => {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="F1">F1</SelectItem>
-                  <SelectItem value="GT3">GT3</SelectItem>
-                  <SelectItem value="HYPERCAR">Hypercar</SelectItem>
-                  <SelectItem value="GT3 HYPERCAR">GT3 + Hypercar</SelectItem>
+                  <SelectItem value={Series.F1}>F1</SelectItem>
+                  <SelectItem value={Series.GT3}>GT3</SelectItem>
+                  <SelectItem value={Series.HYPERCAR}>Hypercar</SelectItem>
+                  <SelectItem value={Series.GT3HYPERCAR}>
+                    GT3 + Hypercar
+                  </SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />
