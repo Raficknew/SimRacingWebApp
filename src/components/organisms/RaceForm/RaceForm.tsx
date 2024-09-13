@@ -31,6 +31,11 @@ import { cn } from "@/lib/utils";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 
+enum status {
+  wait = "waiting",
+  end = "ended",
+}
+
 const formSchema = z.object({
   name: z.string().min(2).max(20),
   description: z.string().min(10).max(100),
@@ -40,6 +45,8 @@ const formSchema = z.object({
   raceHour: z.string(),
   status: z.string(),
 });
+
+type formData = z.infer<typeof formSchema>;
 
 interface RaceFormProps {
   createRace: (
@@ -61,15 +68,13 @@ const RaceForm: React.FC<RaceFormProps> = ({ createRace }) => {
       description: "",
       circuit: "",
       series: "",
-      status: "waiting",
+      status: status.wait,
     },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    let name =
-      values.name.charAt(0).toUpperCase() + values.name.slice(1).toLowerCase();
     createRace(
-      name,
+      values.name.charAt(0).toUpperCase() + values.name.slice(1).toLowerCase(),
       values.description,
       values.circuit,
       values.series,

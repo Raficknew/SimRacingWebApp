@@ -4,22 +4,11 @@ import { revalidatePath } from "next/cache";
 import { notFound, redirect } from "next/navigation";
 import prisma from "@/lib/db/prisma";
 import { cache } from "react";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/src/app/api/auth/[...nextauth]/route";
-
-async function isAuthor(author: string) {
-  if (!author) return;
-
-  const session = await getServerSession(authOptions);
-
-  if (!session) return false;
-
-  if (author !== session.user?.email) return false;
-
-  return true;
-}
+import { isAuthor, isValidObjectId } from "@/src/actions/actions";
 
 export const DeleteRace = async (raceID: string) => {
+  if (!(await isValidObjectId(raceID))) notFound();
+
   const race = await prisma.race.findUnique({
     where: { id: raceID },
     include: { user: { select: { email: true } } },
@@ -35,6 +24,8 @@ export const DeleteRace = async (raceID: string) => {
 };
 
 export const getRace = cache(async (id: string) => {
+  if (!(await isValidObjectId(id))) notFound();
+
   const race = await prisma.race.findUnique({
     where: { id },
     include: { user: true },

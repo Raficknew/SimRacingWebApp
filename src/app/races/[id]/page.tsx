@@ -20,7 +20,7 @@ const RacePage: React.FC<RacePageProps> = async ({ params: { id } }) => {
 
   return (
     <div>
-      {race.results.length! > 1 ? (
+      {race.results.length > 1 ? (
         <div>
           <p>Wyścig się zakończył</p>
           {race.results.map((person, index) => (
@@ -44,7 +44,8 @@ const RacePage: React.FC<RacePageProps> = async ({ params: { id } }) => {
               {race.status !== "ended" ? (
                 <InviteBar CreateInvite={CreateInvite} raceId={race.id} />
               ) : (
-                race.results.length == 0 && (
+                race.results.length == 0 &&
+                race.participants.length >= 3 && (
                   <RaceResultDialog key={race.id} raceId={race.id} />
                 )
               )}
