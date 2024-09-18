@@ -16,7 +16,7 @@ export const DeleteRace = async (raceID: string) => {
 
   if (!race) return;
 
-  if (!(await isRaceAuthor(race.user?.email ?? ""))) return;
+  if (!(await isRaceAuthor(raceID))) return;
 
   await prisma.race.delete({ where: { id: raceID } });
   revalidatePath(`/races/${raceID}`);
@@ -45,7 +45,7 @@ export const CreateInvite = cache(async (userEmail: string, raceId: string) => {
 
   if (!race) return;
 
-  if (!(await isRaceAuthor(race.user?.email ?? ""))) return;
+  if (!(await isRaceAuthor(race.id))) return;
 
   const isUserInvited = race?.invites.some(
     (invite) => invite.userEmail === userEmail

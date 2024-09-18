@@ -10,7 +10,7 @@ export const DeleteInvite = async (inviteId: string) => {
 
   if (!invite) return;
 
-  if (!(await isInviteReciever(invite.userEmail))) return;
+  if (!(await isInviteReciever(invite.id))) return;
 
   await prisma.invite.delete({ where: { id: inviteId } });
   // revalidatePath("/profile");
@@ -24,13 +24,16 @@ export const AcceptInvite = async (
 ) => {
   const user = await prisma.user.findUnique({ where: { email: userEmail } });
 
-  if (user?.email && (await isInviteReciever(user.email))) {
+  if (user?.email && (await isInviteReciever(inviteId))) {
     await prisma.race.update({
       where: { id: raceId },
       data: { participants: { push: user.email } },
     });
+    await DeleteInvite(inviteId);
+    // revalidatePath("/profile");
+    redirect(`races/${raceId}`);
+  } else {
+    await DeleteInvite(inviteId);
+    // revalidatePath("/profile");
   }
-
-  await DeleteInvite(inviteId);
-  // revalidatePath("/profile");
 };
