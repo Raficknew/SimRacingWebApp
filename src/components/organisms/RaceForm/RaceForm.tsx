@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -30,53 +29,28 @@ import { format, startOfDay } from "date-fns";
 import { cn } from "@/lib/utils";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
-
-const formSchema = z.object({
-  name: z.string().min(2).max(20),
-  description: z.string().min(10).max(100),
-  circuit: z.string().min(2).max(40),
-  series: z.string(),
-  raceDate: z.date(),
-  raceHour: z.string(),
-  status: z.string(),
-});
+import { Series, RaceStatus } from "@prisma/client";
+import { RaceFormSchema, RaceFormType } from "./r";
 
 interface RaceFormProps {
-  createRace: (
-    name: string,
-    description: string,
-    circuit: string,
-    series: string,
-    raceDate: string,
-    raceHour: string,
-    status: string
-  ) => Promise<void>;
+  createRace: (data: RaceFormType) => Promise<void>;
 }
 
 const RaceForm: React.FC<RaceFormProps> = ({ createRace }) => {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<RaceFormType>({
+    resolver: zodResolver(RaceFormSchema),
     defaultValues: {
       name: "",
       description: "",
       circuit: "",
-      series: "",
-      status: "waiting",
+      status: RaceStatus.BEFORE,
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    let name =
-      values.name.charAt(0).toUpperCase() + values.name.slice(1).toLowerCase();
-    createRace(
-      name,
-      values.description,
-      values.circuit,
-      values.series,
-      values.raceDate.toISOString(),
-      values.raceHour,
-      values.status
-    );
+  function onSubmit(values: RaceFormType) {
+    (values.name =
+      values.name.charAt(0).toUpperCase() + values.name.slice(1).toLowerCase()),
+      createRace(values);
   }
 
   return (
@@ -133,10 +107,12 @@ const RaceForm: React.FC<RaceFormProps> = ({ createRace }) => {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="F1">F1</SelectItem>
-                  <SelectItem value="GT3">GT3</SelectItem>
-                  <SelectItem value="HYPERCAR">Hypercar</SelectItem>
-                  <SelectItem value="GT3 HYPERCAR">GT3 + Hypercar</SelectItem>
+                  <SelectItem value={Series.F1}>F1</SelectItem>
+                  <SelectItem value={Series.GT3}>GT3</SelectItem>
+                  <SelectItem value={Series.HYPERCAR}>Hypercar</SelectItem>
+                  <SelectItem value={Series.GT3HYPERCAR}>
+                    GT3 + Hypercar
+                  </SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />

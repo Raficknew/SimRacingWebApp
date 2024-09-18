@@ -1,13 +1,13 @@
 import { getServerSession } from "next-auth";
-import DropDown from "../../molecules/DropDown/DropDown";
 import { authOptions } from "@/src/app/api/auth/[...nextauth]/route";
-import Navbarlink from "../../atoms/NavbarLink/NavbarLink";
+import Navbarlink from "@/src/components/atoms/NavbarLink/NavbarLink";
+import DropDown from "@/src/components/molecules/DropDown/DropDown";
 import { Home, Gamepad2, Trophy, User } from "lucide-react";
 
 const Navbar: React.FC = async () => {
   const session = await getServerSession(authOptions);
   return (
-    <div className="pt-3 px-10 bg-[#303030]">
+    <div className="pt-3 px-10">
       <div className="bg-[#3F3F3F] flex self-stretch w-full items-center justify-between p-2 rounded-r-full">
         <p>Logo</p>
         <div className="flex gap-10">

@@ -18,12 +18,12 @@ model Race {
   name          String
   description   String
   circuit       String
-  series        String
+  series        Series
   raceDate      DateTime
   raceHour      String
   userId        String?  @db.ObjectId
   participants  String[]
-  status        String
+  status        RaceStatus
   results       String[]
   user          User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt     DateTime @default(now())
@@ -94,4 +94,17 @@ model VerificationToken {
 
   @@unique([identifier, token])
   @@map("verificationtokens")
+}
+
+enum Series {
+  F1
+  GT3 
+  HYPERCAR
+  GT3HYPERCAR
+}
+
+enum RaceStatus {
+  BEFORE
+  ONGOING
+  ENDED
 }

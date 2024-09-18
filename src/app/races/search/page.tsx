@@ -1,11 +1,13 @@
 import prisma from "@/lib/db/prisma";
 import RaceCard from "@/src/components/molecules/RaceCard/RaceCard";
-import Navbar from "@/src/components/organizms/Navbar/Navbar";
+import Navbar from "@/src/components/organisms/Navbar/Navbar";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import SearchBar from "@/src/components/organizms/SearchBar/SearchBar";
+import SearchBar from "@/src/components/organisms/SearchBar/SearchBar";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../../api/auth/[...nextauth]/route";
-import CreateRaceButton from "@/src/components/atoms/CreateRaceButton/CreateRaceButton";
+import { authOptions } from "@/src/app/api/auth/[...nextauth]/route";
+import Link from "next/link";
+import LinkButton from "@/src/components/atoms/LinkButton/LinkButton";
+import { Flag } from "lucide-react";
 
 async function RaceFind({
   searchParams,
@@ -20,7 +22,7 @@ async function RaceFind({
   const races = await prisma.race.findMany({
     orderBy: { id: "desc" },
     include: {
-      user: true,
+      user: { select: { name: true, image: true } },
     },
     where: { name: { contains: query, mode: "insensitive" } },
   });
@@ -30,26 +32,25 @@ async function RaceFind({
       <Navbar />
       <div className="flex flex-col self-stretch gap-11 p-3">
         <div className="flex justify-between">
-          {" "}
           <SearchBar placeholder="Type to search for race..." />
-          {session && <CreateRaceButton />}
+          {session && (
+            <LinkButton href="/races/create-race">
+              <Flag className="w-4 h-4" />
+              <p>Create Race</p>
+            </LinkButton>
+          )}
         </div>
         <div className="flex justify-center items-center">
           {races.length > 0 ? (
             <ScrollArea className="w-[814px] h-[500px] flex self-strech items-center">
               {races.map((race) => (
-                <RaceCard
+                <Link
+                  href={"/races/" + race.id}
                   key={race.id}
-                  id={race.id}
-                  author={race.user?.name!}
-                  authorPicture={race.user?.image!}
-                  name={race.name}
-                  circuit={race.circuit}
-                  series={race.series}
-                  hour={race.raceHour}
-                  date={race.raceDate}
-                  href=""
-                />
+                  className="self-stretch bg-slate-400 p-1 rounded-lg text-white max-w-[814px] min-w-[200px]"
+                >
+                  <RaceCard race={race} author={race.user} />
+                </Link>
               ))}
             </ScrollArea>
           ) : (

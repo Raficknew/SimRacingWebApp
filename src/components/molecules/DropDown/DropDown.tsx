@@ -9,9 +9,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Gamepad2, Home, Settings, TrophyIcon, User } from "lucide-react";
 import Link from "next/link";
-import LoginButton from "../../atoms/LoginButtons/Loginbutton";
 import { Session } from "next-auth";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import LoginButton from "@/src/components/atoms/LoginButtons/Loginbutton";
 
 interface DropDownProps {
   session: Session | null;
@@ -22,7 +22,7 @@ const DropDown: React.FC<DropDownProps> = ({ session }) => {
     <DropdownMenu>
       <DropdownMenuTrigger>
         <Avatar>
-          <AvatarImage src={session?.user?.image} />
+          {session?.user?.image && <AvatarImage src={session.user.image} />}
           <AvatarFallback>
             <User className="h-4 w-4" />
           </AvatarFallback>

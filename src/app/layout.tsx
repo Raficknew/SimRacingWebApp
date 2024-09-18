@@ -2,9 +2,6 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import SessionProvider from "./SessionProvider";
-import { getServerSession } from "next-auth";
-import { authOptions } from "./api/auth/[...nextauth]/route";
-import Navbar from "../components/organizms/Navbar/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,7 +20,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <SessionProvider>
           <div className="flex flex-col">
-            <main className="bg-[#303030]">{children}</main>
+            <main>{children}</main>
           </div>
         </SessionProvider>
       </body>

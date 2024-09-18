@@ -1,10 +1,9 @@
 import { getServerSession } from "next-auth";
-import Navbar from "../../../components/organizms/Navbar/Navbar";
-import { authOptions } from "../../api/auth/[...nextauth]/route";
+import { authOptions } from "@/src/app/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
-import prisma from "@/lib/db/prisma";
-import RaceForm from "@/src/components/organizms/RaceForm/RaceForm";
+import RaceForm from "@/src/components/organisms/RaceForm/RaceForm";
 import { createRace } from "./actions";
+import Navbar from "@/src/components/organisms/Navbar/Navbar";
 
 export const metadata = {
   title: "Create Race - SimRacingWebApp",
