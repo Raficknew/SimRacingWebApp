@@ -3,14 +3,14 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import prisma from "@/lib/db/prisma";
-import { isReciever } from "@/src/actions/actions";
+import { isInviteReciever } from "@/src/actions/actions";
 
 export const DeleteInvite = async (inviteId: string) => {
   const invite = await prisma.invite.findUnique({ where: { id: inviteId } });
 
   if (!invite) return;
 
-  if (!(await isReciever(invite.userEmail))) return;
+  if (!(await isInviteReciever(invite.userEmail))) return;
 
   await prisma.invite.delete({ where: { id: inviteId } });
   // revalidatePath("/profile");
@@ -24,7 +24,7 @@ export const AcceptInvite = async (
 ) => {
   const user = await prisma.user.findUnique({ where: { email: userEmail } });
 
-  if (user?.email && (await isReciever(user.email))) {
+  if (user?.email && (await isInviteReciever(user.email))) {
     await prisma.race.update({
       where: { id: raceId },
       data: { participants: { push: user.email } },

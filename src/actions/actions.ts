@@ -8,7 +8,7 @@ export async function isValidObjectId(id: string) {
   return ObjectId.isValid(id) && new ObjectId(id).toString() === id;
 }
 
-export async function isAuthor(authorEmail: string) {
+export async function isRaceAuthor(authorEmail: string) {
   if (!authorEmail) return;
 
   const session = await getServerSession(authOptions);
@@ -20,7 +20,9 @@ export async function isAuthor(authorEmail: string) {
   return true;
 }
 
-export async function isReciever(reciever: string) {
+export async function isInviteReciever(reciever: string) {
+  if (!reciever) return;
+
   const session = await getServerSession(authOptions);
 
   if (!session) return false;

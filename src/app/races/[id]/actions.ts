@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { notFound, redirect } from "next/navigation";
 import prisma from "@/lib/db/prisma";
 import { cache } from "react";
-import { isAuthor, isValidObjectId } from "@/src/actions/actions";
+import { isRaceAuthor, isValidObjectId } from "@/src/actions/actions";
 
 export const DeleteRace = async (raceID: string) => {
   if (!(await isValidObjectId(raceID))) notFound();
@@ -16,7 +16,7 @@ export const DeleteRace = async (raceID: string) => {
 
   if (!race) return;
 
-  if (!(await isAuthor(race.user?.email ?? ""))) return;
+  if (!(await isRaceAuthor(race.user?.email ?? ""))) return;
 
   await prisma.race.delete({ where: { id: raceID } });
   revalidatePath(`/races/${raceID}`);
@@ -45,7 +45,7 @@ export const CreateInvite = cache(async (userEmail: string, raceId: string) => {
 
   if (!race) return;
 
-  if (!(await isAuthor(race.user?.email ?? ""))) return;
+  if (!(await isRaceAuthor(race.user?.email ?? ""))) return;
 
   const isUserInvited = race?.invites.some(
     (invite) => invite.userEmail === userEmail
