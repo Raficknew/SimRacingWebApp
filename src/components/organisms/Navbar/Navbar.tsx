@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/src/app/api/auth/[...nextauth]/route";
 import Navbarlink from "@/src/components/atoms/NavbarLink/NavbarLink";
 import DropDown from "@/src/components/molecules/DropDown/DropDown";
-import { Home, Gamepad2, Trophy, User } from "lucide-react";
+import { Home, Trophy, User, Search } from "lucide-react";
 
 const Navbar: React.FC = async () => {
   const session = await getServerSession(authOptions);
@@ -12,7 +12,7 @@ const Navbar: React.FC = async () => {
         <p>Logo</p>
         <div className="flex gap-10">
           <Navbarlink link="/" icon={<Home />} title="Home" />
-          <Navbarlink link="/races/search" icon={<Gamepad2 />} title="Races" />
+          <Navbarlink link="/races/search" icon={<Search />} title="Races" />
           <Navbarlink
             link="/championships"
             icon={<Trophy />}

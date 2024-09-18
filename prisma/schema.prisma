@@ -13,31 +13,42 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model League {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  authorId String @db.ObjectId
+  races    Race[] @relation("LeagueRaces")
+  user     User?  @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@map("leagues")
+}
+
 model Race {
-  id            String   @id @default(auto()) @map("_id") @db.ObjectId
-  name          String
-  description   String
-  circuit       String
-  series        Series
-  raceDate      DateTime
-  raceHour      String
-  userId        String?  @db.ObjectId
-  participants  String[]
-  status        RaceStatus
-  results       String[]
-  user          User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  createdAt     DateTime @default(now())
-  invites       Invite[]
+  id           String     @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  description  String
+  circuit      String
+  series       Series
+  raceDate     DateTime
+  raceHour     String
+  userId       String?    @db.ObjectId
+  participants String[]
+  status       RaceStatus
+  results      String[]
+  user         User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt    DateTime   @default(now())
+  invites      Invite[]
+  leagueId     String?    @db.ObjectId
+  league       League?    @relation(fields: [leagueId], references: [id], name: "LeagueRaces", onDelete: Cascade)
 
   @@map("races")
 }
 
 model Invite {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  raceId      String   @db.ObjectId
-  userEmail   String  
-  race        Race     @relation(fields: [raceId], references: [id], onDelete: Cascade)
-  user        User?    @relation(fields: [userEmail], references: [email], onDelete: Cascade)
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  raceId    String @db.ObjectId
+  userEmail String
+  race      Race   @relation(fields: [raceId], references: [id], onDelete: Cascade)
+  user      User?  @relation(fields: [userEmail], references: [email], onDelete: Cascade)
 
   @@map("invites")
 }
@@ -82,6 +93,7 @@ model User {
   sessions      Session[]
   races         Race[]
   invites       Invite[]
+  leagues       League[]
 
   @@map("users")
 }
@@ -98,7 +110,7 @@ model VerificationToken {
 
 enum Series {
   F1
-  GT3 
+  GT3
   HYPERCAR
   GT3HYPERCAR
 }
