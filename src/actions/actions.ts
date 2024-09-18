@@ -2,21 +2,20 @@
 
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/src/app/api/auth/[...nextauth]/route";
-
-const { ObjectId } = require("mongodb");
+import { ObjectId } from "mongodb";
 
 export async function isValidObjectId(id: string) {
   return ObjectId.isValid(id) && new ObjectId(id).toString() === id;
 }
 
-export async function isAuthor(author: string) {
-  if (!author) return;
+export async function isAuthor(authorEmail: string) {
+  if (!authorEmail) return;
 
   const session = await getServerSession(authOptions);
 
   if (!session) return false;
 
-  if (author !== session.user?.email) return false;
+  if (authorEmail !== session.user?.email) return false;
 
   return true;
 }

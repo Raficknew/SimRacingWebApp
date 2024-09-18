@@ -5,7 +5,7 @@ import { CreateInvite, DeleteRace, getRace } from "./actions";
 import InviteBar from "@/src/components/molecules/InviteBar/Invitebar";
 import RaceResultDialog from "@/src/components/organisms/RaceResultDialog/RaceResultDialog";
 import { redirect } from "next/navigation";
-import { Status } from "@prisma/client";
+import { RaceStatus } from "@prisma/client";
 
 type RacePageProps = {
   params: {
@@ -42,7 +42,7 @@ const RacePage: React.FC<RacePageProps> = async ({ params: { id } }) => {
                 raceID={race.id}
                 DeleteRace={DeleteRace}
               />
-              {race.status !== Status.ended ? (
+              {race.status !== RaceStatus.ENDED ? (
                 <InviteBar CreateInvite={CreateInvite} raceId={race.id} />
               ) : (
                 race.results.length == 0 &&

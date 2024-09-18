@@ -34,11 +34,10 @@ async function RaceFind({
         <div className="flex justify-between">
           <SearchBar placeholder="Type to search for race..." />
           {session && (
-            <LinkButton
-              title="Create Race"
-              icon={<Flag className="w-4 h-4" />}
-              href="/races/create-race"
-            />
+            <LinkButton href="/races/create-race">
+              <Flag className="w-4 h-4" />
+              <p>Create Race</p>
+            </LinkButton>
           )}
         </div>
         <div className="flex justify-center items-center">
@@ -50,11 +49,7 @@ async function RaceFind({
                   key={race.id}
                   className="self-stretch bg-slate-400 p-1 rounded-lg text-white max-w-[814px] min-w-[200px]"
                 >
-                  <RaceCard
-                    race={race}
-                    author={race.user?.name ?? ""}
-                    authorPicture={race.user?.image ?? ""}
-                  />
+                  <RaceCard race={race} author={race.user} />
                 </Link>
               ))}
             </ScrollArea>

@@ -1,21 +1,24 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Clock2, Map, User } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { type Race } from "@prisma/client";
+import { Series, type Race } from "@prisma/client";
+import dayjs from "dayjs";
+
+type Author = {
+  name: string | null;
+  image: string | null;
+} | null;
 
 type RaceCardProps = {
   race: Race;
-  author: string;
-  authorPicture: string;
+  author: Author;
 };
 
-const RaceCard: React.FC<RaceCardProps> = ({ race, author, authorPicture }) => {
-  const dayjs = require("dayjs");
-
+const RaceCard: React.FC<RaceCardProps> = ({ race, author }) => {
   return (
     <div>
       <div className="flex self-stretch justify-between items-center">
-        {race.series === "GT3 HYPERCAR" ? (
+        {race.series === Series.GT3HYPERCAR ? (
           <div className="flex items-center gap-1">
             <Badge>GT3</Badge>
             <Badge>HYPERCAR</Badge>
@@ -24,13 +27,17 @@ const RaceCard: React.FC<RaceCardProps> = ({ race, author, authorPicture }) => {
           <Badge>{race.series}</Badge>
         )}
         <div className="flex justify-end items-center gap-2">
-          <p className="text-sm">{author}</p>
-          <Avatar className="h-9 w-9">
-            <AvatarImage src={authorPicture} />
-            <AvatarFallback>
-              <User className="h-4 w-4" />
-            </AvatarFallback>
-          </Avatar>
+          {author && (
+            <>
+              <p className="text-sm">{author.name}</p>
+              <Avatar className="h-9 w-9">
+                <AvatarImage src={author.image ?? ""} />
+                <AvatarFallback>
+                  <User className="h-4 w-4" />
+                </AvatarFallback>
+              </Avatar>
+            </>
+          )}
         </div>
       </div>
       <div className="mb-4 self-stretch">

@@ -23,7 +23,7 @@ model Race {
   raceHour      String
   userId        String?  @db.ObjectId
   participants  String[]
-  status        Status
+  status        RaceStatus
   results       String[]
   user          User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt     DateTime @default(now())
@@ -103,8 +103,8 @@ enum Series {
   GT3HYPERCAR
 }
 
-enum Status {
-  before
-  ongoing
-  ended
+enum RaceStatus {
+  BEFORE
+  ONGOING
+  ENDED
 }

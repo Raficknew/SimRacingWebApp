@@ -2,12 +2,11 @@ import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 
 interface LinkButton {
-  title: string;
-  icon?: React.ReactNode;
+  children: React.ReactNode;
   href: string;
 }
 
-const LinkButton: React.FC<LinkButton> = ({ title, icon, href }) => {
+const LinkButton: React.FC<LinkButton> = ({ children, href }) => {
   return (
     <Link
       className={buttonVariants({
@@ -16,8 +15,7 @@ const LinkButton: React.FC<LinkButton> = ({ title, icon, href }) => {
       })}
       href={href}
     >
-      {icon}
-      <p className="pl-2">{title}</p>
+      {children}
     </Link>
   );
 };

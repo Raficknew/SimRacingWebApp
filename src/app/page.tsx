@@ -24,26 +24,21 @@ export default async function Home() {
         {session && (
           <div className="flex flex-col">
             <div className="flex flex-col gap-2 max-w-[600px]"></div>
-            <LinkButton
-              title="Create Race"
-              icon={<Flag className="w-4 h-4" />}
-              href="/races/create-race"
-            />
+            <LinkButton href="/races/create-race">
+              <Flag className="w-4 h-4" />
+              <p>Create Race</p>
+            </LinkButton>
           </div>
         )}
         {races.length > 0 ? (
           <div className="flex flex-col self-stretch justify-center items-center gap-5">
             {races.map((race) => (
               <Link
-                href={"/races/" + race.id}
+                href={`/races/${race.id}`}
                 key={race.id}
                 className="self-stretch bg-slate-400 p-1 rounded-lg text-white max-w-[814px] min-w-[200px]"
               >
-                <RaceCard
-                  race={race}
-                  author={race.user?.name ?? ""}
-                  authorPicture={race.user?.image ?? ""}
-                />
+                <RaceCard race={race} author={race.user} />
               </Link>
             ))}
           </div>
