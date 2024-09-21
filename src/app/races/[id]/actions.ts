@@ -11,7 +11,10 @@ export const DeleteRace = async (raceID: string) => {
 
   const race = await prisma.race.findUnique({
     where: { id: raceID },
-    include: { user: { select: { email: true } } },
+    include: {
+      user: { select: { email: true } },
+      league: { select: { id: true } },
+    },
   });
 
   if (!race) return;
@@ -19,8 +22,14 @@ export const DeleteRace = async (raceID: string) => {
   if (!(await isRaceAuthor(raceID))) return;
 
   await prisma.race.delete({ where: { id: raceID } });
-  revalidatePath(`/races/${raceID}`);
-  redirect("/");
+
+  if (!race.league?.id) {
+    revalidatePath("/");
+    redirect("/");
+  }
+
+  revalidatePath(`/championships/${race.league.id}`);
+  redirect(`/championships/${race.league.id}`);
 };
 
 export const getRace = cache(async (id: string) => {

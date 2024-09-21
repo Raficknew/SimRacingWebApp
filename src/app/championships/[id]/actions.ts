@@ -1,6 +1,5 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
 import { notFound, redirect } from "next/navigation";
 import prisma from "@/lib/db/prisma";
 import { cache } from "react";
@@ -12,11 +11,23 @@ export const getChampionship = cache(async (id: string) => {
   const championship = await prisma.league.findUnique({
     where: { id: id },
     include: {
-      races: { include: { user: true }, orderBy: { raceDate: "asc" } },
+      races: {
+        include: { user: { select: { name: true, image: true } } },
+        orderBy: { raceDate: "asc" },
+      },
     },
   });
 
   if (!championship) notFound();
 
   return championship;
+});
+
+export const getChampionshipAuthor = cache(async (id: string) => {
+  const author = await prisma.league.findUnique({
+    where: { id },
+    include: { user: { select: { name: true, email: true } } },
+  });
+
+  return author;
 });

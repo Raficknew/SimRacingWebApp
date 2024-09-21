@@ -1,16 +1,19 @@
 "use server";
 
-import { getServerSession } from "next-auth";
 import { authOptions } from "@/src/app/api/auth/[...nextauth]/route";
-import { redirect } from "next/navigation";
-import prisma from "@/lib/db/prisma";
 import {
   RaceFormSchema,
   RaceFormType,
 } from "@/src/components/organisms/RaceForm/r";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
+import prisma from "@/lib/db/prisma";
 import { revalidatePath } from "next/cache";
 
-export async function createRace(raceData: RaceFormType) {
+export const CreateLeagueRace = async (
+  raceData: RaceFormType,
+  leagueId: string
+) => {
   if (!RaceFormSchema.safeParse(raceData).success) return;
 
   const session = await getServerSession(authOptions);
@@ -32,11 +35,10 @@ export async function createRace(raceData: RaceFormType) {
     data: {
       ...raceData,
       userId: user.id,
+      leagueId: leagueId,
     },
   });
 
   revalidatePath("/races/create-race");
-  redirect("/");
-
-  // ! toast to add
-}
+  redirect(`/championships/${leagueId}`);
+};
