@@ -24,7 +24,9 @@ export const AcceptInvite = async (
 ) => {
   const user = await prisma.user.findUnique({ where: { email: userEmail } });
 
-  if (user?.email && (await isInviteReciever(inviteId))) {
+  if (!user) return;
+
+  if (user.email && (await isInviteReciever(inviteId))) {
     await prisma.race.update({
       where: { id: raceId },
       data: { participants: { push: user.email } },

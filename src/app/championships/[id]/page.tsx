@@ -24,7 +24,7 @@ const Championship: React.FC<ChampionshipProps> = async ({
   const session = await getServerSession(authOptions);
   return (
     <div>
-      {author && session && author.user?.email === session.user?.email && (
+      {author && session && author.user.email === session.user?.email && (
         <LinkButton href={`/championships/${id}/create-race`}>
           <Flag className="w-4 h-4" />
           <p>Create Race</p>

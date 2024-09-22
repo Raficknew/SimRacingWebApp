@@ -14,10 +14,13 @@ datasource db {
 }
 
 model League {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
-  authorId String @db.ObjectId
-  races    Race[] @relation("LeagueRaces")
-  user     User?  @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String
+  image       String
+  authorId    String @db.ObjectId
+  races       Race[] @relation("LeagueRaces")
+  user        User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
 
   @@map("leagues")
 }
@@ -30,11 +33,11 @@ model Race {
   series       Series
   raceDate     DateTime
   raceHour     String
-  userId       String?    @db.ObjectId
+  userId       String     @db.ObjectId
   participants String[]
   status       RaceStatus
   results      String[]
-  user         User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt    DateTime   @default(now())
   invites      Invite[]
   leagueId     String?    @db.ObjectId
@@ -48,7 +51,7 @@ model Invite {
   raceId    String @db.ObjectId
   userEmail String
   race      Race   @relation(fields: [raceId], references: [id], onDelete: Cascade)
-  user      User?  @relation(fields: [userEmail], references: [email], onDelete: Cascade)
+  user      User   @relation(fields: [userEmail], references: [email], onDelete: Cascade)
 
   @@map("invites")
 }

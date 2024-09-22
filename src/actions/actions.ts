@@ -22,7 +22,7 @@ export async function isRaceAuthor(raceId: string) {
 
   if (!session) return false;
 
-  if (race.user?.email !== session.user?.email) return false;
+  if (race.user.email !== session.user?.email) return false;
 
   return true;
 }
