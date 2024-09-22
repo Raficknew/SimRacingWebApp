@@ -17,7 +17,6 @@ model League {
   id          String @id @default(auto()) @map("_id") @db.ObjectId
   name        String
   description String
-  image       String
   authorId    String @db.ObjectId
   races       Race[] @relation("LeagueRaces")
   user        User   @relation(fields: [authorId], references: [id], onDelete: Cascade)

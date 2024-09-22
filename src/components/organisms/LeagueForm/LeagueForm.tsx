@@ -25,7 +25,6 @@ const LeagueForm: React.FC<LeagueFormProps> = ({ createLeague }) => {
     defaultValues: {
       name: "",
       description: "",
-      image: "",
     },
   });
 
@@ -58,19 +57,6 @@ const LeagueForm: React.FC<LeagueFormProps> = ({ createLeague }) => {
                 <FormLabel>Description</FormLabel>
                 <FormControl>
                   <Textarea placeholder="Opis" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="image"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Picture</FormLabel>
-                <FormControl>
-                  <Input placeholder="name" type="file" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

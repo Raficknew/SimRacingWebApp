@@ -14,7 +14,6 @@ async function RaceFind({
 }: {
   searchParams?: {
     query?: string;
-    page?: string;
   };
 }) {
   const session = await getServerSession(authOptions);
