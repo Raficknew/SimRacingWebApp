@@ -27,6 +27,25 @@ export async function isRaceAuthor(raceId: string) {
   return true;
 }
 
+export async function isLeagueAuthor(leagueId: string) {
+  if (!leagueId) return false;
+
+  const league = await prisma?.league.findUnique({
+    where: { id: leagueId },
+    include: { user: { select: { email: true } } },
+  });
+
+  if (!league) return false;
+
+  const session = await getServerSession(authOptions);
+
+  if (!session) return false;
+
+  if (league.user.email !== session.user?.email) return false;
+
+  return true;
+}
+
 export async function isInviteReciever(inviteId: string) {
   if (!inviteId) return false;
 

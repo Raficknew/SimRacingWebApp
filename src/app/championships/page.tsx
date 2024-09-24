@@ -19,7 +19,7 @@ const ChampionshipsPage = async ({
   const query = searchParams?.query || "";
   const leagues = await prisma.league.findMany({
     orderBy: { id: "desc" },
-    include: { user: { select: { name: true } }, races: true },
+    include: { user: { select: { name: true, image: true } }, races: true },
     where: { name: { contains: query, mode: "insensitive" } },
   });
   return (
@@ -31,7 +31,7 @@ const ChampionshipsPage = async ({
       <SearchBar placeholder="Search for leagues" />
       {leagues.map((league) => (
         <Link key={league.id} href={`/championships/${league.id}`}>
-          <LeagueCard league={league} />
+          <LeagueCard league={league} author={league.user} />
         </Link>
       ))}
     </div>
