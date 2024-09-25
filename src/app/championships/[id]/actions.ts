@@ -13,7 +13,7 @@ export const getChampionship = cache(async (id: string) => {
     where: { id: id },
     include: {
       races: {
-        include: { user: { select: { name: true, image: true } } },
+        include: { author: { select: { name: true, image: true } } },
         orderBy: { raceDate: "asc" },
       },
     },
@@ -27,7 +27,7 @@ export const getChampionship = cache(async (id: string) => {
 export const getChampionshipAuthor = cache(async (id: string) => {
   const author = await prisma.league.findUnique({
     where: { id },
-    include: { user: { select: { name: true, email: true } } },
+    include: { author: { select: { name: true, email: true } } },
   });
 
   return author;
@@ -47,3 +47,13 @@ export const deleteLeague = cache(async (leagueId: string) => {
   revalidatePath("/championships");
   redirect("/championships");
 });
+
+export const createInviteToLeague = cache(
+  async (userEmail: string, id: string) => {
+    if (!(await isValidObjectId(id))) notFound();
+
+    const user = await prisma.user.findUnique({ where: { email: userEmail } });
+
+    if (!user) return;
+  }
+);

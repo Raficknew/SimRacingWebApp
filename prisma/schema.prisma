@@ -14,14 +14,24 @@ datasource db {
 }
 
 model League {
-  id          String @id @default(auto()) @map("_id") @db.ObjectId
-  name        String
-  description String
-  authorId    String @db.ObjectId
-  races       Race[] @relation("LeagueRaces")
-  user        User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  id           String              @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  description  String
+  authorId     String              @db.ObjectId
+  races        Race[]              @relation("LeagueRaces")
+  author       User                @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  participants LeagueParticipant[]
 
   @@map("leagues")
+}
+
+model LeagueParticipant {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  userId   String @db.ObjectId
+  leagueId String @db.ObjectId
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  league   League @relation(fields: [leagueId], references: [id], onDelete: Cascade)
+  points   Int
 }
 
 model Race {
@@ -36,7 +46,7 @@ model Race {
   participants String[]
   status       RaceStatus
   results      String[]
-  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  author       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt    DateTime   @default(now())
   invites      Invite[]
   leagueId     String?    @db.ObjectId
@@ -86,16 +96,17 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(auto()) @map("_id") @db.ObjectId
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
-  races         Race[]
-  invites       Invite[]
-  leagues       League[]
+  id               String              @id @default(auto()) @map("_id") @db.ObjectId
+  name             String?
+  email            String?             @unique
+  emailVerified    DateTime?
+  image            String?
+  accounts         Account[]
+  sessions         Session[]
+  races            Race[]
+  invites          Invite[]
+  leagues          League[]
+  participantingIn LeagueParticipant[]
 
   @@map("users")
 }

@@ -1,5 +1,6 @@
 import RaceCard from "@/src/components/molecules/RaceCard/RaceCard";
 import {
+  createInviteToLeague,
   deleteLeague,
   getChampionship,
   getChampionshipAuthor,
@@ -12,6 +13,7 @@ import LinkButton from "@/src/components/atoms/LinkButton/LinkButton";
 import { Flag } from "lucide-react";
 
 import DeleteLeagueButton from "./DeleteLeagueButton/DeleteLeagueButton";
+import InviteBar from "@/src/components/molecules/InviteBar/Invitebar";
 
 type ChampionshipProps = {
   params: {
@@ -30,13 +32,14 @@ const Championship: React.FC<ChampionshipProps> = async ({
   const session = await getServerSession(authOptions);
   return (
     <div>
-      {author && session && author.user.email === session.user?.email && (
+      {author && session && author.author.email === session.user?.email && (
         <div>
           <LinkButton href={`/championships/${id}/create-race`}>
             <Flag className="w-4 h-4" />
             <p>Create Race</p>
           </LinkButton>
           <DeleteLeagueButton leagueId={id} deleteLeague={deleteLeague} />
+          <InviteBar id={id} createInvite={createInviteToLeague} />
         </div>
       )}
       {championship.races.length > 0 ? (
@@ -48,7 +51,7 @@ const Championship: React.FC<ChampionshipProps> = async ({
           )}
           {championship.races.map((race) => (
             <Link key={race.id} href={`/races/${race.id}`}>
-              <RaceCard author={race.user} race={race} />
+              <RaceCard author={race.author} race={race} />
             </Link>
           ))}
         </div>

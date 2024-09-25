@@ -1,5 +1,5 @@
 import RaceForm from "@/src/components/organisms/RaceForm/RaceForm";
-import { CreateLeagueRace } from "./actions";
+import { createLeagueRace } from "./actions";
 
 interface CreateLeagueRacePageProps {
   params: {
@@ -10,7 +10,7 @@ interface CreateLeagueRacePageProps {
 const CreateLeagueRacePage: React.FC<CreateLeagueRacePageProps> = async ({
   params: { id },
 }) => {
-  return <RaceForm leagueId={id} createRace={CreateLeagueRace} />;
+  return <RaceForm leagueId={id} createRace={createLeagueRace} />;
 };
 
 export default CreateLeagueRacePage;

@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/src/app/api/auth/[...nextauth]/route";
 import Invite from "@/src/components/atoms/Invite/Invite";
-import { AcceptInvite, DeleteInvite } from "./actions";
+import { acceptInvite, deleteInvite } from "./actions";
 import prisma from "@/lib/db/prisma";
 
 const ProfilePage = async () => {
@@ -18,8 +18,8 @@ const ProfilePage = async () => {
           key={invite.userEmail}
           invite={invite}
           raceName={invite.race.name}
-          AcceptInvite={AcceptInvite}
-          DeleteInvite={DeleteInvite}
+          AcceptInvite={acceptInvite}
+          DeleteInvite={deleteInvite}
         />
       ))}
     </>

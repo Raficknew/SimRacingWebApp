@@ -10,7 +10,7 @@ import { redirect } from "next/navigation";
 import prisma from "@/lib/db/prisma";
 import { revalidatePath } from "next/cache";
 
-export const CreateLeagueRace = async (
+export const createLeagueRace = async (
   raceData: RaceFormType,
   leagueId: string
 ) => {

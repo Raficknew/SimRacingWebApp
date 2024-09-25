@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import prisma from "@/lib/db/prisma";
 import { isInviteReciever } from "@/src/actions/actions";
 
-export const DeleteInvite = async (inviteId: string) => {
+export const deleteInvite = async (inviteId: string) => {
   const invite = await prisma.invite.findUnique({ where: { id: inviteId } });
 
   if (!invite) return;
@@ -17,7 +17,7 @@ export const DeleteInvite = async (inviteId: string) => {
   redirect("/profile");
 };
 
-export const AcceptInvite = async (
+export const acceptInvite = async (
   raceId: string,
   userEmail: string,
   inviteId: string
@@ -31,11 +31,11 @@ export const AcceptInvite = async (
       where: { id: raceId },
       data: { participants: { push: user.email } },
     });
-    await DeleteInvite(inviteId);
+    await deleteInvite(inviteId);
     // revalidatePath("/profile");
     redirect(`races/${raceId}`);
   } else {
-    await DeleteInvite(inviteId);
+    await deleteInvite(inviteId);
     // revalidatePath("/profile");
   }
 };
