@@ -42,6 +42,14 @@ const Championship: React.FC<ChampionshipProps> = async ({
           <InviteBar id={id} createInvite={createInviteToLeague} />
         </div>
       )}
+      <div>
+        {championship.participants.map((u) => (
+          <p key={u.user.id}>
+            {u.user.name}
+            {u.points}
+          </p>
+        ))}
+      </div>
       {championship.races.length > 0 ? (
         <div>
           {championship.races.length === 1 ? (

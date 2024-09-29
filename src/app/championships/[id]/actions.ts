@@ -12,6 +12,7 @@ export const getChampionship = cache(async (id: string) => {
   const championship = await prisma.league.findUnique({
     where: { id: id },
     include: {
+      participants: { include: { user: true } },
       races: {
         include: { author: { select: { name: true, image: true } } },
         orderBy: { raceDate: "asc" },
@@ -55,5 +56,34 @@ export const createInviteToLeague = cache(
     const user = await prisma.user.findUnique({ where: { email: userEmail } });
 
     if (!user) return;
+
+    const league = await prisma.league.findUnique({
+      where: { id: id },
+      include: {
+        invites: true,
+        participants: { select: { user: { select: { name: true } } } },
+      },
+    });
+
+    if (!league) return;
+
+    const isUserInvited = league?.invites.some(
+      (invite) => invite.userEmail === userEmail
+    );
+
+    if (isUserInvited) return;
+
+    const isUserInLeague = league.participants.some(
+      (participant) => participant.user.name === user.name
+    );
+
+    if (isUserInLeague) return;
+
+    await prisma.invite.create({
+      data: { userEmail: userEmail, leagueId: league.id },
+    });
+
+    revalidatePath(`/championships/${id}`);
+    redirect(`/championships/${id}`);
   }
 );

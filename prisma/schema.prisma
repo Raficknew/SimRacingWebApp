@@ -21,6 +21,7 @@ model League {
   races        Race[]              @relation("LeagueRaces")
   author       User                @relation(fields: [authorId], references: [id], onDelete: Cascade)
   participants LeagueParticipant[]
+  invites      Invite[]
 
   @@map("leagues")
 }
@@ -56,11 +57,13 @@ model Race {
 }
 
 model Invite {
-  id        String @id @default(auto()) @map("_id") @db.ObjectId
-  raceId    String @db.ObjectId
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  raceId    String? @db.ObjectId
+  leagueId  String? @db.ObjectId
   userEmail String
-  race      Race   @relation(fields: [raceId], references: [id], onDelete: Cascade)
-  user      User   @relation(fields: [userEmail], references: [email], onDelete: Cascade)
+  race      Race?   @relation(fields: [raceId], references: [id], onDelete: Cascade)
+  league    League? @relation(fields: [leagueId], references: [id], onDelete: Cascade)
+  user      User    @relation(fields: [userEmail], references: [email], onDelete: Cascade)
 
   @@map("invites")
 }

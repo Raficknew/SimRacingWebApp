@@ -42,7 +42,7 @@ const RacePage: React.FC<RacePageProps> = async ({ params: { id } }) => {
                 raceID={race.id}
                 DeleteRace={deleteRace}
               />
-              {race.status !== RaceStatus.ENDED ? (
+              {race.status !== RaceStatus.ENDED && !race.leagueId ? (
                 <InviteBar createInvite={createInviteToRace} id={race.id} />
               ) : (
                 race.results.length == 0 &&
