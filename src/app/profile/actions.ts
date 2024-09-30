@@ -44,10 +44,16 @@ export const acceptInvite = async (userEmail: string, inviteId: string) => {
       data: { participants: { push: user.email } },
     });
     await deleteInvite(inviteId, invite.raceId);
-  } else if (invite.leagueId) {
+  } else if (invite.leagueId && user.email) {
     await prisma.leagueParticipant.create({
       data: { userId: user.id, leagueId: invite.leagueId, points: 0 },
     });
+
+    await prisma.race.updateMany({
+      where: { AND: [{ leagueId: invite.leagueId }, { status: "BEFORE" }] },
+      data: { participants: { push: user.email } },
+    });
+
     await deleteInvite(inviteId, undefined, invite.leagueId);
   } else {
     await deleteInvite(inviteId);

@@ -24,13 +24,20 @@ export const createLeague = async (leagueData: leagueFormType) => {
     where: { email: useremail },
   });
 
-  if (!user) return;
-  if (!leagueData) return;
+  if (!user || !leagueData) return;
 
-  await prisma.league.create({
+  const league = await prisma.league.create({
     data: {
       ...leagueData,
       authorId: user.id,
+    },
+  });
+
+  await prisma.leagueParticipant.create({
+    data: {
+      leagueId: league.id,
+      userId: user.id,
+      points: 0,
     },
   });
 

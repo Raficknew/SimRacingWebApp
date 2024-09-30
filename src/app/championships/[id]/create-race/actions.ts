@@ -28,14 +28,23 @@ export const createLeagueRace = async (
     where: { email: useremail },
   });
 
-  if (!user) return;
-  if (!raceData) return;
+  if (!user || !raceData) return;
+
+  const leagueParticipants = await prisma.leagueParticipant.findMany({
+    where: { leagueId: leagueId },
+    include: { user: { select: { email: true } } },
+  });
+
+  const participantsEmails = leagueParticipants
+    .map((p) => p.user.email)
+    .filter((email): email is string => email !== null);
 
   await prisma.race.create({
     data: {
       ...raceData,
       userId: user.id,
       leagueId: leagueId,
+      participants: participantsEmails,
     },
   });
 
