@@ -14,7 +14,6 @@ async function RaceFind({
 }: {
   searchParams?: {
     query?: string;
-    page?: string;
   };
 }) {
   const session = await getServerSession(authOptions);
@@ -22,7 +21,7 @@ async function RaceFind({
   const races = await prisma.race.findMany({
     orderBy: { id: "desc" },
     include: {
-      user: { select: { name: true, image: true } },
+      author: { select: { name: true, image: true } },
     },
     where: { name: { contains: query, mode: "insensitive" } },
   });
@@ -49,7 +48,7 @@ async function RaceFind({
                   key={race.id}
                   className="self-stretch bg-slate-400 p-1 rounded-lg text-white max-w-[814px] min-w-[200px]"
                 >
-                  <RaceCard race={race} author={race.user} />
+                  <RaceCard race={race} author={race.author} />
                 </Link>
               ))}
             </ScrollArea>

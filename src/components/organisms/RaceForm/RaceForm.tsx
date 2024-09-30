@@ -1,5 +1,4 @@
 "use client";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
@@ -33,10 +32,11 @@ import { Series, RaceStatus } from "@prisma/client";
 import { RaceFormSchema, RaceFormType } from "./r";
 
 interface RaceFormProps {
-  createRace: (data: RaceFormType) => Promise<void>;
+  leagueId?: string | null;
+  createRace: (data: RaceFormType, leagueId: string) => Promise<void>;
 }
 
-const RaceForm: React.FC<RaceFormProps> = ({ createRace }) => {
+const RaceForm: React.FC<RaceFormProps> = ({ createRace, leagueId }) => {
   const form = useForm<RaceFormType>({
     resolver: zodResolver(RaceFormSchema),
     defaultValues: {
@@ -50,7 +50,7 @@ const RaceForm: React.FC<RaceFormProps> = ({ createRace }) => {
   function onSubmit(values: RaceFormType) {
     (values.name =
       values.name.charAt(0).toUpperCase() + values.name.slice(1).toLowerCase()),
-      createRace(values);
+      createRace(values, leagueId ?? "");
   }
 
   return (

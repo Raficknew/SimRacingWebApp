@@ -1,16 +1,19 @@
 "use server";
 
-import { getServerSession } from "next-auth";
 import { authOptions } from "@/src/app/api/auth/[...nextauth]/route";
-import { redirect } from "next/navigation";
-import prisma from "@/lib/db/prisma";
 import {
   RaceFormSchema,
   RaceFormType,
 } from "@/src/components/organisms/RaceForm/r";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
+import prisma from "@/lib/db/prisma";
 import { revalidatePath } from "next/cache";
 
-export async function createRace(raceData: RaceFormType) {
+export const createLeagueRace = async (
+  raceData: RaceFormType,
+  leagueId: string
+) => {
   if (!RaceFormSchema.safeParse(raceData).success) return;
 
   const session = await getServerSession(authOptions);
@@ -25,18 +28,26 @@ export async function createRace(raceData: RaceFormType) {
     where: { email: useremail },
   });
 
-  if (!user) return;
-  if (!raceData) return;
+  if (!user || !raceData) return;
+
+  const leagueParticipants = await prisma.leagueParticipant.findMany({
+    where: { leagueId: leagueId },
+    include: { user: { select: { email: true } } },
+  });
+
+  const participantsEmails = leagueParticipants
+    .map((p) => p.user.email)
+    .filter((email): email is string => email !== null);
 
   await prisma.race.create({
     data: {
       ...raceData,
       userId: user.id,
+      leagueId: leagueId,
+      participants: participantsEmails,
     },
   });
 
   revalidatePath("/races/create-race");
-  redirect("/");
-
-  // ! toast to add
-}
+  redirect(`/championships/${leagueId}`);
+};

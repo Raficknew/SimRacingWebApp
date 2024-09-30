@@ -6,12 +6,15 @@ import prisma from "@/lib/db/prisma";
 import { cache } from "react";
 import { isRaceAuthor, isValidObjectId } from "@/src/actions/actions";
 
-export const DeleteRace = async (raceID: string) => {
+export const deleteRace = async (raceID: string) => {
   if (!(await isValidObjectId(raceID))) notFound();
 
   const race = await prisma.race.findUnique({
     where: { id: raceID },
-    include: { user: { select: { email: true } } },
+    include: {
+      author: { select: { email: true } },
+      league: { select: { id: true } },
+    },
   });
 
   if (!race) return;
@@ -19,8 +22,14 @@ export const DeleteRace = async (raceID: string) => {
   if (!(await isRaceAuthor(raceID))) return;
 
   await prisma.race.delete({ where: { id: raceID } });
-  revalidatePath(`/races/${raceID}`);
-  redirect("/");
+
+  if (!race.league?.id) {
+    revalidatePath("/");
+    redirect("/");
+  }
+
+  revalidatePath(`/championships/${race.league.id}`);
+  redirect(`/championships/${race.league.id}`);
 };
 
 export const getRace = cache(async (id: string) => {
@@ -28,42 +37,44 @@ export const getRace = cache(async (id: string) => {
 
   const race = await prisma.race.findUnique({
     where: { id },
-    include: { user: true },
+    include: { author: true },
   });
   if (!race) notFound();
   return race;
 });
 
-export const CreateInvite = cache(async (userEmail: string, raceId: string) => {
-  const race = await prisma.race.findUnique({
-    where: { id: raceId },
-    include: {
-      invites: { select: { userEmail: true } },
-      user: { select: { email: true } },
-    },
-  });
+export const createInviteToRace = cache(
+  async (userEmail: string, raceId: string) => {
+    const race = await prisma.race.findUnique({
+      where: { id: raceId },
+      include: {
+        invites: { select: { userEmail: true } },
+        author: { select: { email: true } },
+      },
+    });
 
-  if (!race) return;
+    if (!race) return;
 
-  if (!(await isRaceAuthor(race.id))) return;
+    if (!(await isRaceAuthor(race.id))) return;
 
-  const isUserInvited = race?.invites.some(
-    (invite) => invite.userEmail === userEmail
-  );
+    const isUserInvited = race?.invites.some(
+      (invite) => invite.userEmail === userEmail
+    );
 
-  if (isUserInvited) return;
+    if (isUserInvited) return;
 
-  const isUserInEvent = race?.participants.includes(userEmail);
+    const isUserInEvent = race?.participants.includes(userEmail);
 
-  if (isUserInEvent) return;
+    if (isUserInEvent) return;
 
-  await prisma.invite.create({
-    data: {
-      userEmail,
-      raceId,
-    },
-  });
+    await prisma.invite.create({
+      data: {
+        userEmail,
+        raceId,
+      },
+    });
 
-  revalidatePath(`/races/${raceId}`);
-  redirect(`/races/${raceId}`);
-});
+    revalidatePath(`/races/${raceId}`);
+    redirect(`/races/${raceId}`);
+  }
+);

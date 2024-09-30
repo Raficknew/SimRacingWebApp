@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/src/app/api/auth/[...nextauth]/route";
 import DeleteRaceButton from "@/src/app/races/[id]/DeleteRaceButton/DeleteRaceButton";
-import { CreateInvite, DeleteRace, getRace } from "./actions";
+import { createInviteToRace, deleteRace, getRace } from "./actions";
 import InviteBar from "@/src/components/molecules/InviteBar/Invitebar";
 import RaceResultDialog from "@/src/components/organisms/RaceResultDialog/RaceResultDialog";
 import { redirect } from "next/navigation";
@@ -35,15 +35,15 @@ const RacePage: React.FC<RacePageProps> = async ({ params: { id } }) => {
           <p>{race.name}</p>
           <p>{race.circuit}</p>
           <p>{race.series}</p>
-          {session?.user?.email == race.user?.email && (
+          {session?.user?.email == race.author.email && (
             <div>
               <DeleteRaceButton
                 key={race.id}
                 raceID={race.id}
-                DeleteRace={DeleteRace}
+                DeleteRace={deleteRace}
               />
-              {race.status !== RaceStatus.ENDED ? (
-                <InviteBar CreateInvite={CreateInvite} raceId={race.id} />
+              {race.status !== RaceStatus.ENDED && !race.leagueId ? (
+                <InviteBar createInvite={createInviteToRace} id={race.id} />
               ) : (
                 race.results.length == 0 &&
                 race.participants.length >= 3 && (

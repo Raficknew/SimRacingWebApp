@@ -17,13 +17,13 @@ const formSchema = z.object({
 });
 
 type InviteBarProps = {
-  raceId: string;
-  CreateInvite: (userEmail: string, raceID: string) => Promise<void>;
+  id: string;
+  createInvite: (userEmail: string, id: string) => Promise<void>;
 };
 
-const InviteBar: React.FC<InviteBarProps> = ({ CreateInvite, raceId }) => {
+const InviteBar: React.FC<InviteBarProps> = ({ createInvite, id }) => {
   function onSubmit(values: z.infer<typeof formSchema>) {
-    CreateInvite(values.userEmail, raceId);
+    createInvite(values.userEmail, id);
   }
 
   const form = useForm<z.infer<typeof formSchema>>({

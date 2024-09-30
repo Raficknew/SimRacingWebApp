@@ -13,7 +13,7 @@ export default async function Home() {
     orderBy: { id: "desc" },
     take: 5,
     include: {
-      user: { select: { name: true, image: true } },
+      author: { select: { name: true, image: true } },
     },
   });
 
@@ -38,7 +38,7 @@ export default async function Home() {
                 key={race.id}
                 className="self-stretch bg-slate-400 p-1 rounded-lg text-white max-w-[814px] min-w-[200px]"
               >
-                <RaceCard race={race} author={race.user} />
+                <RaceCard race={race} author={race.author} />
               </Link>
             ))}
           </div>
