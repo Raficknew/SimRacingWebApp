@@ -1,4 +1,5 @@
-import { getParticipants } from "./actions";
+import { notFound } from "next/navigation";
+import { getParticipantPoints } from "./actions";
 
 type StandingsPageProps = {
   params: {
@@ -9,13 +10,15 @@ type StandingsPageProps = {
 const StandingsPage: React.FC<StandingsPageProps> = async ({
   params: { id },
 }) => {
-  const participants = await getParticipants(id);
+  const participants = await getParticipantPoints(id);
+
+  if (!participants) notFound();
+
   return (
     <div>
       {participants.map((u) => (
-        <p key={u.user.id}>
-          {u.user.name}
-          {u.points}
+        <p key={u.driver}>
+          {u.driver} has {u.points} points
         </p>
       ))}
     </div>

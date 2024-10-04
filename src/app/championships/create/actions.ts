@@ -37,7 +37,6 @@ export const createLeague = async (leagueData: leagueFormType) => {
     data: {
       leagueId: league.id,
       userId: user.id,
-      points: 0,
     },
   });
 

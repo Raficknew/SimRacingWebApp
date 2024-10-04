@@ -6,6 +6,7 @@ import InviteBar from "@/src/components/molecules/InviteBar/Invitebar";
 import RaceResultDialog from "@/src/components/organisms/RaceResultDialog/RaceResultDialog";
 import { redirect } from "next/navigation";
 import { RaceStatus } from "@prisma/client";
+import LinkButton from "@/src/components/atoms/LinkButton/LinkButton";
 
 type RacePageProps = {
   params: {
@@ -45,14 +46,20 @@ const RacePage: React.FC<RacePageProps> = async ({ params: { id } }) => {
               {race.status !== RaceStatus.ENDED && !race.leagueId ? (
                 <InviteBar createInvite={createInviteToRace} id={race.id} />
               ) : (
+                race.status === RaceStatus.ENDED &&
                 race.results.length == 0 &&
-                race.participants.length >= 3 && (
+                race.participants.length >= 2 && (
                   <RaceResultDialog key={race.id} raceId={race.id} />
                 )
               )}
             </div>
           )}
         </>
+      )}
+      {race.leagueId && (
+        <LinkButton href={`/championships/${id}/standings`}>
+          Standings
+        </LinkButton>
       )}
     </div>
   );
