@@ -31,21 +31,7 @@ export const getParticipantPoints = async (leagueId: string) => {
     (a, b) => Number(b.points) - Number(a.points)
   );
 
-  let participantMails = Object.entries(participantsWithPoints).map(
-    ([index, name]) => name.driver
-  );
-
-  const participantsNames = await getParticipantsNames(participantMails ?? []);
-
-  let pariticipantsladeboard = participantsWithPoints.map((driver) => {
-    let name = participantsNames[driver.driver];
-    return {
-      ...driver,
-      driver: name,
-    };
-  });
-
-  return pariticipantsladeboard;
+  return participantsWithPoints;
 };
 
 const assignPoints = (results: string[]) => {

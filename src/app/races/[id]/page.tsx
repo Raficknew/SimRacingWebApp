@@ -1,12 +1,13 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/src/app/api/auth/[...nextauth]/route";
 import DeleteRaceButton from "@/src/app/races/[id]/DeleteRaceButton/DeleteRaceButton";
-import { createInviteToRace, deleteRace, getRace } from "./actions";
+import { createInviteToRace, deleteRace, endRace, getRace } from "./actions";
 import InviteBar from "@/src/components/molecules/InviteBar/Invitebar";
 import RaceResultDialog from "@/src/components/organisms/RaceResultDialog/RaceResultDialog";
 import { redirect } from "next/navigation";
 import { RaceStatus } from "@prisma/client";
 import LinkButton from "@/src/components/atoms/LinkButton/LinkButton";
+import EndRaceButton from "./EndRaceButton/EndRaceButton";
 
 type RacePageProps = {
   params: {
@@ -38,11 +39,10 @@ const RacePage: React.FC<RacePageProps> = async ({ params: { id } }) => {
           <p>{race.series}</p>
           {session?.user?.email == race.author.email && (
             <div>
-              <DeleteRaceButton
-                key={race.id}
-                raceID={race.id}
-                DeleteRace={deleteRace}
-              />
+              <DeleteRaceButton raceID={race.id} DeleteRace={deleteRace} />
+              {race.status !== RaceStatus.ENDED && (
+                <EndRaceButton raceID={race.id} EndRace={endRace} />
+              )}
               {race.status !== RaceStatus.ENDED && !race.leagueId ? (
                 <InviteBar createInvite={createInviteToRace} id={race.id} />
               ) : (
@@ -57,7 +57,7 @@ const RacePage: React.FC<RacePageProps> = async ({ params: { id } }) => {
         </>
       )}
       {race.leagueId && (
-        <LinkButton href={`/championships/${id}/standings`}>
+        <LinkButton href={`/championships/${race.leagueId}/standings`}>
           Standings
         </LinkButton>
       )}

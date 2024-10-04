@@ -5,12 +5,13 @@ import { notFound, redirect } from "next/navigation";
 import prisma from "@/lib/db/prisma";
 import { cache } from "react";
 import { isRaceAuthor, isValidObjectId } from "@/src/actions/actions";
+import { RaceStatus } from "@prisma/client";
 
-export const deleteRace = async (raceID: string) => {
-  if (!(await isValidObjectId(raceID))) notFound();
+export const deleteRace = async (raceId: string) => {
+  if (!(await isValidObjectId(raceId))) notFound();
 
   const race = await prisma.race.findUnique({
-    where: { id: raceID },
+    where: { id: raceId },
     include: {
       author: { select: { email: true } },
       league: { select: { id: true } },
@@ -19,9 +20,9 @@ export const deleteRace = async (raceID: string) => {
 
   if (!race) return;
 
-  if (!(await isRaceAuthor(raceID))) return;
+  if (!(await isRaceAuthor(raceId))) return;
 
-  await prisma.race.delete({ where: { id: raceID } });
+  await prisma.race.delete({ where: { id: raceId } });
 
   if (!race.league?.id) {
     revalidatePath("/");
@@ -78,3 +79,31 @@ export const createInviteToRace = cache(
     redirect(`/races/${raceId}`);
   }
 );
+
+export const endRace = async (raceId: string) => {
+  if (!raceId) return;
+
+  if (!(await isValidObjectId(raceId))) notFound();
+
+  const race = await prisma.race.findUnique({
+    where: { id: raceId },
+    include: {
+      author: { select: { email: true } },
+      league: { select: { id: true } },
+    },
+  });
+
+  if (!race) return;
+
+  if (race.status === RaceStatus.ENDED) return;
+
+  if (!(await isRaceAuthor(raceId))) return;
+
+  await prisma.race.update({
+    where: { id: raceId },
+    data: { status: RaceStatus.ENDED },
+  });
+
+  revalidatePath(`/races/${raceId}`);
+  redirect(`/races/${raceId}`);
+};
