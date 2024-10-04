@@ -1,5 +1,6 @@
 "use server";
 import prisma from "@/lib/db/prisma";
+import { isRaceAuthor } from "@/src/actions/actions";
 import { revalidatePath } from "next/cache";
 import { notFound, redirect } from "next/navigation";
 import { cache } from "react";
@@ -25,6 +26,8 @@ export const getParticipantsNames = cache(async (mails: string[]) => {
 });
 
 export const setResults = async (raceID: string, participants: string[]) => {
+  if (!(await isRaceAuthor(raceID))) return;
+
   await prisma.race.update({
     where: { id: raceID },
     data: { results: { set: participants } },

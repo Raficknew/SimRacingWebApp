@@ -40,14 +40,14 @@ const Championship: React.FC<ChampionshipProps> = async ({
           </LinkButton>
           <DeleteLeagueButton leagueId={id} deleteLeague={deleteLeague} />
           <InviteBar id={id} createInvite={createInviteToLeague} />
+          <LinkButton href={`/championships/${id}/standings`}>
+            Standings
+          </LinkButton>
         </div>
       )}
       <div>
         {championship.participants.map((u) => (
-          <p key={u.user.id}>
-            {u.user.name}
-            {u.points}
-          </p>
+          <p key={u.user.id}>{u.user.name}</p>
         ))}
       </div>
       {championship.races.length > 0 ? (
