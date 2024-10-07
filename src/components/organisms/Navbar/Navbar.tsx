@@ -6,6 +6,7 @@ import { Home, Trophy, User, Search } from "lucide-react";
 
 const Navbar: React.FC = async () => {
   const session = await getServerSession(authOptions);
+
   return (
     <div className="pt-3 px-10">
       <div className="bg-[#3F3F3F] flex self-stretch w-full items-center justify-between p-2 rounded-r-full">
@@ -18,7 +19,11 @@ const Navbar: React.FC = async () => {
             icon={<Trophy />}
             title="Championships"
           />
-          <Navbarlink link="/profile" icon={<User />} title="Profile" />
+          <Navbarlink
+            link={`/profile/${session?.user?.name}`}
+            icon={<User />}
+            title="Profile"
+          />
         </div>
         <DropDown session={session} />
       </div>

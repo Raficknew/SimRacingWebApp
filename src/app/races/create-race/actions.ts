@@ -15,7 +15,7 @@ export async function createRace(raceData: RaceFormType) {
 
   const session = await getServerSession(authOptions);
 
-  if (!session) redirect("/api/auth/signin?callbackUrl=/create-event");
+  if (!session) redirect("/api/auth/signin?callbackUrl=/races/create-race");
 
   const useremail = session.user?.email;
 
