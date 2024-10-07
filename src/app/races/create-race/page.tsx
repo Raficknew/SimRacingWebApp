@@ -13,7 +13,7 @@ const CreateEventPage = async () => {
   const session = await getServerSession(authOptions);
 
   if (!session) {
-    redirect("/api/auth/signin?callbackUrl=/create-event");
+    redirect("/api/auth/signin?callbackUrl=/races/create-race");
   }
 
   return (

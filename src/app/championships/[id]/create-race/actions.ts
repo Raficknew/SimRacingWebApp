@@ -18,7 +18,7 @@ export const createLeagueRace = async (
 
   const session = await getServerSession(authOptions);
 
-  if (!session) redirect("/api/auth/signin?callbackUrl=/create-event");
+  if (!session) redirect("/api/auth/signin?callbackUrl=/");
 
   const useremail = session.user?.email;
 

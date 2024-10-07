@@ -2,8 +2,8 @@
 
 import { cache } from "react";
 import prisma from "@/lib/db/prisma";
-import { getParticipantsNames } from "@/src/components/organisms/RaceResultDialog/actions";
-import { isLeagueAuthor, isValidObjectId } from "@/src/actions/actions";
+
+import { isValidObjectId } from "@/src/actions/actions";
 
 type Driver = {
   driver: string;
@@ -12,7 +12,7 @@ type Driver = {
 
 const f1Points = [25, 18, 15, 12, 10, 8, 6, 4, 2, 1];
 
-export const getParticipantPoints = async (leagueId: string) => {
+export const getParticipantPoints = cache(async (leagueId: string) => {
   if (!(await isValidObjectId(leagueId))) return;
 
   const races = await prisma.race.findMany({
@@ -32,7 +32,7 @@ export const getParticipantPoints = async (leagueId: string) => {
   );
 
   return participantsWithPoints;
-};
+});
 
 const assignPoints = (results: string[]) => {
   return results.map((driver, index) => {
