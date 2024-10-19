@@ -1,6 +1,5 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]/route";
-import Navbar from "@/src/components/organisms/Navbar/Navbar";
 import prisma from "@/lib/db/prisma";
 import RaceCard from "@/src/components/molecules/RaceCard/RaceCard";
 import Link from "next/link";
@@ -18,8 +17,7 @@ export default async function Home() {
   });
 
   return (
-    <div className="h-screen">
-      <Navbar />
+    <div>
       <div className="flex flex-col px-8 pt-20 gap-3 justify-center">
         {session && (
           <div className="flex flex-col">

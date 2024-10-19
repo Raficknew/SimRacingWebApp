@@ -3,7 +3,6 @@ import { authOptions } from "@/src/app/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 import RaceForm from "@/src/components/organisms/RaceForm/RaceForm";
 import { createRace } from "./actions";
-import Navbar from "@/src/components/organisms/Navbar/Navbar";
 
 export const metadata = {
   title: "Create Race - SimRacingWebApp",
@@ -17,8 +16,7 @@ const CreateEventPage = async () => {
   }
 
   return (
-    <div className="flex flex-col w-screen h-screen">
-      <Navbar />
+    <div className="flex flex-col w-screen">
       <div className="flex justify-center pt-20">
         <RaceForm createRace={createRace} />
       </div>

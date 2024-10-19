@@ -1,6 +1,5 @@
 import prisma from "@/lib/db/prisma";
 import RaceCard from "@/src/components/molecules/RaceCard/RaceCard";
-import Navbar from "@/src/components/organisms/Navbar/Navbar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import SearchBar from "@/src/components/organisms/SearchBar/SearchBar";
 import { getServerSession } from "next-auth";
@@ -27,8 +26,7 @@ async function RaceFind({
   });
 
   return (
-    <div className="h-screen gap-20 flex flex-col">
-      <Navbar />
+    <div className="gap-20 flex flex-col">
       <div className="flex flex-col self-stretch gap-11 p-3">
         <div className="flex justify-between">
           <SearchBar placeholder="Type to search for race..." />

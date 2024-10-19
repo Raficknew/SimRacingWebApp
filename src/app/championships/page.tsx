@@ -1,7 +1,6 @@
 import LinkButton from "@/src/components/atoms/LinkButton/LinkButton";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
-import Navbar from "@/src/components/organisms/Navbar/Navbar";
 import prisma from "@/lib/db/prisma";
 import Link from "next/link";
 import SearchBar from "@/src/components/organisms/SearchBar/SearchBar";
@@ -24,7 +23,6 @@ const ChampionshipsPage = async ({
   });
   return (
     <div>
-      <Navbar />
       {session && (
         <LinkButton href={"/championships/create"}>Create League</LinkButton>
       )}

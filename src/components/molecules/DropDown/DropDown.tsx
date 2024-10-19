@@ -32,7 +32,7 @@ const DropDown: React.FC<DropDownProps> = ({ session }) => {
         {session ? (
           <>
             <DropdownMenuLabel>
-              <p className="text-red-400">{session?.user?.name}</p>
+              <p className="text-white">{session?.user?.name}</p>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
