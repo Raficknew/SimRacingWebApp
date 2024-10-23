@@ -34,7 +34,7 @@ export default async function Home() {
               <Link
                 href={`/races/${race.id}`}
                 key={race.id}
-                className="self-stretch bg-slate-400 p-1 rounded-lg text-white max-w-[814px] min-w-[200px]"
+                className="self-stretch"
               >
                 <RaceCard race={race} author={race.author} />
               </Link>

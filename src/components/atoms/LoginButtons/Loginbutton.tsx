@@ -17,7 +17,7 @@ const LoginButton: React.FC<LoginbuttonProps> = ({ session }) => {
           onClick={() => signOut({ callbackUrl: "/" })}
         >
           <LogOut className="mr-2 h-4 w-4 " />
-          <p className="text-red-400">LogOut</p>
+          <p className="text-white">LogOut</p>
         </button>
       ) : (
         <button
@@ -25,7 +25,7 @@ const LoginButton: React.FC<LoginbuttonProps> = ({ session }) => {
           onClick={() => signIn()}
         >
           <LogIn className="mr-2 h-4 w-4 " />
-          <p className="text-red-400">LogIn</p>
+          <p className="text-white">LogIn</p>
         </button>
       )}
     </div>

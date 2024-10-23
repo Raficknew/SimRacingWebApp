@@ -16,10 +16,8 @@ const CreateEventPage = async () => {
   }
 
   return (
-    <div className="flex flex-col w-screen">
-      <div className="flex justify-center pt-20">
-        <RaceForm createRace={createRace} />
-      </div>
+    <div className="flex items-center justify-center">
+      <RaceForm createRace={createRace} />
     </div>
   );
 };

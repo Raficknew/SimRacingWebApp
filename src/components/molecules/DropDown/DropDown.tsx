@@ -41,25 +41,7 @@ const DropDown: React.FC<DropDownProps> = ({ session }) => {
                 className="flex justify-center text-[#F6F6F6] items-center hover:text-red-400"
               >
                 <Home className="mr-2 h-4 w-4 " />
-                <p className="text-red-400">Home</p>
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Link
-                href={"/races"}
-                className="flex justify-center text-[#F6F6F6] items-center hover:text-red-400"
-              >
-                <Gamepad2 className="mr-2 h-4 w-4 " />
-                <p className="text-red-400">Races</p>
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Link
-                href={"/profile"}
-                className="flex justify-center text-[#F6F6F6] items-center hover:text-red-400"
-              >
-                <TrophyIcon className="mr-2 h-4 w-4 " />
-                <p className="text-red-400">Championships</p>
+                <p className="text-white">Home</p>
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem>
@@ -68,7 +50,7 @@ const DropDown: React.FC<DropDownProps> = ({ session }) => {
                 className="flex justify-center text-[#F6F6F6] items-center hover:text-red-400"
               >
                 <User className="mr-2 h-4 w-4 " />
-                <p className="text-red-400">Profile</p>
+                <p className="text-white">Profile</p>
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem>
@@ -77,7 +59,7 @@ const DropDown: React.FC<DropDownProps> = ({ session }) => {
                 className="flex justify-center text-[#F6F6F6] items-center hover:text-red-400"
               >
                 <Settings className="mr-2 h-4 w-4 " />
-                <p className="text-red-400">Settings</p>
+                <p className="text-white">Settings</p>
               </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
