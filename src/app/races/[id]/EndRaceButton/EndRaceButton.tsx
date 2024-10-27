@@ -7,7 +7,9 @@ interface EndRaceButtonProps {
 }
 
 const EndRaceButton: React.FC<EndRaceButtonProps> = ({ raceID, EndRace }) => {
-  return <Button onClick={async () => await EndRace(raceID)}>End</Button>;
+  return (
+    <Button onClick={async () => await EndRace(raceID)}>Zakończ wyścig</Button>
+  );
 };
 
 export default EndRaceButton;

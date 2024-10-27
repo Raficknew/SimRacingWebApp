@@ -71,7 +71,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-[#303030] text-foreground;
+    @apply  text-foreground;
   }
     html {
       background-image: radial-gradient(circle, #303030, #333333, #363636, #3a3a3a, #3d3d3d);

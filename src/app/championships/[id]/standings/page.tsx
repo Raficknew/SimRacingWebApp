@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { getParticipantPoints } from "./actions";
+import ParticipantBox from "@/src/components/atoms/PatricipantBox/PatricipantBox";
 
 type StandingsPageProps = {
   params: {
@@ -16,10 +17,15 @@ const StandingsPage: React.FC<StandingsPageProps> = async ({
 
   return (
     <div>
-      {participants.map((u) => (
-        <p key={u.driver}>
-          {u.driver} has {u.points} points
-        </p>
+      {participants.map((u, index) => (
+        <ParticipantBox
+          key={u.driver}
+          team={"Payed Drivers"}
+          position={index + 1}
+          points={u.points}
+        >
+          {u.driver}
+        </ParticipantBox>
       ))}
     </div>
   );
