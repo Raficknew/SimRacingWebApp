@@ -41,8 +41,16 @@ const RacePage: React.FC<RacePageProps> = async ({ params: { id } }) => {
     ([mail, name]) => name ?? mail
   );
 
+  async function leagueRaceResults() {
+    const championshipParticipants = (await getChampionship(race.leagueId))
+      .participants;
+    return race.results.map((user) =>
+      championshipParticipants.find((u) => u.user.name === user)
+    );
+  }
+
   return (
-    <div className="flex flex-col bg-[#303030] rounded-sm p-5 h-[630px] gap-16">
+    <div className="flex flex-col bg-[#303030] rounded-sm p-5 min-h-[630px] gap-12">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-1">
           <Avatar className="w-8 h-8">
@@ -88,29 +96,38 @@ const RacePage: React.FC<RacePageProps> = async ({ params: { id } }) => {
         </div>
       </div>
       {race.results.length > 1 ? (
-        <div>
-          <div className="flex flex-col justify-center items-center">
-            <div className="flex flex-col gap-2 justify-center items-center">
+        <div className="flex flex-col items-center">
+          <Badge className="bg-gray-600 hover:bg-gray-700">{race.status}</Badge>
+          <div className="flex gap-2 items-center justify-center">
+            <p className="text-4xl text-white">{race.name}</p>
+            <Badge className="bg-rose-900 hover:bg-rose-950">
+              {race.series}
+            </Badge>
+            <Badge className="bg-orange-900 hover:bg-orange-950">
+              {race.circuit}
+            </Badge>
+          </div>
+          <div className="flex flex-col justify-center items-center gap-2">
+            <p className="text-white">Results</p>
+            <div className="grid grid-rows-2 grid-cols-2 gap-3">
               {race.leagueId
-                ? (await getChampionship(race.leagueId)).participants.map(
-                    (u) => (
-                      <ParticipantBox key={u.id}>
-                        <div className="flex justify-center items-center gap-2">
-                          <Avatar className="w-8 h-8">
-                            <AvatarImage src={u.user.image!} />
-                          </Avatar>
-                          {u.user.name}
-                        </div>
-                      </ParticipantBox>
-                    )
-                  )
+                ? (await leagueRaceResults()).map((u, index) => (
+                    <ParticipantBox key={u.user.name} position={index + 1}>
+                      <div className="flex justify-center items-center gap-2">
+                        <Avatar className="w-8 h-8">
+                          <AvatarImage src={u.user.image!} />
+                        </Avatar>
+                        {u.user.name}
+                      </div>
+                    </ParticipantBox>
+                  ))
                 : race.results.map((person, index) => (
                     <ParticipantBox
                       key={index.toString()}
                       position={index + 1}
                       className={
                         {
-                          1: "border border-yellow-200",
+                          1: "border border-yellow-200 shadow shadow-yellow-500",
                           2: "border border-gray-300",
                           3: "border border-amber-700",
                         }[index + 1] || ""
@@ -125,11 +142,25 @@ const RacePage: React.FC<RacePageProps> = async ({ params: { id } }) => {
       ) : (
         <div className="flex flex-col gap-5">
           <div className="flex flex-col justify-center items-center gap-6">
-            <Badge>{race.status}</Badge>
+            <Badge
+              className={
+                {
+                  BEFORE: "bg-cyan-600 hover:bg-cyan-700",
+                  ONGOING: "bg-red-600 hover:bg-red-700",
+                  ENDED: "bg-gray-600 hover:bg-gray-700",
+                }[race.status]
+              }
+            >
+              {race.status}
+            </Badge>
             <p className="text-4xl text-white">{race.name}</p>
-            <div className="flex">
-              <Badge>{race.series}</Badge>
-              <Badge>{race.circuit}</Badge>
+            <div className="flex gap-1">
+              <Badge className="bg-rose-900 hover:bg-rose-950">
+                {race.series}
+              </Badge>
+              <Badge className="bg-orange-900 hover:bg-orange-950">
+                {race.circuit}
+              </Badge>
             </div>
             <p className="text-white">{race.description}</p>
           </div>

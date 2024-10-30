@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
+import ParticipantBox from "@/src/components/atoms/PatricipantBox/PatricipantBox";
 import { useRef, useState } from "react";
 
 interface RaceParticipantsProps {
@@ -38,10 +39,10 @@ const RaceParticipants: React.FC<RaceParticipantsProps> = ({
 
   return (
     <>
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 items-center">
         {participants.map((participant, index) => (
           <div
-            className="flex flex-1 justify-between w-full bg-gray-300"
+            className="flex flex-1 justify-between w-ful"
             key={index.toString()}
             draggable
             onDragStart={() => (dragParticipant.current = index)}
@@ -49,8 +50,9 @@ const RaceParticipants: React.FC<RaceParticipantsProps> = ({
             onDragEnd={handleSort}
             onDragOver={(e) => e.preventDefault()}
           >
-            <p>{index + 1}</p>
-            <p>{participant}</p>
+            <ParticipantBox key={participant} position={index + 1}>
+              {participant}
+            </ParticipantBox>
           </div>
         ))}
       </div>
