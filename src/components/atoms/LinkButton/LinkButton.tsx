@@ -11,7 +11,7 @@ const LinkButton: React.FC<LinkButton> = ({ children, href }) => {
     <Link
       className={buttonVariants({
         variant: "outline",
-        className: "self-end flex",
+        className: "self-end flex gap-1",
       })}
       href={href}
     >
