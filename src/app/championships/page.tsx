@@ -22,16 +22,20 @@ const ChampionshipsPage = async ({
     where: { name: { contains: query, mode: "insensitive" } },
   });
   return (
-    <div>
-      {session && (
-        <LinkButton href={"/championships/create"}>Create League</LinkButton>
-      )}
-      <SearchBar placeholder="Search for leagues" />
-      {leagues.map((league) => (
-        <Link key={league.id} href={`/championships/${league.id}`}>
-          <LeagueCard league={league} author={league.author} />
-        </Link>
-      ))}
+    <div className="flex flex-col gap-2">
+      <div className="flex justify-between">
+        <SearchBar placeholder="Search for leagues" />
+        {session && (
+          <LinkButton href={"/championships/create"}>Create League</LinkButton>
+        )}
+      </div>
+      <div className="grid grid-cols-2 gap-2">
+        {leagues.map((league) => (
+          <Link key={league.id} href={`/championships/${league.id}`}>
+            <LeagueCard league={league} author={league.author} />
+          </Link>
+        ))}
+      </div>
     </div>
   );
 };

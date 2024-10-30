@@ -3,6 +3,7 @@ interface ParticipantBoxProps {
   className?: string;
   team?: string;
   position?: number;
+  points?: number;
 }
 
 const ParticipantBox: React.FC<ParticipantBoxProps> = ({
@@ -10,11 +11,12 @@ const ParticipantBox: React.FC<ParticipantBoxProps> = ({
   team,
   position,
   className,
+  points,
 }) => {
   return (
     <div
       className={
-        "flex gap-6 self-stretch items-center bg-black py-1 rounded-sm px-5 opacity-95 min-w-[250px] " +
+        "flex gap-6 self-stretch  items-center bg-black py-1 rounded-sm px-5 opacity-95 min-w-[250px] " +
         className
       }
     >
@@ -33,6 +35,7 @@ const ParticipantBox: React.FC<ParticipantBoxProps> = ({
       )}
       <div className="text-white">{children}</div>
       <div className=" text-red-800">{team}</div>
+      {points && <div className=" text-red-800 self-end">{points}</div>}
     </div>
   );
 };

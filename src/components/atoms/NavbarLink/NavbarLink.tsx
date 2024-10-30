@@ -1,3 +1,4 @@
+"use client";
 import {
   Tooltip,
   TooltipContent,
@@ -5,6 +6,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 type NavbarlinkProps = {
   icon: React.ReactNode;
@@ -13,13 +15,20 @@ type NavbarlinkProps = {
 };
 
 const Navbarlink: React.FC<NavbarlinkProps> = ({ link, icon, title }) => {
+  const pathname = usePathname();
   return (
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger>
           <Link
             href={link}
-            className="text-white md:flex  rounded-l hover:text-white h-7 w-7"
+            className={`text-white md:flex  rounded-l hover:text-white h-7 w-7 ${
+              pathname == "/" && title == "Home"
+                ? "text-orange-400"
+                : pathname.includes(title.toLowerCase())
+                ? "text-orange-400"
+                : ""
+            }`}
           >
             {icon}
           </Link>

@@ -10,7 +10,7 @@ const DeleteLeagueButton: React.FC<DeleteLeagueButtonProps> = ({
   deleteLeague,
   leagueId,
 }) => {
-  return <Button onClick={() => deleteLeague(leagueId)}>EŚ</Button>;
+  return <Button onClick={() => deleteLeague(leagueId)}>Usuń</Button>;
 };
 
 export default DeleteLeagueButton;
