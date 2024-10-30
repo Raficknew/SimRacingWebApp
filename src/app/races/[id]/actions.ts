@@ -80,7 +80,7 @@ export const createInviteToRace = cache(
   }
 );
 
-export const endRace = async (raceId: string) => {
+export const changeStatus = async (raceId: string) => {
   if (!raceId) return;
 
   if (!(await isValidObjectId(raceId))) notFound();
@@ -99,10 +99,17 @@ export const endRace = async (raceId: string) => {
 
   if (!(await isRaceAuthor(raceId))) return;
 
-  await prisma.race.update({
-    where: { id: raceId },
-    data: { status: RaceStatus.ENDED },
-  });
+  if (race.status === RaceStatus.BEFORE) {
+    await prisma.race.update({
+      where: { id: raceId },
+      data: { status: RaceStatus.ONGOING },
+    });
+  } else {
+    await prisma.race.update({
+      where: { id: raceId },
+      data: { status: RaceStatus.ENDED },
+    });
+  }
 
   revalidatePath(`/races/${raceId}`);
   redirect(`/races/${raceId}`);

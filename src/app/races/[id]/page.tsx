@@ -1,13 +1,18 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/src/app/api/auth/[...nextauth]/route";
 import DeleteRaceButton from "@/src/app/races/[id]/DeleteRaceButton/DeleteRaceButton";
-import { createInviteToRace, deleteRace, endRace, getRace } from "./actions";
+import {
+  changeStatus,
+  createInviteToRace,
+  deleteRace,
+  getRace,
+} from "./actions";
 import InviteBar from "@/src/components/molecules/InviteBar/Invitebar";
 import RaceResultDialog from "@/src/components/organisms/RaceResultDialog/RaceResultDialog";
 import { redirect } from "next/navigation";
 import { RaceStatus } from "@prisma/client";
 import LinkButton from "@/src/components/atoms/LinkButton/LinkButton";
-import EndRaceButton from "./EndRaceButton/EndRaceButton";
+import EndRaceButton from "./ChangeStatusForRaceButton/ChangeStatusForRaceButton";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Clock2, Settings, Table } from "lucide-react";
 import dayjs from "dayjs";
@@ -23,6 +28,7 @@ import {
 } from "@/components/ui/dialog";
 import ParticipantBox from "@/src/components/atoms/PatricipantBox/PatricipantBox";
 import { getChampionship } from "../../championships/[id]/actions";
+import ChangeStatusForRaceButton from "./ChangeStatusForRaceButton/ChangeStatusForRaceButton";
 
 type RacePageProps = {
   params: {
@@ -42,8 +48,9 @@ const RacePage: React.FC<RacePageProps> = async ({ params: { id } }) => {
   );
 
   async function leagueRaceResults() {
-    const championshipParticipants = (await getChampionship(race.leagueId))
-      .participants;
+    const championshipParticipants = (
+      await getChampionship(race.leagueId || "")
+    ).participants;
     return race.results.map((user) =>
       championshipParticipants.find((u) => u.user.name === user)
     );
@@ -86,7 +93,10 @@ const RacePage: React.FC<RacePageProps> = async ({ params: { id } }) => {
                     )
                   )}
                   {race.status !== RaceStatus.ENDED && (
-                    <EndRaceButton raceID={race.id} EndRace={endRace} />
+                    <ChangeStatusForRaceButton
+                      raceID={race.id}
+                      ChangeStatus={changeStatus}
+                    />
                   )}
                   <DeleteRaceButton raceID={race.id} DeleteRace={deleteRace} />
                 </div>
@@ -112,12 +122,12 @@ const RacePage: React.FC<RacePageProps> = async ({ params: { id } }) => {
             <div className="grid grid-rows-2 grid-cols-2 gap-3">
               {race.leagueId
                 ? (await leagueRaceResults()).map((u, index) => (
-                    <ParticipantBox key={u.user.name} position={index + 1}>
+                    <ParticipantBox key={u?.user.name} position={index + 1}>
                       <div className="flex justify-center items-center gap-2">
                         <Avatar className="w-8 h-8">
-                          <AvatarImage src={u.user.image!} />
+                          <AvatarImage src={u?.user.image || ""} />
                         </Avatar>
-                        {u.user.name}
+                        {u?.user.name}
                       </div>
                     </ParticipantBox>
                   ))

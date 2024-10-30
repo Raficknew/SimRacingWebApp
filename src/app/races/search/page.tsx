@@ -39,25 +39,17 @@ async function RaceFind({
           </div>
         )}
         {races.length > 0 ? (
-          <div className="flex flex-col self-stretch justify-center items-center gap-5">
-            {races.length > 0 ? (
-              <ScrollArea className="flex flex-col self-stretch justify-center items-center gap-5">
-                {races.map((race) => (
-                  <Link
-                    href={`/races/${race.id}`}
-                    key={race.id}
-                    className="self-stretch"
-                  >
-                    <RaceCard race={race} author={race.author} />
-                  </Link>
-                ))}
-              </ScrollArea>
-            ) : (
-              "Nie znaleziono wyścigu"
-            )}
+          <div className="flex flex-col self-stretch justify-center items-center">
+            <ScrollArea className="flex flex-col self-stretch">
+              {races.map((race) => (
+                <Link href={`/races/${race.id}`} key={race.id}>
+                  <RaceCard race={race} author={race.author} />
+                </Link>
+              ))}
+            </ScrollArea>
           </div>
         ) : (
-          "No races yet"
+          "Nie znaleziono wyścigu/ów"
         )}
       </div>
     </div>

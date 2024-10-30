@@ -12,7 +12,7 @@ const Navbar: React.FC = async () => {
       <div className="bg-[#F2F2F2] bg-opacity-5 flex self-stretch w-full items-center justify-between px-10 py-1 rounded-xl ">
         <div className="flex gap-3 md:gap-5">
           <Navbarlink link="/" icon={<Home />} title="Home" />
-          <Navbarlink link="/races/search" icon={<Search />} title="Races" />
+          <Navbarlink link="/races/search" icon={<Search />} title="Search" />
           <Navbarlink
             link="/championships"
             icon={<Trophy />}
