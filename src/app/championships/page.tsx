@@ -5,6 +5,7 @@ import prisma from "@/lib/db/prisma";
 import Link from "next/link";
 import SearchBar from "@/src/components/organisms/SearchBar/SearchBar";
 import LeagueCard from "@/src/components/molecules/LeagueCard/LeagueCard";
+import { Flag } from "lucide-react";
 
 const ChampionshipsPage = async ({
   searchParams,
@@ -26,7 +27,11 @@ const ChampionshipsPage = async ({
       <div className="flex justify-between">
         <SearchBar placeholder="Search for leagues" />
         {session && (
-          <LinkButton href={"/championships/create"}>Create League</LinkButton>
+          <LinkButton href={"/championships/create"}>
+            {" "}
+            <Flag className="w-4 h-4" />
+            Create League
+          </LinkButton>
         )}
       </div>
       <div className="grid grid-cols-2 gap-2">

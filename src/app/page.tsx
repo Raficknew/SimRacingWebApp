@@ -22,10 +22,12 @@ export default async function Home() {
         {session && (
           <div className="flex flex-col">
             <div className="flex flex-col gap-2 max-w-[600px]"></div>
-            <LinkButton href="/races/create-race">
-              <Flag className="w-4 h-4" />
-              <p>Create Race</p>
-            </LinkButton>
+            <div className="flex self-end">
+              <LinkButton href="/races/create-race">
+                <Flag className="w-4 h-4" />
+                <p>Create Race</p>
+              </LinkButton>
+            </div>
           </div>
         )}
         {races.length > 0 ? (

@@ -35,7 +35,7 @@ const ParticipantBox: React.FC<ParticipantBoxProps> = ({
       )}
       <div className="text-white">{children}</div>
       <div className=" text-red-800">{team}</div>
-      {points && <div className=" text-red-800 self-end">{points}</div>}
+      <div className=" text-red-800 self-end">{points}</div>
     </div>
   );
 };
