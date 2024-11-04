@@ -11,7 +11,10 @@ const ChangeStatusForRaceButton: React.FC<ChangeStatusForRaceButtonProps> = ({
   ChangeStatus,
 }) => {
   return (
-    <Button onClick={async () => await ChangeStatus(raceID)}>
+    <Button
+      className="bg-[#303030] hover:bg-[#252525]"
+      onClick={async () => await ChangeStatus(raceID)}
+    >
       Zmień status wyścigu
     </Button>
   );

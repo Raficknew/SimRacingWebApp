@@ -15,7 +15,7 @@ const DeleteRaceButton: React.FC<DeleteRaceButtonProps> = ({
   return (
     <Button
       onClick={async () => await DeleteRace(raceID)}
-      className="bg-red-400 text-white cursor-pointer hover:bg-red-500 flex gap-2"
+      className="bg-red-900 text-white cursor-pointer hover:bg-red-950 flex gap-2"
     >
       <Trash className="w-4 h-4" />
       <p>Usuń Wyścig</p>

@@ -84,16 +84,15 @@ const Championship: React.FC<ChampionshipProps> = async ({
       </div>
       {championship.races.length > 0 ? (
         <>
-          <div className="flex flex-wrap items-center justify-between">
-            <div className="flex flex-col gap-7 bg-white p-8">
-              <div className="flex flex-col items-center gap-1">
-                <p>Driver standings</p>
+          <div className="flex flex-wrap items-center gap-5">
+            <div className="flex flex-col gap-7 bg-black bg-opacity-10 p-6">
+              <div className="flex flex-col items-center gap-2">
+                <p className="text-white">Driver standings</p>
                 {participants?.length
                   ? participants
                       .map((u, index) => (
                         <ParticipantBox
                           key={u.driver}
-                          team={"P"}
                           position={index + 1}
                           points={u.points}
                         >
@@ -122,15 +121,21 @@ const Championship: React.FC<ChampionshipProps> = async ({
                 <Table width={20} height={20} /> Standings
               </LinkButton>
             </div>
-            <div className="flex flex-col bg-red-300 w-[430px]">
-              <p>Następny wyścig:</p>
-              <div>
-                {nextRace && (
-                  <Link key={nextRace.id} href={`/races/${nextRace?.id}`}>
-                    <RaceCard author={nextRace.author} race={nextRace} />
-                  </Link>
-                )}
-              </div>
+            <div className="flex flex-col w-[430px]">
+              {nextRace ? (
+                <div>
+                  <p className="text-white">Następny wyścig:</p>
+                  <div>
+                    <Link key={nextRace.id} href={`/races/${nextRace?.id}`}>
+                      <RaceCard author={nextRace.author} race={nextRace} />
+                    </Link>
+                  </div>
+                </div>
+              ) : (
+                <p className="text-white self-center">
+                  Brak następnych wyścigów
+                </p>
+              )}
             </div>
           </div>{" "}
         </>

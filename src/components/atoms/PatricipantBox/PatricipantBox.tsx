@@ -16,7 +16,7 @@ const ParticipantBox: React.FC<ParticipantBoxProps> = ({
   return (
     <div
       className={
-        "flex gap-6 self-stretch  items-center bg-black py-1 rounded-sm px-5 opacity-95 min-w-[250px] " +
+        "flex gap-6 self-stretch justify-center items-center bg-black bg-opacity-50 py-1 rounded-sm px-5 opacity-95 min-w-[250px] " +
         className
       }
     >
@@ -34,8 +34,8 @@ const ParticipantBox: React.FC<ParticipantBoxProps> = ({
         </div>
       )}
       <div className="text-white">{children}</div>
-      <div className=" text-red-800">{team}</div>
-      <div className=" text-red-800 self-end">{points}</div>
+      <div className=" text-white">{team}</div>
+      <div className=" text-white">{points}</div>
     </div>
   );
 };
