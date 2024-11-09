@@ -13,10 +13,11 @@ const ParticipantBox: React.FC<ParticipantBoxProps> = ({
   className,
   points,
 }) => {
+  // ! Podzielnic na kilka komponentow
   return (
     <div
       className={
-        "flex gap-6 self-stretch justify-center items-center bg-black bg-opacity-50 py-1 rounded-sm px-5 opacity-95 min-w-[250px] " +
+        "flex gap-6 self-stretch justify-center items-center bg-[#303030] bg-opacity-50 py-1 rounded-sm px-5 opacity-95 min-w-[250px] " +
         className
       }
     >

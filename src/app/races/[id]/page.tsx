@@ -57,7 +57,7 @@ const RacePage: React.FC<RacePageProps> = async ({ params: { id } }) => {
   }
 
   return (
-    <div className="flex flex-col bg-[#303030] rounded-sm p-5 min-h-[630px] gap-12">
+    <div className="flex flex-col bg-custom-gradient rounded-sm p-5 min-h-[630px] gap-12">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-1">
           <Avatar className="w-8 h-8">

@@ -30,6 +30,7 @@ import { getServerSession } from "next-auth";
 import LinkButton from "@/src/components/atoms/LinkButton/LinkButton";
 import DeleteLeagueButton from "../DeleteLeagueButton/DeleteLeagueButton";
 import InviteBar from "@/src/components/molecules/InviteBar/Invitebar";
+import bg from "@/src/assets/8ec323bd-ab9b-43a6-88df-51951fe44f6b.jpg";
 
 type StandingsPageProps = {
   params: {
@@ -52,7 +53,7 @@ const StandingsPage: React.FC<StandingsPageProps> = async ({
   if (!participants) notFound();
 
   return (
-    <div className="flex flex-col bg-[#303030] rounded-sm p-5 min-h-[630px] gap-12">
+    <div className="flex flex-col bg-custom-gradient rounded-sm p-5 min-h-[630px] gap-12">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-1">
           <Avatar className="w-8 h-8">
@@ -134,6 +135,17 @@ const StandingsPage: React.FC<StandingsPageProps> = async ({
                 ))}
           </TableBody>
         </Table>
+      </div>
+      <div>
+        <div
+          className="absolute top-0 left-0 z-[-2] min-h-screen w-full bg-cover bg-center flex justify-center items-center"
+          style={{
+            backgroundImage: `url(${bg.src})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        ></div>
+        <div className="absolute top-0 left-0 z-[-1] min-h-screen w-full bg-cover bg-center flex justify-center items-center bg-black opacity-30"></div>
       </div>
     </div>
   );

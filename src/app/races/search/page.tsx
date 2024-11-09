@@ -1,6 +1,5 @@
 import prisma from "@/lib/db/prisma";
 import RaceCard from "@/src/components/molecules/RaceCard/RaceCard";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import SearchBar from "@/src/components/organisms/SearchBar/SearchBar";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/src/app/api/auth/[...nextauth]/route";
@@ -40,13 +39,13 @@ async function RaceFind({
         )}
         {races.length > 0 ? (
           <div className="flex flex-col self-stretch justify-center items-center">
-            <ScrollArea className="flex flex-col self-stretch">
+            <div className="flex flex-col self-stretch gap-3">
               {races.map((race) => (
                 <Link href={`/races/${race.id}`} key={race.id}>
                   <RaceCard race={race} author={race.author} />
                 </Link>
               ))}
-            </ScrollArea>
+            </div>
           </div>
         ) : (
           "Nie znaleziono wyścigu/ów"
