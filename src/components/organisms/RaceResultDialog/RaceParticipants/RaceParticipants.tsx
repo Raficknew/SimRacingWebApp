@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
 import ParticipantBox from "@/src/components/atoms/PatricipantBox/PatricipantBox";
 import { useRef, useState } from "react";
+import { Reorder } from "framer-motion";
 
 interface RaceParticipantsProps {
   raceId: string;
@@ -17,49 +18,23 @@ const RaceParticipants: React.FC<RaceParticipantsProps> = ({
   setResults,
 }) => {
   const [participants, SetParticipants] = useState(participantsList);
-  const dragParticipant = useRef<number>(0);
-  const dragOverParticipant = useRef<number>(0);
-
-  function handleSort() {
-    const participantsClone = [...participants];
-
-    const draggedParticipant = participantsClone.splice(
-      dragParticipant.current,
-      1
-    )[0];
-
-    participantsClone.splice(
-      dragOverParticipant.current,
-      0,
-      draggedParticipant
-    );
-
-    SetParticipants(participantsClone);
-  }
 
   return (
     <>
-      <div className="flex flex-col gap-2 items-center">
+      <Reorder.Group
+        className="flex flex-col gap-1"
+        axis="y"
+        values={participants}
+        onReorder={SetParticipants}
+      >
         {participants.map((participant, index) => (
-          <div
-            className="flex flex-1 justify-between w-ful"
-            key={index.toString()}
-            draggable
-            onDragStart={() => (dragParticipant.current = index)}
-            onDragEnter={() => (dragOverParticipant.current = index)}
-            onDragEnd={handleSort}
-            onDragOver={(e) => e.preventDefault()}
-          >
-            <ParticipantBox key={participant} position={index + 1}>
-              {participant}
-            </ParticipantBox>
-          </div>
+          <Reorder.Item key={participant} value={participant}>
+            <ParticipantBox position={index + 1}>{participant}</ParticipantBox>
+          </Reorder.Item>
         ))}
-      </div>
+      </Reorder.Group>
       <DialogFooter>
-        <Button onClick={() => setResults(raceId, participantsList)}>
-          Zapisz
-        </Button>
+        <Button onClick={() => setResults(raceId, participants)}>Zapisz</Button>
       </DialogFooter>
     </>
   );
