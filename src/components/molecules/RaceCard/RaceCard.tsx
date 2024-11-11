@@ -16,7 +16,7 @@ type RaceCardProps = {
 
 const RaceCard: React.FC<RaceCardProps> = ({ race, author }) => {
   return (
-    <div>
+    <div className="bg-slate-400 p-1 rounded-lg text-white">
       <div className="flex self-stretch justify-between items-center">
         {race.series === Series.GT3HYPERCAR ? (
           <div className="flex items-center gap-1">

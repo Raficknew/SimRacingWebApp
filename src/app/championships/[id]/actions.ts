@@ -28,7 +28,7 @@ export const getChampionship = cache(async (id: string) => {
 export const getChampionshipAuthor = cache(async (id: string) => {
   const author = await prisma.league.findUnique({
     where: { id },
-    include: { author: { select: { name: true, email: true } } },
+    select: { author: { select: { name: true, email: true, image: true } } },
   });
 
   return author;

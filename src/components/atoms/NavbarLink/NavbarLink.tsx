@@ -19,13 +19,13 @@ const Navbarlink: React.FC<NavbarlinkProps> = ({ link, icon, title }) => {
         <TooltipTrigger>
           <Link
             href={link}
-            className="hidden md:flex  bg-white p-2 rounded-lg text-red-400 hover:bg-red-400 hover:text-white"
+            className="text-white md:flex  rounded-l hover:text-white h-7 w-7}"
           >
             {icon}
           </Link>
         </TooltipTrigger>
         <TooltipContent className="border-white">
-          <p className="text-red-400 ">{title}</p>
+          <p className="text-black ">{title}</p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>

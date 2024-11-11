@@ -1,7 +1,6 @@
 import { League } from "@prisma/client";
 import {
   Card,
-  CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
@@ -27,12 +26,8 @@ const LeagueCard: React.FC<LeagueCardProps> = ({ league, author }) => {
         <CardTitle>{league.name}</CardTitle>
         <CardDescription>{league.description}</CardDescription>
       </CardHeader>
-      <CardContent>
-        <p>ewc</p>
-      </CardContent>
-      <CardFooter>
-        <p>Autor: </p>
-        <Avatar>
+      <CardFooter className="flex gap-1">
+        <Avatar className="h-8 w-8">
           <AvatarImage src={author.image ?? ""} />
           <AvatarFallback>
             <User className="h-4 w-4" />

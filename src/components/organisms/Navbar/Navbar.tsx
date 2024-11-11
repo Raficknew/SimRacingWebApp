@@ -8,12 +8,11 @@ const Navbar: React.FC = async () => {
   const session = await getServerSession(authOptions);
 
   return (
-    <div className="pt-3 px-10">
-      <div className="bg-[#3F3F3F] flex self-stretch w-full items-center justify-between p-2 rounded-r-full">
-        <p>Logo</p>
-        <div className="flex gap-10">
+    <div className="pt-3 sm:px-10 px-5 w-full">
+      <div className="bg-[#F2F2F2] bg-opacity-5 flex self-stretch w-full items-center justify-between px-10 py-1 rounded-xl ">
+        <div className="flex gap-3 md:gap-5">
           <Navbarlink link="/" icon={<Home />} title="Home" />
-          <Navbarlink link="/races/search" icon={<Search />} title="Races" />
+          <Navbarlink link="/races/search" icon={<Search />} title="Search" />
           <Navbarlink
             link="/championships"
             icon={<Trophy />}

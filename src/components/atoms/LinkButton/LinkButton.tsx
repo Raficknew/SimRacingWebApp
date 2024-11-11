@@ -4,14 +4,15 @@ import Link from "next/link";
 interface LinkButton {
   children: React.ReactNode;
   href: string;
+  classname?: string;
 }
 
-const LinkButton: React.FC<LinkButton> = ({ children, href }) => {
+const LinkButton: React.FC<LinkButton> = ({ children, href, classname }) => {
   return (
     <Link
       className={buttonVariants({
         variant: "outline",
-        className: "self-end flex",
+        className: "flex gap-1" + classname,
       })}
       href={href}
     >

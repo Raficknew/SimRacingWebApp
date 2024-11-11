@@ -1,7 +1,5 @@
 import prisma from "@/lib/db/prisma";
 import RaceCard from "@/src/components/molecules/RaceCard/RaceCard";
-import Navbar from "@/src/components/organisms/Navbar/Navbar";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import SearchBar from "@/src/components/organisms/SearchBar/SearchBar";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/src/app/api/auth/[...nextauth]/route";
@@ -27,35 +25,31 @@ async function RaceFind({
   });
 
   return (
-    <div className="h-screen gap-20 flex flex-col">
-      <Navbar />
-      <div className="flex flex-col self-stretch gap-11 p-3">
-        <div className="flex justify-between">
-          <SearchBar placeholder="Type to search for race..." />
-          {session && (
+    <div>
+      <div className="flex flex-col px-8 pt-20 gap-3 justify-center">
+        {session && (
+          <div className="flex justify-between">
+            <SearchBar placeholder="Type to search for race..." />
+            <div className="flex flex-col gap-2 max-w-[600px]"></div>
             <LinkButton href="/races/create-race">
               <Flag className="w-4 h-4" />
               <p>Create Race</p>
             </LinkButton>
-          )}
-        </div>
-        <div className="flex justify-center items-center">
-          {races.length > 0 ? (
-            <ScrollArea className="w-[814px] h-[500px] flex self-strech items-center">
+          </div>
+        )}
+        {races.length > 0 ? (
+          <div className="flex flex-col self-stretch justify-center items-center">
+            <div className="flex flex-col self-stretch gap-3">
               {races.map((race) => (
-                <Link
-                  href={"/races/" + race.id}
-                  key={race.id}
-                  className="self-stretch bg-slate-400 p-1 rounded-lg text-white max-w-[814px] min-w-[200px]"
-                >
+                <Link href={`/races/${race.id}`} key={race.id}>
                   <RaceCard race={race} author={race.author} />
                 </Link>
               ))}
-            </ScrollArea>
-          ) : (
-            "Nie znaleziono wyścigu"
-          )}
-        </div>
+            </div>
+          </div>
+        ) : (
+          "Nie znaleziono wyścigu/ów"
+        )}
       </div>
     </div>
   );
