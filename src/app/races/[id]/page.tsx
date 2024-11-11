@@ -7,12 +7,10 @@ import {
   deleteRace,
   getRace,
 } from "./actions";
-import InviteBar from "@/src/components/molecules/InviteBar/Invitebar";
 import RaceResultDialog from "@/src/components/organisms/RaceResultDialog/RaceResultDialog";
 import { redirect } from "next/navigation";
 import { RaceStatus } from "@prisma/client";
 import LinkButton from "@/src/components/atoms/LinkButton/LinkButton";
-import EndRaceButton from "./ChangeStatusForRaceButton/ChangeStatusForRaceButton";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Clock2, Settings, Table } from "lucide-react";
 import dayjs from "dayjs";
@@ -29,6 +27,7 @@ import {
 import ParticipantBox from "@/src/components/atoms/PatricipantBox/PatricipantBox";
 import { getChampionship } from "../../championships/[id]/actions";
 import ChangeStatusForRaceButton from "./ChangeStatusForRaceButton/ChangeStatusForRaceButton";
+import InviteToRaceBar from "@/src/components/molecules/InviteToRaceBar/InviteToRaceBar";
 
 type RacePageProps = {
   params: {
@@ -84,7 +83,10 @@ const RacePage: React.FC<RacePageProps> = async ({ params: { id } }) => {
                   {race.status !== RaceStatus.ENDED &&
                   race.status !== RaceStatus.ONGOING &&
                   !race.leagueId ? (
-                    <InviteBar createInvite={createInviteToRace} id={race.id} />
+                    <InviteToRaceBar
+                      id={id}
+                      createInviteToRace={createInviteToRace}
+                    />
                   ) : (
                     race.status === RaceStatus.ENDED &&
                     race.results.length == 0 &&
@@ -177,22 +179,38 @@ const RacePage: React.FC<RacePageProps> = async ({ params: { id } }) => {
           <div>
             <p className="text-white">Participants:</p>
             <div className="flex flex-wrap text-white gap-2">
-              {race.leagueId
-                ? (await getChampionship(race.leagueId)).participants.map(
-                    (u) => (
-                      <ParticipantBox key={u.id}>
-                        <div className="flex justify-center items-center gap-2">
-                          <Avatar className="w-8 h-8">
-                            <AvatarImage src={u.user.image!} />
-                          </Avatar>
-                          {u.user.name}
-                        </div>
-                      </ParticipantBox>
-                    )
-                  )
-                : participants.map((participant, index) => (
+              {race.leagueId ? (
+                (await getChampionship(race.leagueId)).participants.map((u) => (
+                  <ParticipantBox key={u.id}>
+                    <div className="flex justify-center items-center gap-2">
+                      <Avatar className="w-8 h-8">
+                        <AvatarImage src={u.user.image!} />
+                      </Avatar>
+                      {u.user.name}
+                    </div>
+                  </ParticipantBox>
+                ))
+              ) : (
+                <>
+                  {participants.map((participant, index) => (
                     <ParticipantBox key={index}>{participant}</ParticipantBox>
                   ))}
+                  {race.invites.map((i) => (
+                    <ParticipantBox key={i.id}>
+                      {i.user ? (
+                        <div className="flex justify-center items-center gap-2">
+                          <Avatar className="w-8 h-8">
+                            <AvatarImage src={i.user.image || ""} />
+                          </Avatar>
+                          {i.user.name}
+                        </div>
+                      ) : (
+                        i.userName || i.userEmail
+                      )}
+                    </ParticipantBox>
+                  ))}
+                </>
+              )}
             </div>
           </div>
         </div>

@@ -38,14 +38,14 @@ export const getRace = cache(async (id: string) => {
 
   const race = await prisma.race.findUnique({
     where: { id },
-    include: { author: true },
+    include: { author: true, invites: { include: { user: true } } },
   });
   if (!race) notFound();
   return race;
 });
 
 export const createInviteToRace = cache(
-  async (userEmail: string, raceId: string) => {
+  async (userEmail: string, raceId: string, userName?: string) => {
     const race = await prisma.race.findUnique({
       where: { id: raceId },
       include: {
@@ -72,6 +72,7 @@ export const createInviteToRace = cache(
       data: {
         userEmail,
         raceId,
+        userName,
       },
     });
 

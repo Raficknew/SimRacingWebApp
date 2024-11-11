@@ -12,7 +12,6 @@ import { authOptions } from "../../api/auth/[...nextauth]/route";
 import LinkButton from "@/src/components/atoms/LinkButton/LinkButton";
 import { Flag, Settings, Table, Trophy } from "lucide-react";
 import DeleteLeagueButton from "./DeleteLeagueButton/DeleteLeagueButton";
-import InviteBar from "@/src/components/molecules/InviteBar/Invitebar";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import {
   Dialog,
@@ -24,6 +23,7 @@ import {
 import ParticipantBox from "@/src/components/atoms/PatricipantBox/PatricipantBox";
 import { getParticipantPoints } from "./standings/actions";
 import bg from "@/src/assets/8ec323bd-ab9b-43a6-88df-51951fe44f6b.jpg";
+import InviteToLeagueBar from "@/src/components/molecules/InviteToLeagueBar/InviteToLeagueBar";
 
 type ChampionshipProps = {
   params: {
@@ -74,7 +74,10 @@ const Championship: React.FC<ChampionshipProps> = async ({
                       <Flag className="w-4 h-4" />
                       <p>Create Race</p>
                     </LinkButton>
-                    <InviteBar id={id} createInvite={createInviteToLeague} />
+                    <InviteToLeagueBar
+                      createInvite={createInviteToLeague}
+                      id={id}
+                    />
                     <DeleteLeagueButton
                       leagueId={id}
                       deleteLeague={deleteLeague}

@@ -21,13 +21,13 @@ export const deleteInvite = async (
 
   await prisma.invite.delete({ where: { id: inviteId } });
 
-  revalidatePath(`/profile/${invite.user.name}`);
+  revalidatePath(`/profile/${invite.user?.name}`);
 
   if (raceId) redirect(`/races/${raceId}`);
 
   if (leagueId) redirect(`/championships/${leagueId}`);
 
-  redirect(`/profile/${invite.user.name}`);
+  redirect(`/profile/${invite.user?.name}`);
 };
 
 export const acceptInvite = async (userEmail: string, inviteId: string) => {

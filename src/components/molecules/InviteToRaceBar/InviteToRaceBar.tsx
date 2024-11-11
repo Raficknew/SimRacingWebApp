@@ -13,17 +13,25 @@ import {
 } from "@/components/ui/form";
 
 const formSchema = z.object({
-  userEmail: z.string().min(2).max(50),
+  userEmail: z.string().min(3).max(50),
+  userName: z.string().min(3).max(50).optional(),
 });
 
-type InviteBarProps = {
+type InviteToRaceBarProps = {
   id: string;
-  createInvite: (userEmail: string, id: string) => Promise<void>;
+  createInviteToRace: (
+    userEmail: string,
+    id: string,
+    userName?: string
+  ) => Promise<void>;
 };
 
-const InviteBar: React.FC<InviteBarProps> = ({ createInvite, id }) => {
+const InviteToRaceBar: React.FC<InviteToRaceBarProps> = ({
+  createInviteToRace,
+  id,
+}) => {
   function onSubmit(values: z.infer<typeof formSchema>) {
-    createInvite(values.userEmail, id);
+    createInviteToRace(values.userEmail, id, values.userName);
   }
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -48,10 +56,22 @@ const InviteBar: React.FC<InviteBarProps> = ({ createInvite, id }) => {
             </FormItem>
           )}
         />
+        <FormField
+          control={form.control}
+          name="userName"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input placeholder="Name" type="text" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <Button type="submit">Submit</Button>
       </form>
     </Form>
   );
 };
 
-export default InviteBar;
+export default InviteToRaceBar;

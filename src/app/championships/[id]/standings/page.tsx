@@ -29,8 +29,8 @@ import { authOptions } from "@/src/app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
 import LinkButton from "@/src/components/atoms/LinkButton/LinkButton";
 import DeleteLeagueButton from "../DeleteLeagueButton/DeleteLeagueButton";
-import InviteBar from "@/src/components/molecules/InviteBar/Invitebar";
 import bg from "@/src/assets/8ec323bd-ab9b-43a6-88df-51951fe44f6b.jpg";
+import InviteToLeagueBar from "@/src/components/molecules/InviteToLeagueBar/InviteToLeagueBar";
 
 type StandingsPageProps = {
   params: {
@@ -80,7 +80,10 @@ const StandingsPage: React.FC<StandingsPageProps> = async ({
                     <Flag className="w-4 h-4" />
                     <p>Create Race</p>
                   </LinkButton>
-                  <InviteBar id={id} createInvite={createInviteToLeague} />
+                  <InviteToLeagueBar
+                    createInvite={createInviteToLeague}
+                    id={id}
+                  />
                   <DeleteLeagueButton
                     leagueId={id}
                     deleteLeague={deleteLeague}

@@ -60,9 +60,10 @@ model Invite {
   raceId    String? @db.ObjectId
   leagueId  String? @db.ObjectId
   userEmail String
+  userName  String?
   race      Race?   @relation(fields: [raceId], references: [id], onDelete: Cascade)
   league    League? @relation(fields: [leagueId], references: [id], onDelete: Cascade)
-  user      User    @relation(fields: [userEmail], references: [email], onDelete: Cascade)
+  user      User?   @relation(fields: [userEmail], references: [email], onDelete: Cascade)
 
   @@map("invites")
 }
