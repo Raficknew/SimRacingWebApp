@@ -32,19 +32,19 @@ export const createLeagueRace = async (
 
   const leagueParticipants = await prisma.leagueParticipant.findMany({
     where: { leagueId: leagueId },
-    include: { user: { select: { email: true } } },
+    include: { user: { select: { id: true } } },
   });
 
-  const participantsEmails = leagueParticipants
-    .map((p) => p.user.email)
-    .filter((email): email is string => email !== null);
+  const participantsIds = leagueParticipants
+    .map((p) => p.user.id)
+    .filter((id): id is string => id !== null);
 
   await prisma.race.create({
     data: {
       ...raceData,
       userId: user.id,
       leagueId: leagueId,
-      participants: participantsEmails,
+      participants: participantsIds,
     },
   });
 

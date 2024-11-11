@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
 import ParticipantBox from "@/src/components/atoms/PatricipantBox/PatricipantBox";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { Reorder } from "framer-motion";
 
 interface RaceParticipantsProps {

@@ -42,7 +42,7 @@ const RaceResultDialog: React.FC<RaceResultDialogProps> = async ({
             raceId={race.id}
             setResults={setResults}
             participantsList={Object.entries(participantsNames).map(
-              ([mail, name]) => name ?? mail
+              ([id, user]) => user?.name ?? id
             )}
           />
         </div>

@@ -43,7 +43,7 @@ model Race {
   raceDate     DateTime
   raceHour     String
   userId       String     @db.ObjectId
-  participants String[]
+  participants String[]   @db.ObjectId
   status       RaceStatus
   results      String[]
   author       User       @relation(fields: [userId], references: [id], onDelete: Cascade)

@@ -19,7 +19,6 @@ import { getParticipantsNames } from "@/src/components/organisms/RaceResultDialo
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -42,9 +41,6 @@ const RacePage: React.FC<RacePageProps> = async ({ params: { id } }) => {
   if (!race) redirect("/");
 
   const participantsNames = await getParticipantsNames(race.participants ?? []);
-  const participants = Object.entries(participantsNames).map(
-    ([mail, name]) => name ?? mail
-  );
 
   async function leagueRaceResults() {
     const championshipParticipants = (
@@ -192,8 +188,19 @@ const RacePage: React.FC<RacePageProps> = async ({ params: { id } }) => {
                 ))
               ) : (
                 <>
-                  {participants.map((participant, index) => (
-                    <ParticipantBox key={index}>{participant}</ParticipantBox>
+                  {Object.entries(participantsNames).map(([id, user]) => (
+                    <ParticipantBox key={id}>
+                      {user ? (
+                        <div className="flex justify-center items-center gap-2">
+                          <Avatar className="w-8 h-8">
+                            <AvatarImage src={user.image ?? ""} />
+                          </Avatar>
+                          {user.name}
+                        </div>
+                      ) : (
+                        id
+                      )}
+                    </ParticipantBox>
                   ))}
                   {race.invites.map((i) => (
                     <ParticipantBox key={i.id}>
