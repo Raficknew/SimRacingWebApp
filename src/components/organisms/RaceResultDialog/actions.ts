@@ -9,6 +9,7 @@ import type { User } from "@prisma/client";
 export const getRace = cache(async (id: string) => {
   const race = await prisma.race.findUnique({
     where: { id },
+    include: { invites: true },
   });
   if (!race) notFound;
   return race;

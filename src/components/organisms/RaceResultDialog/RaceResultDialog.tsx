@@ -41,9 +41,19 @@ const RaceResultDialog: React.FC<RaceResultDialogProps> = async ({
             key={race.id}
             raceId={race.id}
             setResults={setResults}
-            participantsList={Object.entries(participantsNames).map(
-              ([id, user]) => user?.name ?? id
-            )}
+            participantsList={
+              race.leagueId
+                ? Object.entries(participantsNames).map(
+                    ([id, user]) => user?.name ?? id
+                  )
+                : race.invites.length > 0
+                ? Object.entries(participantsNames)
+                    .map(([id, user]) => user?.name ?? id)
+                    .concat(race.invites.map((i) => i.userName ?? i.userEmail))
+                : Object.entries(participantsNames).map(
+                    ([id, user]) => user?.name ?? id
+                  )
+            }
           />
         </div>
       </DialogContent>
