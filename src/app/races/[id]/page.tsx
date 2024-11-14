@@ -129,21 +129,55 @@ const RacePage: React.FC<RacePageProps> = async ({ params: { id } }) => {
                       </div>
                     </ParticipantBox>
                   ))
-                : race.results.map((person, index) => (
-                    <ParticipantBox
-                      key={index.toString()}
-                      position={index + 1}
-                      className={
-                        {
-                          1: "border border-yellow-200 shadow shadow-yellow-500",
-                          2: "border border-gray-300",
-                          3: "border border-amber-700",
-                        }[index + 1] || ""
-                      }
-                    >
-                      {person}
-                    </ParticipantBox>
-                  ))}
+                : race.results.map((person, index) =>
+                    Object.entries(participantsNames).find(
+                      (p) => p[1]?.name == person
+                    ) ? (
+                      <ParticipantBox
+                        key={index.toString()}
+                        position={index + 1}
+                        className={
+                          {
+                            1: "border border-yellow-200 shadow shadow-yellow-500",
+                            2: "border border-gray-300",
+                            3: "border border-amber-700",
+                          }[index + 1] || ""
+                        }
+                      >
+                        <div className="flex justify-center items-center gap-2">
+                          {" "}
+                          <Avatar className="w-8 h-8">
+                            <AvatarImage
+                              src={
+                                Object.entries(participantsNames).find(
+                                  (p) => p[1]?.name == person
+                                )?.[1]?.image || ""
+                              }
+                            />
+                          </Avatar>
+                          {
+                            Object.entries(participantsNames).find(
+                              (p) => p[1]?.name == person
+                            )?.[1]?.name
+                          }
+                        </div>
+                      </ParticipantBox>
+                    ) : (
+                      <ParticipantBox
+                        key={index.toString()}
+                        position={index + 1}
+                        className={
+                          {
+                            1: "border border-yellow-200 shadow shadow-yellow-500",
+                            2: "border border-gray-300",
+                            3: "border border-amber-700",
+                          }[index + 1] || ""
+                        }
+                      >
+                        {person}
+                      </ParticipantBox>
+                    )
+                  )}
             </div>
           </div>
         </div>
