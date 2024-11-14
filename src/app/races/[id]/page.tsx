@@ -42,15 +42,6 @@ const RacePage: React.FC<RacePageProps> = async ({ params: { id } }) => {
 
   const participantsNames = await getParticipantsNames(race.participants ?? []);
 
-  async function leagueRaceResults() {
-    const championshipParticipants = (
-      await getChampionship(race.leagueId || "")
-    ).participants;
-    return race.results.map((user) =>
-      championshipParticipants.find((u) => u.user.name === user)
-    );
-  }
-
   return (
     <div className="flex flex-col bg-custom-gradient rounded-sm p-5 min-h-[630px] gap-12">
       <div className="flex items-center justify-between">
@@ -118,66 +109,52 @@ const RacePage: React.FC<RacePageProps> = async ({ params: { id } }) => {
           <div className="flex flex-col justify-center items-center gap-2">
             <p className="text-white">Results</p>
             <div className="grid grid-rows-2 grid-cols-2 gap-3">
-              {race.leagueId
-                ? (await leagueRaceResults()).map((u, index) => (
-                    <ParticipantBox key={u?.user.name} position={index + 1}>
-                      <div className="flex justify-center items-center gap-2">
-                        <Avatar className="w-8 h-8">
-                          <AvatarImage src={u?.user.image || ""} />
-                        </Avatar>
-                        {u?.user.name}
-                      </div>
-                    </ParticipantBox>
-                  ))
-                : race.results.map((person, index) =>
-                    Object.entries(participantsNames).find(
-                      (p) => p[1]?.name == person
-                    ) ? (
-                      <ParticipantBox
-                        key={index.toString()}
-                        position={index + 1}
-                        className={
-                          {
-                            1: "border border-yellow-200 shadow shadow-yellow-500",
-                            2: "border border-gray-300",
-                            3: "border border-amber-700",
-                          }[index + 1] || ""
-                        }
-                      >
-                        <div className="flex justify-center items-center gap-2">
-                          {" "}
-                          <Avatar className="w-8 h-8">
-                            <AvatarImage
-                              src={
-                                Object.entries(participantsNames).find(
-                                  (p) => p[1]?.name == person
-                                )?.[1]?.image || ""
-                              }
-                            />
-                          </Avatar>
-                          {
+              {race.results.map((person, index) =>
+                person in participantsNames ? (
+                  <ParticipantBox
+                    key={index}
+                    position={index + 1}
+                    className={
+                      {
+                        1: "border border-yellow-200 shadow shadow-yellow-500",
+                        2: "border border-gray-300",
+                        3: "border border-amber-700",
+                      }[index + 1] || ""
+                    }
+                  >
+                    <div className="flex justify-center items-center gap-2">
+                      <Avatar className="w-8 h-8">
+                        <AvatarImage
+                          src={
                             Object.entries(participantsNames).find(
-                              (p) => p[1]?.name == person
-                            )?.[1]?.name
+                              (u) => u[1]?.id == person
+                            )?.[1]?.image || ""
                           }
-                        </div>
-                      </ParticipantBox>
-                    ) : (
-                      <ParticipantBox
-                        key={index.toString()}
-                        position={index + 1}
-                        className={
-                          {
-                            1: "border border-yellow-200 shadow shadow-yellow-500",
-                            2: "border border-gray-300",
-                            3: "border border-amber-700",
-                          }[index + 1] || ""
-                        }
-                      >
-                        {person}
-                      </ParticipantBox>
-                    )
-                  )}
+                        />
+                      </Avatar>
+                      {
+                        Object.entries(participantsNames).find(
+                          (u) => u[1]?.id == person
+                        )?.[1]?.name
+                      }
+                    </div>
+                  </ParticipantBox>
+                ) : (
+                  <ParticipantBox
+                    key={index}
+                    position={index + 1}
+                    className={
+                      {
+                        1: "border border-yellow-200 shadow shadow-yellow-500",
+                        2: "border border-gray-300",
+                        3: "border border-amber-700",
+                      }[index + 1] || ""
+                    }
+                  >
+                    {person}
+                  </ParticipantBox>
+                )
+              )}
             </div>
           </div>
         </div>
