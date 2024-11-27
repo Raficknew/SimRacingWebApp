@@ -102,7 +102,12 @@ const Championship: React.FC<ChampionshipProps> = async ({
                             position={index + 1}
                             points={u.points}
                           >
-                            {u.name}
+                            <div className="flex justify-center items-center gap-2">
+                              <Avatar className="w-8 h-8">
+                                <AvatarImage src={u.image || ""} />
+                              </Avatar>
+                              {u.name}
+                            </div>
                           </ParticipantBox>
                         ))
                         .slice(0, 3)

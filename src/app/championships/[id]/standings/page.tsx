@@ -111,7 +111,14 @@ const StandingsPage: React.FC<StandingsPageProps> = async ({
                     >
                       {index + 1}
                     </TableCell>
-                    <TableCell className="text-white">{u.name}</TableCell>
+                    <TableCell className="text-white">
+                      <div className="flex items-center gap-2">
+                        <Avatar className="w-8 h-8">
+                          <AvatarImage src={u.image || ""} />
+                        </Avatar>
+                        {u.name}
+                      </div>
+                    </TableCell>
                     <TableCell className="text-blue-400">Narazie NIE</TableCell>
                     <TableCell className="text-right text-white">
                       {u.points}
