@@ -98,11 +98,11 @@ const Championship: React.FC<ChampionshipProps> = async ({
                     ? participants
                         .map((u, index) => (
                           <ParticipantBox
-                            key={u.driver}
+                            key={u.name}
                             position={index + 1}
                             points={u.points}
                           >
-                            {u.driver}
+                            {u.name}
                           </ParticipantBox>
                         ))
                         .slice(0, 3)

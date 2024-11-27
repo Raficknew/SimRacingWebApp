@@ -4,10 +4,15 @@ import { cache } from "react";
 import prisma from "@/lib/db/prisma";
 import { isValidObjectId } from "@/src/actions/actions";
 import { getChampionship } from "../actions";
-import { getParticipantsNames } from "@/src/components/organisms/RaceResultDialog/actions";
 
 type Driver = {
   driver: string;
+  points: number;
+};
+
+type ClassifiedDriver = {
+  name: string | null;
+  image: string | null;
   points: number;
 };
 
@@ -36,9 +41,34 @@ export const getParticipantPoints = cache(async (leagueId: string) => {
     (a, b) => Number(b.points) - Number(a.points)
   );
 
-  console.log(participantsWithPoints);
+  for (let i = 0; i < championship.participants.length; i++) {
+    let participant = championship.participants[i];
 
-  return participantsWithPoints;
+    if (!participantsWithPoints.some((p) => p.driver === participant.user.id)) {
+      participantsWithPoints.push({
+        driver: participant.user.id,
+        points: 0,
+      });
+    }
+  }
+
+  let classification: ClassifiedDriver[] = [];
+
+  participantsWithPoints.forEach((u) => {
+    const participant = championship.participants.find(
+      (i) => i.user.id === u.driver
+    );
+
+    if (participant) {
+      classification.push({
+        name: participant.user.name,
+        image: participant.user.image,
+        points: u.points,
+      });
+    }
+  });
+
+  return classification;
 });
 
 const assignPoints = (results: string[]) => {

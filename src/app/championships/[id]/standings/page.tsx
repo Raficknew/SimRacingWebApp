@@ -111,7 +111,7 @@ const StandingsPage: React.FC<StandingsPageProps> = async ({
                     >
                       {index + 1}
                     </TableCell>
-                    <TableCell className="text-white">{u.driver}</TableCell>
+                    <TableCell className="text-white">{u.name}</TableCell>
                     <TableCell className="text-blue-400">Narazie NIE</TableCell>
                     <TableCell className="text-right text-white">
                       {u.points}
