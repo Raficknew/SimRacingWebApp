@@ -7,12 +7,10 @@ import {
   deleteRace,
   getRace,
 } from "./actions";
-import InviteBar from "@/src/components/molecules/InviteBar/Invitebar";
 import RaceResultDialog from "@/src/components/organisms/RaceResultDialog/RaceResultDialog";
 import { redirect } from "next/navigation";
 import { RaceStatus } from "@prisma/client";
 import LinkButton from "@/src/components/atoms/LinkButton/LinkButton";
-import EndRaceButton from "./ChangeStatusForRaceButton/ChangeStatusForRaceButton";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Clock2, Settings, Table } from "lucide-react";
 import dayjs from "dayjs";
@@ -21,7 +19,6 @@ import { getParticipantsNames } from "@/src/components/organisms/RaceResultDialo
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -29,6 +26,7 @@ import {
 import ParticipantBox from "@/src/components/atoms/PatricipantBox/PatricipantBox";
 import { getChampionship } from "../../championships/[id]/actions";
 import ChangeStatusForRaceButton from "./ChangeStatusForRaceButton/ChangeStatusForRaceButton";
+import InviteToRaceBar from "@/src/components/molecules/InviteToRaceBar/InviteToRaceBar";
 
 type RacePageProps = {
   params: {
@@ -43,18 +41,6 @@ const RacePage: React.FC<RacePageProps> = async ({ params: { id } }) => {
   if (!race) redirect("/");
 
   const participantsNames = await getParticipantsNames(race.participants ?? []);
-  const participants = Object.entries(participantsNames).map(
-    ([mail, name]) => name ?? mail
-  );
-
-  async function leagueRaceResults() {
-    const championshipParticipants = (
-      await getChampionship(race.leagueId || "")
-    ).participants;
-    return race.results.map((user) =>
-      championshipParticipants.find((u) => u.user.name === user)
-    );
-  }
 
   return (
     <div className="flex flex-col bg-custom-gradient rounded-sm p-5 min-h-[630px] gap-12">
@@ -84,7 +70,10 @@ const RacePage: React.FC<RacePageProps> = async ({ params: { id } }) => {
                   {race.status !== RaceStatus.ENDED &&
                   race.status !== RaceStatus.ONGOING &&
                   !race.leagueId ? (
-                    <InviteBar createInvite={createInviteToRace} id={race.id} />
+                    <InviteToRaceBar
+                      id={id}
+                      createInviteToRace={createInviteToRace}
+                    />
                   ) : (
                     race.status === RaceStatus.ENDED &&
                     race.results.length == 0 &&
@@ -120,32 +109,52 @@ const RacePage: React.FC<RacePageProps> = async ({ params: { id } }) => {
           <div className="flex flex-col justify-center items-center gap-2">
             <p className="text-white">Results</p>
             <div className="grid grid-rows-2 grid-cols-2 gap-3">
-              {race.leagueId
-                ? (await leagueRaceResults()).map((u, index) => (
-                    <ParticipantBox key={u?.user.name} position={index + 1}>
-                      <div className="flex justify-center items-center gap-2">
-                        <Avatar className="w-8 h-8">
-                          <AvatarImage src={u?.user.image || ""} />
-                        </Avatar>
-                        {u?.user.name}
-                      </div>
-                    </ParticipantBox>
-                  ))
-                : race.results.map((person, index) => (
-                    <ParticipantBox
-                      key={index.toString()}
-                      position={index + 1}
-                      className={
-                        {
-                          1: "border border-yellow-200 shadow shadow-yellow-500",
-                          2: "border border-gray-300",
-                          3: "border border-amber-700",
-                        }[index + 1] || ""
+              {race.results.map((person, index) =>
+                person in participantsNames ? (
+                  <ParticipantBox
+                    key={index}
+                    position={index + 1}
+                    className={
+                      {
+                        1: "border border-yellow-200 shadow shadow-yellow-500",
+                        2: "border border-gray-300",
+                        3: "border border-amber-700",
+                      }[index + 1] || ""
+                    }
+                  >
+                    <div className="flex justify-center items-center gap-2">
+                      <Avatar className="w-8 h-8">
+                        <AvatarImage
+                          src={
+                            Object.entries(participantsNames).find(
+                              (u) => u[1]?.id == person
+                            )?.[1]?.image || ""
+                          }
+                        />
+                      </Avatar>
+                      {
+                        Object.entries(participantsNames).find(
+                          (u) => u[1]?.id == person
+                        )?.[1]?.name
                       }
-                    >
-                      {person}
-                    </ParticipantBox>
-                  ))}
+                    </div>
+                  </ParticipantBox>
+                ) : (
+                  <ParticipantBox
+                    key={index}
+                    position={index + 1}
+                    className={
+                      {
+                        1: "border border-yellow-200 shadow shadow-yellow-500",
+                        2: "border border-gray-300",
+                        3: "border border-amber-700",
+                      }[index + 1] || ""
+                    }
+                  >
+                    {person}
+                  </ParticipantBox>
+                )
+              )}
             </div>
           </div>
         </div>
@@ -177,22 +186,49 @@ const RacePage: React.FC<RacePageProps> = async ({ params: { id } }) => {
           <div>
             <p className="text-white">Participants:</p>
             <div className="flex flex-wrap text-white gap-2">
-              {race.leagueId
-                ? (await getChampionship(race.leagueId)).participants.map(
-                    (u) => (
-                      <ParticipantBox key={u.id}>
+              {race.leagueId ? (
+                (await getChampionship(race.leagueId)).participants.map((u) => (
+                  <ParticipantBox key={u.id}>
+                    <div className="flex justify-center items-center gap-2">
+                      <Avatar className="w-8 h-8">
+                        <AvatarImage src={u.user.image!} />
+                      </Avatar>
+                      {u.user.name}
+                    </div>
+                  </ParticipantBox>
+                ))
+              ) : (
+                <>
+                  {Object.entries(participantsNames).map(([id, user]) => (
+                    <ParticipantBox key={id}>
+                      {user ? (
                         <div className="flex justify-center items-center gap-2">
                           <Avatar className="w-8 h-8">
-                            <AvatarImage src={u.user.image!} />
+                            <AvatarImage src={user.image ?? ""} />
                           </Avatar>
-                          {u.user.name}
+                          {user.name}
                         </div>
-                      </ParticipantBox>
-                    )
-                  )
-                : participants.map((participant, index) => (
-                    <ParticipantBox key={index}>{participant}</ParticipantBox>
+                      ) : (
+                        id
+                      )}
+                    </ParticipantBox>
                   ))}
+                  {race.invites.map((i) => (
+                    <ParticipantBox key={i.id}>
+                      {i.user ? (
+                        <div className="flex justify-center items-center gap-2">
+                          <Avatar className="w-8 h-8">
+                            <AvatarImage src={i.user.image || ""} />
+                          </Avatar>
+                          {i.user.name}
+                        </div>
+                      ) : (
+                        i.userName || i.userEmail
+                      )}
+                    </ParticipantBox>
+                  ))}
+                </>
+              )}
             </div>
           </div>
         </div>

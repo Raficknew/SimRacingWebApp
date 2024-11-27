@@ -17,6 +17,7 @@ const ProfilepPage = async () => {
       league: { select: { name: true } },
     },
   });
+
   return (
     <>
       <div>Your Invites:</div>
