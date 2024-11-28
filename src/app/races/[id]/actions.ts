@@ -115,3 +115,27 @@ export const changeStatus = async (raceId: string) => {
   revalidatePath(`/races/${raceId}`);
   redirect(`/races/${raceId}`);
 };
+
+export const DeleteParticipantFromRace = cache(
+  async (raceID: string, participantID: string) => {
+    if (!raceID) return;
+
+    if (!(await isValidObjectId(raceID))) notFound();
+
+    const race = await prisma.race.findUnique({
+      where: { id: raceID },
+      include: {
+        author: { select: { email: true } },
+      },
+    });
+
+    if (!race) return;
+
+    if (race.status === RaceStatus.ENDED) return;
+
+    if (!(await isRaceAuthor(raceID))) return;
+
+    revalidatePath(`/races/${raceID}`);
+    redirect(`/races/${raceID}`);
+  }
+);
