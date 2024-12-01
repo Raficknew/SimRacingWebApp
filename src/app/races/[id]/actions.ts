@@ -6,6 +6,7 @@ import prisma from "@/lib/db/prisma";
 import { cache } from "react";
 import { isRaceAuthor, isValidObjectId } from "@/src/actions/actions";
 import { RaceStatus } from "@prisma/client";
+import { deleteInvite } from "../../profile/actions";
 
 export const deleteRace = async (raceId: string) => {
   if (!(await isValidObjectId(raceId))) notFound();
@@ -121,6 +122,7 @@ export const DeleteParticipantFromRace = cache(
     if (!raceID) return;
 
     if (!(await isValidObjectId(raceID))) notFound();
+    if (!(await isValidObjectId(participantID))) notFound();
 
     const race = await prisma.race.findUnique({
       where: { id: raceID },
@@ -131,9 +133,45 @@ export const DeleteParticipantFromRace = cache(
 
     if (!race) return;
 
-    if (race.status === RaceStatus.ENDED) return;
+    if (race.status === RaceStatus.ENDED || race.status === RaceStatus.ONGOING)
+      return;
 
     if (!(await isRaceAuthor(raceID))) return;
+
+    race.participants = race.participants.filter((p) => p !== participantID);
+
+    await prisma.race.update({
+      where: { id: raceID },
+      data: {
+        participants: { set: race.participants },
+      },
+    });
+
+    revalidatePath(`/races/${raceID}`);
+    redirect(`/races/${raceID}`);
+  }
+);
+
+export const DeleteInvitedParticipant = cache(
+  async (raceID: string, inviteID: string) => {
+    if (!(await isValidObjectId(raceID))) notFound();
+    if (!(await isValidObjectId(inviteID))) notFound();
+
+    const race = await prisma.race.findUnique({
+      where: { id: raceID },
+      include: {
+        author: { select: { email: true } },
+      },
+    });
+
+    if (!race) return;
+
+    if (race.status === RaceStatus.ENDED || race.status === RaceStatus.ONGOING)
+      return;
+
+    if (!(await isRaceAuthor(raceID))) return;
+
+    await prisma.invite.delete({ where: { id: inviteID } });
 
     revalidatePath(`/races/${raceID}`);
     redirect(`/races/${raceID}`);

@@ -7,10 +7,13 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Invite, type Race } from "@prisma/client";
-import { Trash } from "lucide-react";
 import { getParticipantsNames } from "../RaceResultDialog/actions";
 import DeleteParticipantButton from "./DeleteParticipantButton/DeleteParticipantButton";
-import { DeleteParticipantFromRace } from "@/src/app/races/[id]/actions";
+import {
+  DeleteInvitedParticipant,
+  DeleteParticipantFromRace,
+} from "@/src/app/races/[id]/actions";
+import DeleteInvitedParticipantFromRace from "./DeleteInvitedParticipantFromRace/DeleteInvitedParticipantFromRace";
 
 type DeleteParticipantFromRaceDialogProps = {
   race: Race;
@@ -50,9 +53,11 @@ const DeleteParticipantFromRaceDialog: React.FC<
             >
               {i.userName ?? i.userEmail}
 
-              <Button className="p-2 bg-red-300">
-                <Trash className="w-5 h-5" />
-              </Button>
+              <DeleteInvitedParticipantFromRace
+                raceID={race.id}
+                inviteID={i.id}
+                DeleteInvitedParticipant={DeleteInvitedParticipant}
+              />
             </div>
           ))}
         </div>
