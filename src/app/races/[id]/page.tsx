@@ -27,6 +27,7 @@ import ParticipantBox from "@/src/components/atoms/PatricipantBox/PatricipantBox
 import { getChampionship } from "../../championships/[id]/actions";
 import ChangeStatusForRaceButton from "./ChangeStatusForRaceButton/ChangeStatusForRaceButton";
 import InviteToRaceBar from "@/src/components/molecules/InviteToRaceBar/InviteToRaceBar";
+import DeleteParticipantFromRaceDialog from "@/src/components/organisms/DeleteParticipantFromRaceDialog/DeleteParticipantFromRaceDialog";
 
 type RacePageProps = {
   params: {
@@ -67,9 +68,7 @@ const RacePage: React.FC<RacePageProps> = async ({ params: { id } }) => {
                   <DialogTitle>Ustawienia</DialogTitle>
                 </DialogHeader>
                 <div className="flex flex-col  gap-5">
-                  {race.status !== RaceStatus.ENDED &&
-                  race.status !== RaceStatus.ONGOING &&
-                  !race.leagueId ? (
+                  {race.status == RaceStatus.BEFORE && !race.leagueId ? (
                     <InviteToRaceBar
                       id={id}
                       createInviteToRace={createInviteToRace}
@@ -184,7 +183,17 @@ const RacePage: React.FC<RacePageProps> = async ({ params: { id } }) => {
             <p className="text-white">{race.description}</p>
           </div>
           <div>
-            <p className="text-white">Participants:</p>
+            <div className="flex gap-2">
+              {session?.user?.email == race.author.email &&
+                !race.leagueId &&
+                race.status == RaceStatus.BEFORE && (
+                  <DeleteParticipantFromRaceDialog
+                    race={race}
+                    invites={race.invites}
+                  />
+                )}
+              <p className="text-white">Participants:</p>
+            </div>
             <div className="flex flex-wrap text-white gap-2">
               {race.leagueId ? (
                 (await getChampionship(race.leagueId)).participants.map((u) => (

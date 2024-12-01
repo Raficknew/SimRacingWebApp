@@ -24,6 +24,7 @@ import ParticipantBox from "@/src/components/atoms/PatricipantBox/PatricipantBox
 import { getParticipantPoints } from "./standings/actions";
 import bg from "@/src/assets/8ec323bd-ab9b-43a6-88df-51951fe44f6b.jpg";
 import InviteToLeagueBar from "@/src/components/molecules/InviteToLeagueBar/InviteToLeagueBar";
+import DeleteParticipantFromLeague from "@/src/components/organisms/DeleteParticipantsFromLeague/DeleteParticipantsFromLeague";
 
 type ChampionshipProps = {
   params: {
@@ -77,6 +78,9 @@ const Championship: React.FC<ChampionshipProps> = async ({
                     <InviteToLeagueBar
                       createInvite={createInviteToLeague}
                       id={id}
+                    />
+                    <DeleteParticipantFromLeague
+                      championshipId={championship.id}
                     />
                     <DeleteLeagueButton
                       leagueId={id}
