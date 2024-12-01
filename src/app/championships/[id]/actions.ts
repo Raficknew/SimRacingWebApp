@@ -36,12 +36,11 @@ export const getChampionshipAuthor = cache(async (id: string) => {
 
 export const deleteLeague = cache(async (leagueId: string) => {
   if (!(await isValidObjectId(leagueId))) notFound();
+  if (!(await isLeagueAuthor(leagueId))) return;
 
   const league = prisma.league.findUnique({ where: { id: leagueId } });
 
   if (!league) return;
-
-  if (!(await isLeagueAuthor(leagueId))) return;
 
   await prisma.league.delete({ where: { id: leagueId } });
 
@@ -52,6 +51,7 @@ export const deleteLeague = cache(async (leagueId: string) => {
 export const createInviteToLeague = cache(
   async (userEmail: string, id: string) => {
     if (!(await isValidObjectId(id))) notFound();
+    if (!(await isLeagueAuthor(id))) return;
 
     const user = await prisma.user.findUnique({ where: { email: userEmail } });
 
@@ -85,5 +85,32 @@ export const createInviteToLeague = cache(
 
     revalidatePath(`/championships/${id}`);
     redirect(`/championships/${id}`);
+  }
+);
+
+export const DeleteParticipantFromLeagueAction = cache(
+  async (participantID: string, leagueID: string) => {
+    if (!participantID) return;
+    if (!leagueID) return;
+
+    if (!(await isValidObjectId(participantID))) notFound();
+    if (!(await isValidObjectId(leagueID))) notFound();
+    if (!(await isLeagueAuthor(leagueID))) return;
+
+    const participant = await prisma.leagueParticipant.findFirst({
+      where: {
+        user: { id: participantID },
+        league: { id: leagueID },
+      },
+    });
+
+    if (!participant) return;
+
+    await prisma.leagueParticipant.delete({
+      where: { id: participant.id },
+    });
+
+    revalidatePath(`/championships/${leagueID}`);
+    redirect(`/championships/${leagueID}`);
   }
 );
