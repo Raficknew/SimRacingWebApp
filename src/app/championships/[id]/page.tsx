@@ -25,6 +25,7 @@ import { getParticipantPoints } from "./standings/actions";
 import bg from "@/src/assets/8ec323bd-ab9b-43a6-88df-51951fe44f6b.jpg";
 import InviteToLeagueBar from "@/src/components/molecules/InviteToLeagueBar/InviteToLeagueBar";
 import DeleteParticipantFromLeague from "@/src/components/organisms/DeleteParticipantsFromLeague/DeleteParticipantsFromLeague";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 type ChampionshipProps = {
   params: {
@@ -70,23 +71,35 @@ const Championship: React.FC<ChampionshipProps> = async ({
                   <DialogHeader>
                     <DialogTitle>Ustawienia</DialogTitle>
                   </DialogHeader>
-                  <div className="flex flex-col gap-5">
-                    <LinkButton href={`/championships/${id}/create-race`}>
-                      <Flag className="w-4 h-4" />
-                      <p>Create Race</p>
-                    </LinkButton>
-                    <InviteToLeagueBar
-                      createInvite={createInviteToLeague}
-                      id={id}
-                    />
-                    <DeleteParticipantFromLeague
-                      championshipId={championship.id}
-                    />
-                    <DeleteLeagueButton
-                      leagueId={id}
-                      deleteLeague={deleteLeague}
-                    />
-                  </div>
+                  <Tabs defaultValue="general" className="w-[400px]">
+                    <TabsList>
+                      <TabsTrigger value="general">Ogólne</TabsTrigger>
+                      <TabsTrigger value="drivers">
+                        Zarządzaj kierowcami
+                      </TabsTrigger>
+                    </TabsList>
+                    <TabsContent value="general">
+                      <div className="flex flex-col gap-5">
+                        <LinkButton href={`/championships/${id}/create-race`}>
+                          <Flag className="w-4 h-4" />
+                          <p>Create Race</p>
+                        </LinkButton>
+                        <InviteToLeagueBar
+                          createInvite={createInviteToLeague}
+                          id={id}
+                        />
+                        <DeleteLeagueButton
+                          leagueId={id}
+                          deleteLeague={deleteLeague}
+                        />
+                      </div>
+                    </TabsContent>
+                    <TabsContent value="drivers">
+                      <DeleteParticipantFromLeague
+                        championshipId={championship.id}
+                      />
+                    </TabsContent>
+                  </Tabs>
                 </DialogContent>
               </Dialog>
             )}
