@@ -20,7 +20,7 @@ const config = {
     extend: {
       backgroundImage: {
         "custom-gradient":
-          "radial-gradient(circle, rgba(48, 48, 48, 0.4), rgba(51, 51, 51, 0.4), rgba(54, 54, 54, 0.4), rgba(58, 58, 58, 0.4), rgba(61, 61, 61, 0.4))",
+          "radial-gradient(circle, rgba(27, 27, 27, 0.8) 46%, rgba(14, 14, 14, 0.8) 88%);",
       },
       colors: {
         border: "hsl(var(--border))",

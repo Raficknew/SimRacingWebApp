@@ -120,7 +120,7 @@ const Championship: React.FC<ChampionshipProps> = async ({
                             points={u.points}
                           >
                             <div className="flex justify-center items-center gap-2">
-                              <Avatar className="w-8 h-8">
+                              <Avatar className="size-8">
                                 <AvatarImage src={u.image || ""} />
                               </Avatar>
                               {u.name}

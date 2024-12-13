@@ -10,9 +10,8 @@ import {
 import RaceResultDialog from "@/src/components/organisms/RaceResultDialog/RaceResultDialog";
 import { redirect } from "next/navigation";
 import { RaceStatus } from "@prisma/client";
-import LinkButton from "@/src/components/atoms/LinkButton/LinkButton";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { Clock2, Settings, Table } from "lucide-react";
+import { Clock2, Settings, Table, Trophy } from "lucide-react";
 import dayjs from "dayjs";
 import { Badge } from "@/components/ui/badge";
 import { getParticipantsNames } from "@/src/components/organisms/RaceResultDialog/actions";
@@ -29,6 +28,7 @@ import ChangeStatusForRaceButton from "./ChangeStatusForRaceButton/ChangeStatusF
 import InviteToRaceBar from "@/src/components/molecules/InviteToRaceBar/InviteToRaceBar";
 import DeleteParticipantFromRaceDialog from "@/src/components/organisms/DeleteParticipantFromRaceDialog/DeleteParticipantFromRaceDialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import Link from "next/link";
 
 type RacePageProps = {
   params: {
@@ -45,75 +45,86 @@ const RacePage: React.FC<RacePageProps> = async ({ params: { id } }) => {
   const participantsNames = await getParticipantsNames(race.participants ?? []);
 
   return (
-    <div className="flex flex-col bg-custom-gradient rounded-sm p-5 min-h-[630px] gap-12">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-1">
-          <Avatar className="w-8 h-8">
-            <AvatarImage src={race.author.image!} />
-          </Avatar>
-          <p className="text-sm text-white">{race.author.name}</p>
-        </div>
-        <div className="flex self-stretch flex-wrap justify-center items-center gap-2 bg-white text-[#303030] px-3 py-0.5 rounded-full">
-          <Clock2 className="h-4 w-4" />
-          <p>{race.raceHour}</p>
-          <p>{dayjs(race.raceDate).format("DD MMM YYYY")}</p>
-        </div>
-        <div className="w-[104px] flex justify-end">
-          {session?.user?.email == race.author.email && (
-            <Dialog>
-              <DialogTrigger asChild>
-                <Settings className="text-white cursor-pointer" />
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Ustawienia</DialogTitle>
-                </DialogHeader>
-                <Tabs defaultValue="general" className="w-[400px]">
-                  <TabsList>
-                    <TabsTrigger value="general">Ogólne</TabsTrigger>
-                    <TabsTrigger value="drivers">
-                      Zarządzaj kierowcami
-                    </TabsTrigger>
-                  </TabsList>
-                  <TabsContent value="general">
-                    <div className="flex flex-col  gap-5">
-                      {race.status == RaceStatus.BEFORE && !race.leagueId ? (
-                        <InviteToRaceBar
-                          id={id}
-                          createInviteToRace={createInviteToRace}
-                        />
-                      ) : (
-                        race.status === RaceStatus.ENDED &&
-                        race.results.length == 0 &&
-                        race.participants.length >= 2 && (
-                          <RaceResultDialog key={race.id} raceId={race.id} />
-                        )
-                      )}
-                      {race.status !== RaceStatus.ENDED && (
-                        <ChangeStatusForRaceButton
+    <div className="flex flex-col bg-custom-gradient rounded-sm p-8 min-h-[630px] gap-20">
+      <div className="flex flex-col gap-2">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Avatar className="size-8">
+              <AvatarImage src={race.author.image!} />
+            </Avatar>
+            <p className="text-sm text-white">{race.author.name}</p>
+          </div>
+          <div className="flex self-stretch flex-wrap justify-center items-center gap-2 text-white px-3 py-0.5 rounded-full">
+            <Clock2 className="size-6" />
+            <p>{race.raceHour}</p>
+            <p>{dayjs(race.raceDate).format("DD MMMM YYYY")}</p>
+          </div>
+          <div className="w-[104px] flex justify-end">
+            {session?.user?.email == race.author.email && (
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Settings className="text-white cursor-pointer size-6" />
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Ustawienia</DialogTitle>
+                  </DialogHeader>
+                  <Tabs defaultValue="general" className="w-[400px]">
+                    <TabsList>
+                      <TabsTrigger value="general">Ogólne</TabsTrigger>
+                      <TabsTrigger value="drivers">
+                        Zarządzaj kierowcami
+                      </TabsTrigger>
+                    </TabsList>
+                    <TabsContent value="general">
+                      <div className="flex flex-col  gap-5">
+                        {race.status == RaceStatus.BEFORE && !race.leagueId ? (
+                          <InviteToRaceBar
+                            id={id}
+                            createInviteToRace={createInviteToRace}
+                          />
+                        ) : (
+                          race.status === RaceStatus.ENDED &&
+                          race.results.length == 0 &&
+                          race.participants.length >= 2 && (
+                            <RaceResultDialog key={race.id} raceId={race.id} />
+                          )
+                        )}
+                        {race.status !== RaceStatus.ENDED && (
+                          <ChangeStatusForRaceButton
+                            raceID={race.id}
+                            ChangeStatus={changeStatus}
+                          />
+                        )}
+                        <DeleteRaceButton
                           raceID={race.id}
-                          ChangeStatus={changeStatus}
+                          DeleteRace={deleteRace}
                         />
-                      )}
-                      <DeleteRaceButton
-                        raceID={race.id}
-                        DeleteRace={deleteRace}
-                      />
-                    </div>
-                  </TabsContent>
-                  {!race.leagueId && race.status == RaceStatus.BEFORE && (
-                    <TabsContent value="drivers">
-                      <DeleteParticipantFromRaceDialog
-                        race={race}
-                        invites={race.invites}
-                      />
+                      </div>
                     </TabsContent>
-                  )}
-                </Tabs>
-              </DialogContent>
-            </Dialog>
-          )}
+                    {!race.leagueId && race.status == RaceStatus.BEFORE && (
+                      <TabsContent value="drivers">
+                        <DeleteParticipantFromRaceDialog
+                          race={race}
+                          invites={race.invites}
+                        />
+                      </TabsContent>
+                    )}
+                  </Tabs>
+                </DialogContent>
+              </Dialog>
+            )}
+          </div>
         </div>
+        {race.league && (
+          <Link
+            href={`/championships/${race.leagueId}/standings`}
+            className="flex gap-2 *:text-[#FFA750] self-center cursor-pointer"
+          >
+            <Trophy className="size-6" />
+            <p>{race.league.name}</p>
+          </Link>
+        )}
       </div>
       {race.results.length > 1 ? (
         <div className="flex flex-col items-center">
@@ -180,84 +191,83 @@ const RacePage: React.FC<RacePageProps> = async ({ params: { id } }) => {
           </div>
         </div>
       ) : (
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-10">
           <div className="flex flex-col justify-center items-center gap-6">
             <Badge
               className={
                 {
-                  BEFORE: "bg-cyan-600 hover:bg-cyan-700",
-                  ONGOING: "bg-red-600 hover:bg-red-700",
-                  ENDED: "bg-gray-600 hover:bg-gray-700",
+                  BEFORE: "bg-green-800 hover:bg-green-900",
+                  ONGOING: "bg-red-700 hover:bg-red-700",
+                  ENDED: "bg-zinc-800 hover:bg-zinc-900",
                 }[race.status]
               }
             >
               {race.status}
             </Badge>
-            <p className="text-4xl text-white">{race.name}</p>
+            <p className="text-4xl text-white">{race.name.toUpperCase()}</p>
             <div className="flex gap-1">
-              <Badge className="bg-rose-900 hover:bg-rose-950">
+              <Badge className="bg-red-900 hover:bg-red-950">
                 {race.series}
               </Badge>
-              <Badge className="bg-orange-900 hover:bg-orange-950">
+              <Badge className="bg-gray-500 hover:bg-gray-600">
                 {race.circuit}
               </Badge>
             </div>
-            <p className="text-white">{race.description}</p>
+            <p className="text-white w-full">{race.description}</p>
           </div>
-          <div>
+          <div className="flex flex-col gap-2">
             <p className="text-white">Participants:</p>
-            <div className="flex flex-wrap text-white gap-2">
-              {race.leagueId ? (
-                (await getChampionship(race.leagueId)).participants.map((u) => (
-                  <ParticipantBox key={u.id}>
-                    <div className="flex justify-center items-center gap-2">
-                      <Avatar className="w-8 h-8">
-                        <AvatarImage src={u.user.image!} />
-                      </Avatar>
-                      {u.user.name}
-                    </div>
-                  </ParticipantBox>
-                ))
-              ) : (
-                <>
-                  {Object.entries(participantsNames).map(([id, user]) => (
-                    <ParticipantBox key={id}>
-                      {user ? (
+            <div className="p-3">
+              <div className="flex flex-wrap text-white gap-2">
+                {race.leagueId ? (
+                  (await getChampionship(race.leagueId)).participants.map(
+                    (u) => (
+                      <ParticipantBox key={u.id}>
                         <div className="flex justify-center items-center gap-2">
                           <Avatar className="w-8 h-8">
-                            <AvatarImage src={user.image ?? ""} />
+                            <AvatarImage src={u.user.image!} />
                           </Avatar>
-                          {user.name}
+                          {u.user.name}
                         </div>
-                      ) : (
-                        id
-                      )}
-                    </ParticipantBox>
-                  ))}
-                  {race.invites.map((i) => (
-                    <ParticipantBox key={i.id}>
-                      {i.user ? (
-                        <div className="flex justify-center items-center gap-2">
-                          <Avatar className="w-8 h-8">
-                            <AvatarImage src={i.user.image || ""} />
-                          </Avatar>
-                          {i.user.name}
-                        </div>
-                      ) : (
-                        i.userName || i.userEmail
-                      )}
-                    </ParticipantBox>
-                  ))}
-                </>
-              )}
+                      </ParticipantBox>
+                    )
+                  )
+                ) : (
+                  <>
+                    {Object.entries(participantsNames).map(([id, user]) => (
+                      <ParticipantBox key={id}>
+                        {user ? (
+                          <div className="flex justify-center items-center gap-2">
+                            <Avatar className="w-8 h-8">
+                              <AvatarImage src={user.image ?? ""} />
+                            </Avatar>
+                            {user.name}
+                          </div>
+                        ) : (
+                          id
+                        )}
+                      </ParticipantBox>
+                    ))}
+                    {race.invites.map((i) => (
+                      <ParticipantBox key={i.id}>
+                        {i.user ? (
+                          <div className="flex justify-center items-center gap-2">
+                            <Avatar className="w-8 h-8">
+                              <AvatarImage src={i.user.image || ""} />
+                            </Avatar>
+                            {i.user.name}
+                          </div>
+                        ) : (
+                          i.userName || i.userEmail
+                        )}
+                      </ParticipantBox>
+                    ))}
+                  </>
+                )}
+              </div>
             </div>
           </div>
         </div>
-      )}
-      {race.leagueId && (
-        <LinkButton href={`/championships/${race.leagueId}/standings`}>
-          <Table width={20} height={20} /> Standings
-        </LinkButton>
       )}
     </div>
   );
