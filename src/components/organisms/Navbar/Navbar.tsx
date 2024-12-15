@@ -8,7 +8,7 @@ const Navbar: React.FC = async () => {
   const session = await getServerSession(authOptions);
 
   return (
-    <div className="pt-3 sm:px-10 px-5 w-full">
+    <div className="pt-3 w-full">
       <div className="bg-[#F2F2F2] bg-opacity-5 flex self-stretch w-full items-center justify-between px-10 py-1 rounded-xl ">
         <div className="flex gap-3 md:gap-5">
           <Navbarlink link="/" icon={<Home />} title="Home" />

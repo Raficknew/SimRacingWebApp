@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
-import ParticipantBox from "@/src/components/atoms/PatricipantBox/PatricipantBox";
+import ParticipantBox from "@/src/components/atoms/Patricipant/Patricipant";
 import { useState } from "react";
 import { Reorder } from "framer-motion";
 import { User } from "@prisma/client";
