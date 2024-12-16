@@ -50,7 +50,7 @@ const InviteToRaceBar: React.FC<InviteToRaceBarProps> = ({
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="invite" type="email" {...field} />
+                <Input placeholder="Email" type="email" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -68,7 +68,9 @@ const InviteToRaceBar: React.FC<InviteToRaceBarProps> = ({
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button className="bg-custom-gradient" type="submit">
+          Zaproś
+        </Button>
       </form>
     </Form>
   );

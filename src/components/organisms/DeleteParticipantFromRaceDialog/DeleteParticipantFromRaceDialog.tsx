@@ -1,12 +1,4 @@
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Invite, User, type Race } from "@prisma/client";
+import { type Race } from "@prisma/client";
 import { getParticipantsNames } from "../RaceResultDialog/actions";
 import DeleteParticipantButton from "./DeleteParticipantButton/DeleteParticipantButton";
 import {
@@ -15,6 +7,7 @@ import {
 } from "@/src/app/races/[id]/actions";
 import DeleteInvitedParticipantFromRace from "./DeleteInvitedParticipantFromRace/DeleteInvitedParticipantFromRace";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import Participant from "../../atoms/Patricipant/Patricipant";
 
 type UserInInvite = {
   user: {
@@ -44,19 +37,15 @@ const DeleteParticipantFromRaceDialog: React.FC<
   return (
     <div className="flex flex-col gap-2">
       {Object.entries(participantsNames).map(([id, user]) => (
-        <div
-          className="flex justify-between items-center bg-gray-100 rounded-sm px-2"
-          key={id}
-        >
+        <div className="flex rounded-sm gap-5" key={id}>
           {user ? (
-            <div className="flex justify-center items-center gap-2">
-              <Avatar className="w-8 h-8">
-                <AvatarImage src={user.image || ""} />
-              </Avatar>
-              {user.name}
-            </div>
+            <Participant
+              key={user.id}
+              name={user.name ?? ""}
+              avatar={user.image ?? ""}
+            />
           ) : (
-            id
+            <Participant key={id} name={id} />
           )}
 
           <DeleteParticipantButton
@@ -67,19 +56,15 @@ const DeleteParticipantFromRaceDialog: React.FC<
         </div>
       ))}
       {invites.map((i) => (
-        <div
-          className="flex justify-between items-center bg-gray-100 rounded-sm px-2"
-          key={i.id}
-        >
+        <div className="flex rounded-sm gap-5" key={i.id}>
           {i.user ? (
-            <div className="flex justify-center items-center gap-2">
-              <Avatar className="w-8 h-8">
-                <AvatarImage src={i.user.image || ""} />
-              </Avatar>
-              {i.user.name}
-            </div>
+            <Participant
+              key={i.user.id}
+              name={i.user.name ?? ""}
+              avatar={i.user.image ?? ""}
+            />
           ) : (
-            i.userName ?? i.userName
+            <Participant key={i.id} name={i.userName ?? i.userEmail} />
           )}
 
           <DeleteInvitedParticipantFromRace

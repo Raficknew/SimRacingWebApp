@@ -52,7 +52,7 @@ const RacePage: React.FC<RacePageProps> = async ({ params: { id } }) => {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Avatar className="size-8">
-              <AvatarImage src={race.author.image!} />
+              <AvatarImage src={race.author.image ?? ""} />
             </Avatar>
             <p className="text-sm text-white">{race.author.name}</p>
           </div>
@@ -68,18 +68,19 @@ const RacePage: React.FC<RacePageProps> = async ({ params: { id } }) => {
                   <Settings className="text-white cursor-pointer size-6" />
                 </DialogTrigger>
                 <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>Ustawienia</DialogTitle>
-                  </DialogHeader>
                   <Tabs defaultValue="general" className="w-[400px]">
-                    <TabsList>
-                      <TabsTrigger value="general">Ogólne</TabsTrigger>
-                      <TabsTrigger value="drivers">
-                        Zarządzaj kierowcami
-                      </TabsTrigger>
-                    </TabsList>
+                    <DialogHeader>
+                      <DialogTitle>
+                        <TabsList className="bg-white">
+                          <TabsTrigger value="general">Ogólne</TabsTrigger>
+                          <TabsTrigger value="drivers">
+                            Zarządzaj kierowcami
+                          </TabsTrigger>
+                        </TabsList>
+                      </DialogTitle>
+                    </DialogHeader>
                     <TabsContent value="general">
-                      <div className="flex flex-col  gap-5">
+                      <div className="flex flex-col gap-4">
                         {race.status == RaceStatus.BEFORE && !race.leagueId ? (
                           <InviteToRaceBar
                             id={id}
@@ -104,14 +105,12 @@ const RacePage: React.FC<RacePageProps> = async ({ params: { id } }) => {
                         />
                       </div>
                     </TabsContent>
-                    {!race.leagueId && race.status == RaceStatus.BEFORE && (
-                      <TabsContent value="drivers">
-                        <DeleteParticipantFromRaceDialog
-                          race={race}
-                          invites={race.invites}
-                        />
-                      </TabsContent>
-                    )}
+                    <TabsContent value="drivers">
+                      <DeleteParticipantFromRaceDialog
+                        race={race}
+                        invites={race.invites}
+                      />
+                    </TabsContent>
                   </Tabs>
                 </DialogContent>
               </Dialog>
@@ -131,14 +130,16 @@ const RacePage: React.FC<RacePageProps> = async ({ params: { id } }) => {
       {race.results.length > 1 ? (
         <div className="flex flex-col items-center">
           <Badge className="bg-gray-600 hover:bg-gray-700">{race.status}</Badge>
-          <div className="flex gap-2 items-center justify-center">
+          <div className="flex flex-col gap-2 items-center justify-center">
             <p className="text-4xl text-white">{race.name}</p>
-            <Badge className="bg-rose-900 hover:bg-rose-950">
-              {race.series}
-            </Badge>
-            <Badge className="bg-orange-900 hover:bg-orange-950">
-              {race.circuit}
-            </Badge>
+            <div className="flex gap-2">
+              <Badge className="bg-red-900 hover:bg-red-950">
+                {race.series}
+              </Badge>
+              <Badge className="bg-gray-500 hover:bg-gray-600">
+                {race.circuit}
+              </Badge>
+            </div>
           </div>
           <div className="flex flex-col justify-center items-center gap-2">
             <p className="text-white">Results</p>
