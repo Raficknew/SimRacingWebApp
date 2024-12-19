@@ -13,7 +13,7 @@ const DeleteInvitedParticipantFromRace: React.FC<
 > = ({ DeleteInvitedParticipant, inviteID, raceID }) => {
   return (
     <Button
-      className="p-2 bg-red-500"
+      className="p-2 bg-red-500 hover:bg-red-700"
       onClick={() => DeleteInvitedParticipant(raceID, inviteID)}
     >
       <Trash className="w-5 h-5" />

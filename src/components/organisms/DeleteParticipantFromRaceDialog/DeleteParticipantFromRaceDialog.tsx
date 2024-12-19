@@ -8,6 +8,7 @@ import {
 import DeleteInvitedParticipantFromRace from "./DeleteInvitedParticipantFromRace/DeleteInvitedParticipantFromRace";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import Participant from "../../atoms/Patricipant/Patricipant";
+import ParticipantToDelete from "./ParticipantToDelete/ParticipantToDelete";
 
 type UserInInvite = {
   user: {
@@ -35,45 +36,38 @@ const DeleteParticipantFromRaceDialog: React.FC<
 > = async ({ race, invites }) => {
   const participantsNames = await getParticipantsNames(race.participants ?? []);
   return (
-    <div className="flex flex-col gap-2">
-      {Object.entries(participantsNames).map(([id, user]) => (
-        <div className="flex rounded-sm gap-5" key={id}>
-          {user ? (
-            <Participant
-              key={user.id}
-              name={user.name ?? ""}
-              avatar={user.image ?? ""}
-            />
-          ) : (
-            <Participant key={id} name={id} />
-          )}
-
-          <DeleteParticipantButton
-            participantId={id}
-            raceId={race.id}
-            DeleteParticipantFromRace={DeleteParticipantFromRace}
-          />
-        </div>
-      ))}
-      {invites.map((i) => (
-        <div className="flex rounded-sm gap-5" key={i.id}>
-          {i.user ? (
-            <Participant
-              key={i.user.id}
-              name={i.user.name ?? ""}
-              avatar={i.user.image ?? ""}
-            />
-          ) : (
-            <Participant key={i.id} name={i.userName ?? i.userEmail} />
-          )}
-
-          <DeleteInvitedParticipantFromRace
+    <div className="flex w-fit flex-col gap-2">
+      {Object.entries(participantsNames).map(([id, user]) =>
+        user ? (
+          <ParticipantToDelete
+            key={id}
+            name={user?.name ?? id}
+            avatar={user?.image ?? ""}
             raceID={race.id}
-            inviteID={i.id}
-            DeleteInvitedParticipant={DeleteInvitedParticipant}
+            participantID={user?.id}
           />
-        </div>
-      ))}
+        ) : (
+          <ParticipantToDelete key={id} name={id} raceID={race.id} />
+        )
+      )}
+      {invites.map((i) =>
+        i.user ? (
+          <ParticipantToDelete
+            key={i.id}
+            name={i.user.name ?? i.user.id}
+            avatar={i.user.image ?? ""}
+            inviteID={i.id}
+            raceID={race.id}
+          />
+        ) : (
+          <ParticipantToDelete
+            key={i.id}
+            name={i.userName ?? i.userEmail}
+            inviteID={i.id}
+            raceID={race.id}
+          />
+        )
+      )}
     </div>
   );
 };

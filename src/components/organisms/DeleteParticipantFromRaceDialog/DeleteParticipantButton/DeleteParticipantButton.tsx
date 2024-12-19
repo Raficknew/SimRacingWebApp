@@ -18,7 +18,7 @@ const DeleteParticipantButton: React.FC<DeleteParticipantButtonProps> = ({
 }) => {
   return (
     <Button
-      className="p-2 bg-red-500"
+      className="p-2 bg-red-500 hover:bg-red-700"
       onClick={() => DeleteParticipantFromRace(raceId, participantId)}
     >
       <Trash className="w-5 h-5" />

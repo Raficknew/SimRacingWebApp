@@ -89,7 +89,8 @@ const RacePage: React.FC<RacePageProps> = async ({ params: { id } }) => {
                         ) : (
                           race.status === RaceStatus.ENDED &&
                           race.results.length == 0 &&
-                          race.participants.length >= 2 && (
+                          race.participants.length + race.invites.length >=
+                            2 && (
                             <RaceResultDialog key={race.id} raceId={race.id} />
                           )
                         )}
