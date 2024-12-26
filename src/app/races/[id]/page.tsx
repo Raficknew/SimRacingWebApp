@@ -73,26 +73,29 @@ const RacePage: React.FC<RacePageProps> = async ({ params: { id } }) => {
                       <DialogTitle>
                         <TabsList className="bg-white">
                           <TabsTrigger value="general">Ogólne</TabsTrigger>
-                          <TabsTrigger value="drivers">
-                            Zarządzaj kierowcami
-                          </TabsTrigger>
+                          {race.status !== RaceStatus.ENDED && (
+                            <TabsTrigger value="drivers">
+                              Zarządzaj kierowcami
+                            </TabsTrigger>
+                          )}
+                          {race.status === RaceStatus.ENDED &&
+                            race.results.length == 0 &&
+                            race.participants.length + race.invites.length >=
+                              2 && (
+                              <TabsTrigger value="score">
+                                Dodaj wynik
+                              </TabsTrigger>
+                            )}
                         </TabsList>
                       </DialogTitle>
                     </DialogHeader>
                     <TabsContent value="general">
                       <div className="flex flex-col gap-4">
-                        {race.status == RaceStatus.BEFORE && !race.leagueId ? (
+                        {race.status == RaceStatus.BEFORE && !race.leagueId && (
                           <InviteToRaceBar
                             id={id}
                             createInviteToRace={createInviteToRace}
                           />
-                        ) : (
-                          race.status === RaceStatus.ENDED &&
-                          race.results.length == 0 &&
-                          race.participants.length + race.invites.length >=
-                            2 && (
-                            <RaceResultDialog key={race.id} raceId={race.id} />
-                          )
                         )}
                         {race.status !== RaceStatus.ENDED && (
                           <ChangeStatusForRaceButton
@@ -111,6 +114,9 @@ const RacePage: React.FC<RacePageProps> = async ({ params: { id } }) => {
                         race={race}
                         invites={race.invites}
                       />
+                    </TabsContent>
+                    <TabsContent value="score">
+                      <RaceResultDialog key={race.id} raceId={race.id} />
                     </TabsContent>
                   </Tabs>
                 </DialogContent>
