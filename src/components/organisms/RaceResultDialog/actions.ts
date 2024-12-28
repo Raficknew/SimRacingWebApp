@@ -28,6 +28,7 @@ export const getParticipantsNames = cache(async (ids: string[]) => {
 });
 
 export const setResults = async (raceID: string, participants: string[]) => {
+  if (!(await isValidObjectId(raceID))) return;
   if (!(await isRaceAuthor(raceID))) return;
 
   await prisma.race.update({

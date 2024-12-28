@@ -33,6 +33,13 @@ const RaceParticipants: React.FC<RaceParticipantsProps> = ({
         {participants.map((participant, index) => (
           <Reorder.Item key={participant} value={participant}>
             <DraggableParticipant
+              classname={
+                {
+                  1: "text-yellow-200 shadow",
+                  2: "text-gray-300 shadow",
+                  3: "text-amber-700 shadow",
+                }[index + 1] || "text-gray-500"
+              }
               name={
                 Object.entries(participantNames).find(
                   (u) => u[1]?.id == participant
