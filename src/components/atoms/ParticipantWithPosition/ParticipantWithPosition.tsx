@@ -15,7 +15,7 @@ const ParticipantWithPosition: React.FC<ParticipantWithPositionProps> = ({
   return (
     <div
       className={
-        "flex items-center px-3 py-1 rounded-sm min-w-[200px] bg-[#3A3A3A] bg-opacity-95 text-white " +
+        "flex h-[36px] items-center px-3 py-1 rounded-sm min-w-[200px] bg-[#3A3A3A] bg-opacity-95 text-white " +
           {
             1: "border-[0.5px] border-yellow-200 shadow shadow-yellow-200",
             2: "border-[0.5px] border-gray-300 shadow shadow-gray-300",

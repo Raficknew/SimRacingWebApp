@@ -110,6 +110,20 @@ export const DeleteParticipantFromLeagueAction = cache(
       where: { id: participant.id },
     });
 
+    const league = await prisma.league.findUnique({
+      where: { id: leagueID },
+      include: {
+        participants: { include: { user: { select: { id: true } } } },
+      },
+    });
+
+    const participants = league?.participants.map((p) => p.user.id);
+
+    await prisma.race.updateMany({
+      where: { leagueId: leagueID },
+      data: { participants: { set: participants } },
+    });
+
     revalidatePath(`/championships/${leagueID}`);
     redirect(`/championships/${leagueID}`);
   }

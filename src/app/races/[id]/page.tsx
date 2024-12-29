@@ -146,7 +146,7 @@ const RacePage: React.FC<RacePageProps> = async ({ params: { id } }) => {
         )}
       </div>
       {race.results.length > 1 ? (
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center gap-3">
           <Badge className="bg-gray-600 hover:bg-gray-700">{race.status}</Badge>
           <div className="flex flex-col gap-2 items-center justify-center">
             <p className="text-4xl text-white">{race.name}</p>
@@ -161,23 +161,42 @@ const RacePage: React.FC<RacePageProps> = async ({ params: { id } }) => {
           </div>
           <div className="flex flex-col justify-center items-center gap-2">
             <p className="text-white">Results</p>
-            <div className="grid grid-rows-2 grid-cols-2 gap-3">
-              {race.results.map((person, index) => (
-                <ParticipantWithPosition
-                  key={index}
-                  position={index + 1}
-                  name={
-                    Object.entries(participantsNames).find(
-                      (u) => u[1]?.id == person
-                    )?.[1]?.name || person
-                  }
-                  avatar={
-                    Object.entries(participantsNames).find(
-                      (u) => u[1]?.id == person
-                    )?.[1]?.image || ""
-                  }
-                />
-              ))}
+            <div className="grid grid-cols-2 gap-3">
+              {race.results.map((person, index) =>
+                index % 2 == 0 ? (
+                  <div key={index} className="h-[36px]">
+                    <ParticipantWithPosition
+                      position={index + 1}
+                      name={
+                        Object.entries(participantsNames).find(
+                          (u) => u[1]?.id == person
+                        )?.[1]?.name || person
+                      }
+                      avatar={
+                        Object.entries(participantsNames).find(
+                          (u) => u[1]?.id == person
+                        )?.[1]?.image || ""
+                      }
+                    />
+                  </div>
+                ) : (
+                  <div key={index} className="mt-3 h-[36px]">
+                    <ParticipantWithPosition
+                      position={index + 1}
+                      name={
+                        Object.entries(participantsNames).find(
+                          (u) => u[1]?.id == person
+                        )?.[1]?.name || person
+                      }
+                      avatar={
+                        Object.entries(participantsNames).find(
+                          (u) => u[1]?.id == person
+                        )?.[1]?.image || ""
+                      }
+                    />
+                  </div>
+                )
+              )}
             </div>
           </div>
         </div>

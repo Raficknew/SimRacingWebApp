@@ -1,7 +1,6 @@
 import { Race } from "@prisma/client";
 import { getParticipantsNames, getRace, setResults } from "./actions";
 import RaceParticipants from "./RaceParticipants/RaceParticipants";
-import { isValidObjectId } from "@/src/actions/actions";
 
 type UserInInvite = {
   user: {

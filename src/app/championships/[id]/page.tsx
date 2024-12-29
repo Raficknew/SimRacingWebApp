@@ -20,7 +20,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import ParticipantBox from "@/src/components/atoms/Patricipant/Patricipant";
 import { getParticipantPoints } from "./standings/actions";
 import bg from "@/src/assets/8ec323bd-ab9b-43a6-88df-51951fe44f6b.jpg";
 import InviteToLeagueBar from "@/src/components/molecules/InviteToLeagueBar/InviteToLeagueBar";

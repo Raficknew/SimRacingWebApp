@@ -6,6 +6,7 @@ import { useState } from "react";
 import { Reorder } from "framer-motion";
 import { User } from "@prisma/client";
 import DraggableParticipant from "./DraggableParticipant/DraggableParticipant";
+import { DialogClose } from "@radix-ui/react-dialog";
 
 interface RaceParticipantsProps {
   raceId: string;
@@ -55,7 +56,14 @@ const RaceParticipants: React.FC<RaceParticipantsProps> = ({
         ))}
       </Reorder.Group>
       <DialogFooter>
-        <Button onClick={() => setResults(raceId, participants)}>Zapisz</Button>
+        <DialogClose>
+          <Button
+            className="bg-red-900 text-white cursor-pointer hover:bg-red-950 "
+            onClick={() => setResults(raceId, participants)}
+          >
+            Zapisz
+          </Button>
+        </DialogClose>
       </DialogFooter>
     </>
   );

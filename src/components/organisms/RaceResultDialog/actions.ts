@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { notFound, redirect } from "next/navigation";
 import { cache } from "react";
 import type { User } from "@prisma/client";
+import { Dialog, DialogClose } from "@/components/ui/dialog";
 
 export const getRace = cache(async (id: string) => {
   const race = await prisma.race.findUnique({

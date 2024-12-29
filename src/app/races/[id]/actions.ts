@@ -54,7 +54,7 @@ export const createInviteToRace = cache(
     const race = await prisma.race.findUnique({
       where: { id: raceId },
       include: {
-        invites: { select: { userEmail: true } },
+        invites: { select: { userEmail: true, userName: true } },
         author: { select: { email: true } },
       },
     });
@@ -64,7 +64,7 @@ export const createInviteToRace = cache(
     if (!(await isRaceAuthor(race.id))) return;
 
     const isUserInvited = race?.invites.some(
-      (invite) => invite.userEmail === userEmail
+      (invite) => invite.userEmail === userEmail || invite.userName === userName
     );
 
     if (isUserInvited) return;
