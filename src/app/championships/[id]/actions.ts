@@ -120,7 +120,12 @@ export const DeleteParticipantFromLeagueAction = cache(
     const participants = league?.participants.map((p) => p.user.id);
 
     await prisma.race.updateMany({
-      where: { leagueId: leagueID },
+      where: {
+        leagueId: leagueID,
+        AND: {
+          results: { isEmpty: true },
+        },
+      },
       data: { participants: { set: participants } },
     });
 
