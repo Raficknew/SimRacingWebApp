@@ -76,7 +76,10 @@ const StandingsPage: React.FC<StandingsPageProps> = async ({
                   <DialogTitle>Ustawienia</DialogTitle>
                 </DialogHeader>
                 <div className="flex flex-col gap-5">
-                  <LinkButton href={`/championships/${id}/create-race`}>
+                  <LinkButton
+                    classname="border"
+                    href={`/championships/${id}/create-race`}
+                  >
                     <Flag className="w-4 h-4" />
                     <p>Create Race</p>
                   </LinkButton>

@@ -26,12 +26,15 @@ async function RaceFind({
 
   return (
     <div>
-      <div className="flex flex-col  pt-20 gap-3 justify-center">
+      <div className="flex flex-col  gap-3 justify-center">
         {session && (
           <div className="flex justify-between">
             <SearchBar placeholder="Type to search for race..." />
             <div className="flex flex-col gap-2 max-w-[600px]"></div>
-            <LinkButton href="/races/create-race">
+            <LinkButton
+              classname="bg-white max-w-[200px]"
+              href="/races/create-race"
+            >
               <Flag className="w-4 h-4" />
               <p>Create Race</p>
             </LinkButton>

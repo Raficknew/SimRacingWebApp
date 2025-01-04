@@ -67,14 +67,14 @@ const Championship: React.FC<ChampionshipProps> = async ({
             {session?.user?.email == leagueAuthor?.author.email && (
               <Dialog>
                 <DialogTrigger asChild>
-                  <Settings className="text-white cursor-pointer" />
+                  <Settings className="text-white cursor-pointer size-6" />
                 </DialogTrigger>
                 <DialogContent>
                   <DialogHeader>
                     <DialogTitle>Ustawienia</DialogTitle>
                   </DialogHeader>
                   <Tabs defaultValue="general" className="w-[400px]">
-                    <TabsList>
+                    <TabsList className="bg-white">
                       <TabsTrigger value="general">Ogólne</TabsTrigger>
                       <TabsTrigger value="drivers">
                         Zarządzaj kierowcami
@@ -82,14 +82,17 @@ const Championship: React.FC<ChampionshipProps> = async ({
                     </TabsList>
                     <TabsContent value="general">
                       <div className="flex flex-col gap-5">
-                        <LinkButton href={`/championships/${id}/create-race`}>
-                          <Flag className="w-4 h-4" />
-                          <p>Create Race</p>
-                        </LinkButton>
                         <InviteToLeagueBar
                           createInvite={createInviteToLeague}
                           id={id}
                         />
+                        <LinkButton
+                          classname="border"
+                          href={`/championships/${id}/create-race`}
+                        >
+                          <Flag className="size-4" />
+                          <p>Create Race</p>
+                        </LinkButton>
                         <DeleteLeagueButton
                           leagueId={id}
                           deleteLeague={deleteLeague}
@@ -137,7 +140,10 @@ const Championship: React.FC<ChampionshipProps> = async ({
                         ))
                         .slice(0, 3)}
                 </div>
-                <LinkButton href={`/championships/${id}/standings`}>
+                <LinkButton
+                  classname="bg-white"
+                  href={`/championships/${id}/standings`}
+                >
                   <Table width={20} height={20} /> <p>Standings</p>
                 </LinkButton>
               </div>

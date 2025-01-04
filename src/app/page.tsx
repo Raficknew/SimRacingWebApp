@@ -17,12 +17,12 @@ export default async function Home() {
   });
 
   return (
-    <div className="flex flex-col pt-20 gap-3 justify-center">
+    <div className="flex flex-col gap-3 justify-center">
       {session && (
         <div className="flex flex-col">
           <div className="flex flex-col gap-2 max-w-[600px]"></div>
           <div className="flex self-end">
-            <LinkButton href="/races/create-race">
+            <LinkButton classname="bg-white px-5" href="/races/create-race">
               <Flag className="w-4 h-4" />
               <p>Create Race</p>
             </LinkButton>
