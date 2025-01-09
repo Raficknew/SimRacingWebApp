@@ -2,7 +2,7 @@ import prisma from "@/lib/db/prisma";
 import RaceCard from "@/src/components/molecules/RaceCard/RaceCard";
 import SearchBar from "@/src/components/organisms/SearchBar/SearchBar";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/src/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/src/app/api/auth/[...nextauth]/auth";
 import Link from "next/link";
 import LinkButton from "@/src/components/atoms/LinkButton/LinkButton";
 import { Flag } from "lucide-react";

@@ -35,7 +35,7 @@ const RaceResultDialog: React.FC<RaceResultDialogProps> = async ({
 
   const existingParticipants = invites.length
     ? race.participants.concat(
-        invites.filter((i) => i.user).map((i) => i.user.id)
+        invites.filter((i) => i.user).map((i) => i.user!.id)
       )
     : race.participants;
 

@@ -25,7 +25,7 @@ import {
   getChampionshipAuthor,
 } from "../actions";
 import { Flag, Settings, Trophy } from "lucide-react";
-import { authOptions } from "@/src/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/src/app/api/auth/[...nextauth]/auth";
 import { getServerSession } from "next-auth";
 import LinkButton from "@/src/components/atoms/LinkButton/LinkButton";
 import DeleteLeagueButton from "../DeleteLeagueButton/DeleteLeagueButton";

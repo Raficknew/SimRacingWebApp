@@ -1,5 +1,5 @@
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/src/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/src/app/api/auth/[...nextauth]/auth";
 import Navbarlink from "@/src/components/atoms/NavbarLink/NavbarLink";
 import DropDown from "@/src/components/molecules/DropDown/DropDown";
 import { Home, Trophy, User, Search } from "lucide-react";

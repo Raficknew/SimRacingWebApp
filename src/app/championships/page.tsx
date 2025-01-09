@@ -1,6 +1,6 @@
 import LinkButton from "@/src/components/atoms/LinkButton/LinkButton";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/route";
+import { authOptions } from "@/src/app/api/auth/[...nextauth]/auth";
 import prisma from "@/lib/db/prisma";
 import Link from "next/link";
 import SearchBar from "@/src/components/organisms/SearchBar/SearchBar";

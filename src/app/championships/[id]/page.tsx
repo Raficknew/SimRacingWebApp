@@ -8,7 +8,7 @@ import {
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../../api/auth/[...nextauth]/route";
+import { authOptions } from "@/src/app/api/auth/[...nextauth]/auth";
 import LinkButton from "@/src/components/atoms/LinkButton/LinkButton";
 import { Flag, Settings, Table, Trophy } from "lucide-react";
 import DeleteLeagueButton from "./DeleteLeagueButton/DeleteLeagueButton";

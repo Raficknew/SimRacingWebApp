@@ -1,5 +1,5 @@
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/src/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/src/app/api/auth/[...nextauth]/auth";
 import { redirect } from "next/navigation";
 import RaceForm from "@/src/components/organisms/RaceForm/RaceForm";
 import { createRace } from "./actions";

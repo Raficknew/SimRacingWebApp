@@ -1,5 +1,5 @@
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/src/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/src/app/api/auth/[...nextauth]/auth";
 import DeleteRaceButton from "@/src/app/races/[id]/DeleteRaceButton/DeleteRaceButton";
 import {
   changeStatus,
@@ -46,7 +46,7 @@ const RacePage: React.FC<RacePageProps> = async ({ params: { id } }) => {
 
   const existingParticipants = race.invites.length
     ? race.participants.concat(
-        race.invites.filter((i) => i.user).map((i) => i.user.id)
+        race.invites.filter((i) => i.user).map((i) => i.user!.id)
       )
     : race.participants;
 

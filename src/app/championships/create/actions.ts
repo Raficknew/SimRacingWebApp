@@ -5,7 +5,7 @@ import {
   leagueFormType,
 } from "@/src/components/organisms/LeagueForm/l";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../../api/auth/[...nextauth]/route";
+import { authOptions } from "@/src/app/api/auth/[...nextauth]/auth";
 import { redirect } from "next/navigation";
 import prisma from "@/lib/db/prisma";
 import { revalidatePath } from "next/cache";
