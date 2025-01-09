@@ -29,14 +29,14 @@ async function RaceFind({
       <div className="flex flex-col  gap-3 justify-center">
         {session && (
           <div className="flex justify-between">
-            <SearchBar placeholder="Type to search for race..." />
+            <SearchBar placeholder="Wpisz aby wyszukać wyścig..." />
             <div className="flex flex-col gap-2 max-w-[600px]"></div>
             <LinkButton
               classname="bg-white max-w-[200px]"
               href="/races/create-race"
             >
               <Flag className="w-4 h-4" />
-              <p>Create Race</p>
+              <p>Utwórz wyścig</p>
             </LinkButton>
           </div>
         )}

@@ -115,7 +115,7 @@ const Championship: React.FC<ChampionshipProps> = async ({
             <div className="flex flex-wrap items-center gap-5">
               <div className="flex flex-col gap-7 bg-black bg-opacity-10 p-5">
                 <div className="flex flex-col items-center gap-2">
-                  <div className="text-white">Driver standings</div>
+                  <div className="text-white">Klasyfikacja kierowców</div>
                   {participants?.length
                     ? participants
                         .map((u, index) => (

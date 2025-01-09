@@ -3,6 +3,7 @@ import { Clock2, Map, User } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Series, type Race } from "@prisma/client";
 import dayjs from "dayjs";
+import "dayjs/locale/pl";
 
 type Author = {
   name: string | null;
@@ -15,6 +16,7 @@ type RaceCardProps = {
 };
 
 const RaceCard: React.FC<RaceCardProps> = ({ race, author }) => {
+  dayjs.locale("pl");
   return (
     <div className="bg-slate-400 p-1 rounded-lg text-white">
       <div className="flex self-stretch justify-between items-center">

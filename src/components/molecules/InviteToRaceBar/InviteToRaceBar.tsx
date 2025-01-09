@@ -62,7 +62,7 @@ const InviteToRaceBar: React.FC<InviteToRaceBarProps> = ({
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="Name" type="text" {...field} />
+                <Input placeholder="Nazwa" type="text" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

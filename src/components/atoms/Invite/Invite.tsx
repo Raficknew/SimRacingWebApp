@@ -18,22 +18,22 @@ const Invite: React.FC<InviteProps> = ({
   DeleteInvite,
 }) => {
   return (
-    <div className="flex gap-2 p-2 items-center bg-[#303030]">
+    <div className="flex  gap-2 p-2 items-center bg-[#303030] rounded-lg">
       <p className="text-sm text-pretty text-white">
         {invite.league?.name ?? invite.race?.name}
       </p>
-      <div className="flex items-center *:h-7 *:p-2 *:text-xs gap-2">
+      <div className="flex items-center md:flex-nowrap flex-wrap *:h-7 *:p-2 *:text-xs gap-2">
         <Button
           className="bg-green-900 hover:bg-green-950"
           onClick={async () => await AcceptInvite(invite.userEmail, invite.id)}
         >
-          Accept
+          Przyjmij
         </Button>
         <Button
           className="bg-red-900 hover:bg-red-950"
           onClick={async () => await DeleteInvite(invite.id)}
         >
-          Decline
+          Odrzuć
         </Button>
       </div>
     </div>

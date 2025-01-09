@@ -24,7 +24,7 @@ export default async function Home() {
           <div className="flex self-end">
             <LinkButton classname="bg-white px-5" href="/races/create-race">
               <Flag className="w-4 h-4" />
-              <p>Create Race</p>
+              <p>Utwórz wyścig</p>
             </LinkButton>
           </div>
         </div>

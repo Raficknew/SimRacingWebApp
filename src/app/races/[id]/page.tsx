@@ -30,6 +30,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Link from "next/link";
 import Participant from "@/src/components/atoms/Patricipant/Patricipant";
 import ParticipantWithPosition from "@/src/components/atoms/ParticipantWithPosition/ParticipantWithPosition";
+import "dayjs/locale/pl";
 
 type RacePageProps = {
   params: {
@@ -53,6 +54,7 @@ const RacePage: React.FC<RacePageProps> = async ({ params: { id } }) => {
     existingParticipants ?? []
   );
 
+  dayjs.locale("pl");
   return (
     <div className="flex flex-col bg-custom-gradient rounded-sm p-8 min-h-[630px] gap-20">
       <div className="flex flex-col gap-2">
@@ -226,7 +228,7 @@ const RacePage: React.FC<RacePageProps> = async ({ params: { id } }) => {
             <p className="text-white w-full">{race.description}</p>
           </div>
           <div className="flex flex-col gap-2">
-            <p className="text-white">Participants:</p>
+            <p className="text-white">Kierowcy:</p>
             <div className="p-3">
               <div className="flex flex-wrap text-white gap-2">
                 {race.leagueId ? (

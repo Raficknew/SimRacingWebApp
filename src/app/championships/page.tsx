@@ -33,7 +33,7 @@ const ChampionshipsPage = async ({
           >
             {" "}
             <Flag className="w-4 h-4" />
-            Create League
+            Utwórz ligę
           </LinkButton>
         )}
       </div>

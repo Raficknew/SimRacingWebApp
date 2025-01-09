@@ -1,7 +1,9 @@
+import { redirect } from "next/navigation";
+
 interface ProfileSettingsPageProps {}
 
 const ProfileSettingsPage: React.FC<ProfileSettingsPageProps> = () => {
-  return <p>es</p>;
+  return redirect("/profile");
 };
 
 export default ProfileSettingsPage;

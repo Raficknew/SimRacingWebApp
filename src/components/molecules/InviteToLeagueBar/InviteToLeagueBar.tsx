@@ -45,14 +45,14 @@ const InviteToLeagueBar: React.FC<InviteToLeagueBarProps> = ({
           render={({ field }) => (
             <FormItem className="w-3/4">
               <FormControl>
-                <Input placeholder="invite" type="email" {...field} />
+                <Input placeholder="Zaproś" type="email" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
         <Button className="w-1/4 bg-custom-gradient" type="submit">
-          Submit
+          Wyślij
         </Button>
       </form>
     </Form>

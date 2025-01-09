@@ -63,7 +63,7 @@ const StandingsPage: React.FC<StandingsPageProps> = async ({
         </div>
         <div className="flex self-stretch flex-wrap justify-center items-center gap-2  text-orange-400 px-3 py-0.5 rounded-full">
           <Trophy />
-          {championship.name} Standings
+          {championship.name} Klasyfikacja
         </div>
         <div className="w-[104px] flex justify-end">
           {session?.user?.email == leagueAuthor?.author.email && (
@@ -81,7 +81,7 @@ const StandingsPage: React.FC<StandingsPageProps> = async ({
                     href={`/championships/${id}/create-race`}
                   >
                     <Flag className="w-4 h-4" />
-                    <p>Create Race</p>
+                    <p>Utwórz wyścig</p>
                   </LinkButton>
                   <InviteToLeagueBar
                     createInvite={createInviteToLeague}
@@ -103,7 +103,7 @@ const StandingsPage: React.FC<StandingsPageProps> = async ({
             <TableRow className="*:text-white">
               <TableHead>#</TableHead>
               <TableHead>Driver</TableHead>
-              <TableHead className="text-right">Points</TableHead>
+              <TableHead className="text-right">Punkty</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody className="bg-[#3A3A3A] opacity-95">
