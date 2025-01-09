@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { notFound, redirect } from "next/navigation";
 import { cache } from "react";
 import type { User } from "@prisma/client";
+import { Dialog, DialogClose } from "@/components/ui/dialog";
 
 export const getRace = cache(async (id: string) => {
   const race = await prisma.race.findUnique({
@@ -28,6 +29,7 @@ export const getParticipantsNames = cache(async (ids: string[]) => {
 });
 
 export const setResults = async (raceID: string, participants: string[]) => {
+  if (!(await isValidObjectId(raceID))) return;
   if (!(await isRaceAuthor(raceID))) return;
 
   await prisma.race.update({

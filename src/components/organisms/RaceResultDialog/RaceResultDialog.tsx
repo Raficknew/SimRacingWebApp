@@ -1,58 +1,67 @@
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Race } from "@prisma/client";
 import { getParticipantsNames, getRace, setResults } from "./actions";
 import RaceParticipants from "./RaceParticipants/RaceParticipants";
-import { notFound } from "next/navigation";
+
+type UserInInvite = {
+  user: {
+    id: string;
+    name: string | null;
+    email: string | null;
+    emailVerified: Date | null;
+    image: string | null;
+  } | null;
+} & {
+  id: string;
+  leagueId: string | null;
+  raceId: string | null;
+  userEmail: string;
+  userName: string | null;
+};
 
 interface RaceResultDialogProps {
-  raceId: string;
+  race: Race;
+  invites: UserInInvite[];
 }
 
 const RaceResultDialog: React.FC<RaceResultDialogProps> = async ({
-  raceId,
+  race,
+  invites,
 }) => {
-  const race = await getRace(raceId);
+  const allParticipants = invites.length
+    ? race.participants.concat(
+        invites.map((i) => (i.user ? i.user.id : i.userName ?? i.userEmail))
+      )
+    : race.participants;
 
-  if (!race) notFound();
+  const existingParticipants = invites.length
+    ? race.participants.concat(
+        invites.filter((i) => i.user).map((i) => i.user.id)
+      )
+    : race.participants;
 
-  const participantsNames = await getParticipantsNames(race.participants ?? []);
+  const participantsNames = await getParticipantsNames(
+    existingParticipants ?? []
+  );
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="outline">Dodaj wynik</Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Wynik wyścigu dla {race.name}</DialogTitle>
-          <DialogDescription>
-            Ustaw kierowców w kolejności miejsca na mecie po zakończeniu wyścigu
-          </DialogDescription>
-        </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <RaceParticipants
-            key={race.id}
-            raceId={race.id}
-            setResults={setResults}
-            participantNames={participantsNames}
-            participantsList={
-              race.invites.length
-                ? race.participants.concat(
-                    race.invites.map((i) => i.userName ?? i.userEmail)
-                  )
-                : race.participants
-            }
-          />
-        </div>
-      </DialogContent>
-    </Dialog>
+    <div className="flex">
+      <div className="flex flex-col py-4 gap-1">
+        {allParticipants.map((u, index) => (
+          <div className="flex items-center h-[36px] w-[30px]" key={index}>
+            {index + 1}
+          </div>
+        ))}
+      </div>
+      <div className="grid gap-4 py-4">
+        <RaceParticipants
+          key={race.id}
+          raceId={race.id}
+          setResults={setResults}
+          participantNames={participantsNames}
+          participantsList={allParticipants}
+        />
+      </div>
+    </div>
   );
 };
 

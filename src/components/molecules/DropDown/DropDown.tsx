@@ -35,31 +35,28 @@ const DropDown: React.FC<DropDownProps> = ({ session }) => {
               <p className="text-white">{session?.user?.name}</p>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <Link
-                href={"/"}
-                className="flex justify-center text-[#F6F6F6] items-center hover:text-red-400"
-              >
+            <DropdownMenuItem className="*:text-[#F6F6F6] *:hover:text-red-400">
+              <Link href={"/"} className="flex justify-center items-center">
                 <Home className="mr-2 h-4 w-4 " />
-                <p className="text-white">Home</p>
+                <p>Home</p>
               </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem>
+            <DropdownMenuItem className="*:text-[#F6F6F6] *:hover:text-red-400">
               <Link
                 href={"/profile"}
-                className="flex justify-center text-[#F6F6F6] items-center hover:text-red-400"
+                className="flex justify-center items-center"
               >
                 <User className="mr-2 h-4 w-4 " />
-                <p className="text-white">Profile</p>
+                <p>Profile</p>
               </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem>
+            <DropdownMenuItem className="*:text-[#F6F6F6] *:hover:text-red-400">
               <Link
                 href={"/profile/settings"}
-                className="flex justify-center text-[#F6F6F6] items-center hover:text-red-400"
+                className="flex justify-center items-center"
               >
                 <Settings className="mr-2 h-4 w-4 " />
-                <p className="text-white">Settings</p>
+                <p>Settings</p>
               </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
@@ -68,7 +65,7 @@ const DropDown: React.FC<DropDownProps> = ({ session }) => {
           ""
         )}
 
-        <DropdownMenuItem className="flex justify-center">
+        <DropdownMenuItem className="flex justify-center *:text-[#F6F6F6] *:hover:text-red-400">
           <LoginButton session={session} />
         </DropdownMenuItem>
       </DropdownMenuContent>

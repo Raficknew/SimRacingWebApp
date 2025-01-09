@@ -1,12 +1,4 @@
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Invite, type Race } from "@prisma/client";
+import { type Race } from "@prisma/client";
 import { getParticipantsNames } from "../RaceResultDialog/actions";
 import DeleteParticipantButton from "./DeleteParticipantButton/DeleteParticipantButton";
 import {
@@ -14,10 +6,29 @@ import {
   DeleteParticipantFromRace,
 } from "@/src/app/races/[id]/actions";
 import DeleteInvitedParticipantFromRace from "./DeleteInvitedParticipantFromRace/DeleteInvitedParticipantFromRace";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import Participant from "../../atoms/Patricipant/Patricipant";
+import ParticipantToDelete from "./ParticipantToDelete/ParticipantToDelete";
+
+type UserInInvite = {
+  user: {
+    id: string;
+    name: string | null;
+    email: string | null;
+    emailVerified: Date | null;
+    image: string | null;
+  } | null;
+} & {
+  id: string;
+  leagueId: string | null;
+  raceId: string | null;
+  userEmail: string;
+  userName: string | null;
+};
 
 type DeleteParticipantFromRaceDialogProps = {
   race: Race;
-  invites: Invite[];
+  invites: UserInInvite[];
 };
 
 const DeleteParticipantFromRaceDialog: React.FC<
@@ -25,44 +36,39 @@ const DeleteParticipantFromRaceDialog: React.FC<
 > = async ({ race, invites }) => {
   const participantsNames = await getParticipantsNames(race.participants ?? []);
   return (
-    <Dialog>
-      <DialogTrigger>Manage</DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Usuń Kierowcę</DialogTitle>
-        </DialogHeader>
-        <div className="flex flex-col gap-2">
-          {Object.entries(participantsNames).map(([id, user]) => (
-            <div
-              className="flex justify-between items-center bg-gray-100 rounded-sm px-2"
-              key={id}
-            >
-              {user ? user.name : id}
-
-              <DeleteParticipantButton
-                participantId={id}
-                raceId={race.id}
-                DeleteParticipantFromRace={DeleteParticipantFromRace}
-              />
-            </div>
-          ))}
-          {invites.map((i) => (
-            <div
-              className="flex justify-between items-center bg-gray-100 rounded-sm px-2"
-              key={i.id}
-            >
-              {i.userName ?? i.userEmail}
-
-              <DeleteInvitedParticipantFromRace
-                raceID={race.id}
-                inviteID={i.id}
-                DeleteInvitedParticipant={DeleteInvitedParticipant}
-              />
-            </div>
-          ))}
-        </div>
-      </DialogContent>
-    </Dialog>
+    <div className="flex w-fit flex-col gap-2">
+      {Object.entries(participantsNames).map(([id, user]) =>
+        user ? (
+          <ParticipantToDelete
+            key={id}
+            name={user?.name ?? id}
+            avatar={user?.image ?? ""}
+            raceID={race.id}
+            participantID={user?.id}
+          />
+        ) : (
+          <ParticipantToDelete key={id} name={id} raceID={race.id} />
+        )
+      )}
+      {invites.map((i) =>
+        i.user ? (
+          <ParticipantToDelete
+            key={i.id}
+            name={i.user.name ?? i.user.id}
+            avatar={i.user.image ?? ""}
+            inviteID={i.id}
+            raceID={race.id}
+          />
+        ) : (
+          <ParticipantToDelete
+            key={i.id}
+            name={i.userName ?? i.userEmail}
+            inviteID={i.id}
+            raceID={race.id}
+          />
+        )
+      )}
+    </div>
   );
 };
 

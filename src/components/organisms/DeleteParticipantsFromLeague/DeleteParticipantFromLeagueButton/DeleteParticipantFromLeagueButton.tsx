@@ -1,8 +1,8 @@
 "use client";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { User } from "@prisma/client";
-import { Trash } from "lucide-react";
+import { Trash, UserIcon } from "lucide-react";
 
 interface DeleteParticipantFromLeagueButonProps {
   participant: User;
@@ -17,15 +17,18 @@ const DeleteParticipantFromLeagueButon: React.FC<
   DeleteParticipantFromLeagueButonProps
 > = ({ participant, championshipID, DeleteParticipantFromLeague }) => {
   return (
-    <div className="flex justify-between items-center bg-gray-100 px-3 py-1 rounded-lg">
-      <div className="flex justify-center items-center gap-2">
-        <Avatar className="w-8 h-8">
-          <AvatarImage src={participant.image || ""} />
+    <div className="flex bg-opacity-95 text-white justify-between gap-5 min-w-[300px]">
+      <div className="flex items-center gap-2 bg-[#3A3A3A] w-full px-3 rounded-sm">
+        <Avatar className="size-7">
+          <AvatarImage src={participant.image ?? ""} />
+          <AvatarFallback className="bg-custom-gradient">
+            <UserIcon className="size-5" />
+          </AvatarFallback>
         </Avatar>
-        {participant.name}
+        <p>{participant.name}</p>
       </div>
       <Button
-        className="p-2 bg-red-300"
+        className="p-2 bg-red-500 hover:bg-red-700"
         onClick={() =>
           DeleteParticipantFromLeague(participant.id, championshipID)
         }

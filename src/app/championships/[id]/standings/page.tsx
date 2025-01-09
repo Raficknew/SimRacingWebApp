@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { getParticipantPoints } from "./actions";
-import ParticipantBox from "@/src/components/atoms/PatricipantBox/PatricipantBox";
+import ParticipantBox from "@/src/components/atoms/Patricipant/Patricipant";
 import {
   Table,
   TableBody,
@@ -63,7 +63,7 @@ const StandingsPage: React.FC<StandingsPageProps> = async ({
         </div>
         <div className="flex self-stretch flex-wrap justify-center items-center gap-2  text-orange-400 px-3 py-0.5 rounded-full">
           <Trophy />
-          {championship.name} Standings
+          {championship.name} Klasyfikacja
         </div>
         <div className="w-[104px] flex justify-end">
           {session?.user?.email == leagueAuthor?.author.email && (
@@ -76,9 +76,12 @@ const StandingsPage: React.FC<StandingsPageProps> = async ({
                   <DialogTitle>Ustawienia</DialogTitle>
                 </DialogHeader>
                 <div className="flex flex-col gap-5">
-                  <LinkButton href={`/championships/${id}/create-race`}>
+                  <LinkButton
+                    classname="border"
+                    href={`/championships/${id}/create-race`}
+                  >
                     <Flag className="w-4 h-4" />
-                    <p>Create Race</p>
+                    <p>Utwórz wyścig</p>
                   </LinkButton>
                   <InviteToLeagueBar
                     createInvite={createInviteToLeague}
@@ -96,7 +99,14 @@ const StandingsPage: React.FC<StandingsPageProps> = async ({
       </div>
       <div className="flex flex-wrap md:flex-nowrap">
         <Table className="bg-gray-100 bg-opacity-5 rounded-md">
-          <TableBody>
+          <TableHeader className="bg-[#303030] bg-opacity-40">
+            <TableRow className="*:text-white">
+              <TableHead>#</TableHead>
+              <TableHead>Driver</TableHead>
+              <TableHead className="text-right">Punkty</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody className="bg-[#3A3A3A] opacity-95">
             {participants.length
               ? participants.map((u, index) => (
                   <TableRow key={index}>
@@ -119,7 +129,6 @@ const StandingsPage: React.FC<StandingsPageProps> = async ({
                         {u.name}
                       </div>
                     </TableCell>
-                    <TableCell className="text-blue-400">Narazie NIE</TableCell>
                     <TableCell className="text-right text-white">
                       {u.points}
                     </TableCell>
@@ -139,7 +148,6 @@ const StandingsPage: React.FC<StandingsPageProps> = async ({
                       {index + 1}
                     </TableCell>
                     <TableCell className="text-white">{u.user.name}</TableCell>
-                    <TableCell className="text-white">Narazie NIE</TableCell>
                     <TableCell className="text-right text-red-300">0</TableCell>
                   </TableRow>
                 ))}

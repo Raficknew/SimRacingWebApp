@@ -61,7 +61,7 @@ const RaceForm: React.FC<RaceFormProps> = ({ createRace, leagueId }) => {
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-white">Race Name</FormLabel>
+              <FormLabel className="text-white">Nazwa wyścigu</FormLabel>
               <FormControl>
                 <Input {...field} />
               </FormControl>
@@ -74,7 +74,7 @@ const RaceForm: React.FC<RaceFormProps> = ({ createRace, leagueId }) => {
           name="description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-white">Description</FormLabel>
+              <FormLabel className="text-white">Opis</FormLabel>
               <FormControl>
                 <Textarea {...field} />
               </FormControl>
@@ -87,7 +87,7 @@ const RaceForm: React.FC<RaceFormProps> = ({ createRace, leagueId }) => {
           name="circuit"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-white">Circuit</FormLabel>
+              <FormLabel className="text-white">Tor</FormLabel>
               <FormControl>
                 <Input {...field} />
               </FormControl>
@@ -172,7 +172,7 @@ const RaceForm: React.FC<RaceFormProps> = ({ createRace, leagueId }) => {
           )}
         />
 
-        <Button type="submit">Create</Button>
+        <Button type="submit">Utwórz</Button>
       </form>
     </Form>
   );

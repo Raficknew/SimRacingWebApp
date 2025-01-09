@@ -17,35 +17,33 @@ export default async function Home() {
   });
 
   return (
-    <div>
-      <div className="flex flex-col px-8 pt-20 gap-3 justify-center">
-        {session && (
-          <div className="flex flex-col">
-            <div className="flex flex-col gap-2 max-w-[600px]"></div>
-            <div className="flex self-end">
-              <LinkButton href="/races/create-race">
-                <Flag className="w-4 h-4" />
-                <p>Create Race</p>
-              </LinkButton>
-            </div>
+    <div className="flex flex-col gap-3 justify-center">
+      {session && (
+        <div className="flex flex-col">
+          <div className="flex flex-col gap-2 max-w-[600px]"></div>
+          <div className="flex self-end">
+            <LinkButton classname="bg-white px-5" href="/races/create-race">
+              <Flag className="w-4 h-4" />
+              <p>Utwórz wyścig</p>
+            </LinkButton>
           </div>
-        )}
-        {races.length > 0 ? (
-          <div className="flex flex-col self-stretch justify-center items-center gap-5">
-            {races.map((race) => (
-              <Link
-                href={`/races/${race.id}`}
-                key={race.id}
-                className="self-stretch"
-              >
-                <RaceCard race={race} author={race.author} />
-              </Link>
-            ))}
-          </div>
-        ) : (
-          "No races yet"
-        )}
-      </div>
+        </div>
+      )}
+      {races.length > 0 ? (
+        <div className="flex flex-col self-stretch justify-center items-center gap-5">
+          {races.map((race) => (
+            <Link
+              href={`/races/${race.id}`}
+              key={race.id}
+              className="self-stretch"
+            >
+              <RaceCard race={race} author={race.author} />
+            </Link>
+          ))}
+        </div>
+      ) : (
+        "No races yet"
+      )}
     </div>
   );
 }

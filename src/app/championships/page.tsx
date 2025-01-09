@@ -27,10 +27,13 @@ const ChampionshipsPage = async ({
       <div className="flex justify-between">
         <SearchBar placeholder="Search for leagues" />
         {session && (
-          <LinkButton href={"/championships/create"}>
+          <LinkButton
+            classname="bg-white max-w-[180px]"
+            href={"/championships/create"}
+          >
             {" "}
             <Flag className="w-4 h-4" />
-            Create League
+            Utwórz ligę
           </LinkButton>
         )}
       </div>

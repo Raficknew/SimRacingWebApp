@@ -13,19 +13,19 @@ const LoginButton: React.FC<LoginbuttonProps> = ({ session }) => {
     <div>
       {user ? (
         <button
-          className="flex justify-center text-[#F6F6F6] items-center hover:text-red-400"
+          className="flex justify-center  items-center"
           onClick={() => signOut({ callbackUrl: "/" })}
         >
           <LogOut className="mr-2 h-4 w-4 " />
-          <p className="text-white">LogOut</p>
+          <p>Wyloguj się</p>
         </button>
       ) : (
         <button
-          className="flex justify-center text-[#F6F6F6] items-center hover:text-red-400"
+          className="flex justify-center items-center"
           onClick={() => signIn()}
         >
           <LogIn className="mr-2 h-4 w-4 " />
-          <p className="text-white">LogIn</p>
+          <p>Zaloguj się</p>
         </button>
       )}
     </div>

@@ -43,7 +43,7 @@ const LeagueForm: React.FC<LeagueFormProps> = ({ createLeague }) => {
               <FormItem>
                 <FormLabel>Nazwa</FormLabel>
                 <FormControl>
-                  <Input placeholder="name" {...field} />
+                  <Input placeholder="Nazwa" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -62,7 +62,7 @@ const LeagueForm: React.FC<LeagueFormProps> = ({ createLeague }) => {
               </FormItem>
             )}
           />
-          <Button type="submit">Submit</Button>
+          <Button type="submit">Utwórz</Button>
         </form>
       </Form>
     </div>

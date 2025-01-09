@@ -10,9 +10,8 @@ import {
 import RaceResultDialog from "@/src/components/organisms/RaceResultDialog/RaceResultDialog";
 import { redirect } from "next/navigation";
 import { RaceStatus } from "@prisma/client";
-import LinkButton from "@/src/components/atoms/LinkButton/LinkButton";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { Clock2, Settings, Table } from "lucide-react";
+import { Clock2, Settings, Trophy } from "lucide-react";
 import dayjs from "dayjs";
 import { Badge } from "@/components/ui/badge";
 import { getParticipantsNames } from "@/src/components/organisms/RaceResultDialog/actions";
@@ -23,11 +22,15 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import ParticipantBox from "@/src/components/atoms/PatricipantBox/PatricipantBox";
 import { getChampionship } from "../../championships/[id]/actions";
 import ChangeStatusForRaceButton from "./ChangeStatusForRaceButton/ChangeStatusForRaceButton";
 import InviteToRaceBar from "@/src/components/molecules/InviteToRaceBar/InviteToRaceBar";
 import DeleteParticipantFromRaceDialog from "@/src/components/organisms/DeleteParticipantFromRaceDialog/DeleteParticipantFromRaceDialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import Link from "next/link";
+import Participant from "@/src/components/atoms/Patricipant/Patricipant";
+import ParticipantWithPosition from "@/src/components/atoms/ParticipantWithPosition/ParticipantWithPosition";
+import "dayjs/locale/pl";
 
 type RacePageProps = {
   params: {
@@ -41,211 +44,235 @@ const RacePage: React.FC<RacePageProps> = async ({ params: { id } }) => {
 
   if (!race) redirect("/");
 
-  const participantsNames = await getParticipantsNames(race.participants ?? []);
+  const existingParticipants = race.invites.length
+    ? race.participants.concat(
+        race.invites.filter((i) => i.user).map((i) => i.user.id)
+      )
+    : race.participants;
 
+  const participantsNames = await getParticipantsNames(
+    existingParticipants ?? []
+  );
+
+  dayjs.locale("pl");
   return (
-    <div className="flex flex-col bg-custom-gradient rounded-sm p-5 min-h-[630px] gap-12">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-1">
-          <Avatar className="w-8 h-8">
-            <AvatarImage src={race.author.image!} />
-          </Avatar>
-          <p className="text-sm text-white">{race.author.name}</p>
+    <div className="flex flex-col bg-custom-gradient rounded-sm p-8 min-h-[630px] gap-20">
+      <div className="flex flex-col gap-2">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Avatar className="size-8">
+              <AvatarImage src={race.author.image ?? ""} />
+            </Avatar>
+            <p className="text-sm text-white">{race.author.name}</p>
+          </div>
+          <div className="flex self-stretch flex-wrap justify-center items-center gap-2 text-white px-3 py-0.5 rounded-full">
+            <Clock2 className="size-6" />
+            <p>{race.raceHour}</p>
+            <p>{dayjs(race.raceDate).format("DD MMMM YYYY")}</p>
+          </div>
+          <div className="w-[104px] flex justify-end">
+            {session?.user?.email == race.author.email && (
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Settings className="text-white cursor-pointer size-6" />
+                </DialogTrigger>
+                <DialogContent>
+                  <Tabs defaultValue="general" className="w-[400px]">
+                    <DialogHeader>
+                      <DialogTitle>
+                        <TabsList className="bg-white">
+                          <TabsTrigger value="general">Ogólne</TabsTrigger>
+                          {race.status !== RaceStatus.ENDED && (
+                            <TabsTrigger value="drivers">
+                              Zarządzaj kierowcami
+                            </TabsTrigger>
+                          )}
+                          {race.status === RaceStatus.ENDED &&
+                            race.results.length == 0 &&
+                            race.participants.length + race.invites.length >=
+                              2 && (
+                              <TabsTrigger value="score">
+                                Dodaj wynik
+                              </TabsTrigger>
+                            )}
+                        </TabsList>
+                      </DialogTitle>
+                    </DialogHeader>
+                    <TabsContent value="general">
+                      <div className="flex flex-col gap-4">
+                        {race.status == RaceStatus.BEFORE && !race.leagueId && (
+                          <InviteToRaceBar
+                            id={id}
+                            createInviteToRace={createInviteToRace}
+                          />
+                        )}
+                        {race.status !== RaceStatus.ENDED && (
+                          <ChangeStatusForRaceButton
+                            raceID={race.id}
+                            ChangeStatus={changeStatus}
+                          />
+                        )}
+                        <DeleteRaceButton
+                          raceID={race.id}
+                          DeleteRace={deleteRace}
+                        />
+                      </div>
+                    </TabsContent>
+                    <TabsContent value="drivers">
+                      <DeleteParticipantFromRaceDialog
+                        race={race}
+                        invites={race.invites}
+                      />
+                    </TabsContent>
+                    <TabsContent value="score">
+                      <RaceResultDialog
+                        key={race.id}
+                        race={race}
+                        invites={race.invites}
+                      />
+                    </TabsContent>
+                  </Tabs>
+                </DialogContent>
+              </Dialog>
+            )}
+          </div>
         </div>
-        <div className="flex self-stretch flex-wrap justify-center items-center gap-2 bg-white text-[#303030] px-3 py-0.5 rounded-full">
-          <Clock2 className="h-4 w-4" />
-          <p>{race.raceHour}</p>
-          <p>{dayjs(race.raceDate).format("DD MMM YYYY")}</p>
-        </div>
-        <div className="w-[104px] flex justify-end">
-          {session?.user?.email == race.author.email && (
-            <Dialog>
-              <DialogTrigger asChild>
-                <Settings className="text-white cursor-pointer" />
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Ustawienia</DialogTitle>
-                </DialogHeader>
-                <div className="flex flex-col  gap-5">
-                  {race.status == RaceStatus.BEFORE && !race.leagueId ? (
-                    <InviteToRaceBar
-                      id={id}
-                      createInviteToRace={createInviteToRace}
-                    />
-                  ) : (
-                    race.status === RaceStatus.ENDED &&
-                    race.results.length == 0 &&
-                    race.participants.length >= 2 && (
-                      <RaceResultDialog key={race.id} raceId={race.id} />
-                    )
-                  )}
-                  {race.status !== RaceStatus.ENDED && (
-                    <ChangeStatusForRaceButton
-                      raceID={race.id}
-                      ChangeStatus={changeStatus}
-                    />
-                  )}
-                  <DeleteRaceButton raceID={race.id} DeleteRace={deleteRace} />
-                </div>
-              </DialogContent>
-            </Dialog>
-          )}
-        </div>
+        {race.league && (
+          <Link
+            href={`/championships/${race.leagueId}/standings`}
+            className="flex gap-2 *:text-[#FFA750] self-center cursor-pointer"
+          >
+            <Trophy className="size-6" />
+            <p>{race.league.name}</p>
+          </Link>
+        )}
       </div>
       {race.results.length > 1 ? (
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center gap-3">
           <Badge className="bg-gray-600 hover:bg-gray-700">{race.status}</Badge>
-          <div className="flex gap-2 items-center justify-center">
+          <div className="flex flex-col gap-2 items-center justify-center">
             <p className="text-4xl text-white">{race.name}</p>
-            <Badge className="bg-rose-900 hover:bg-rose-950">
-              {race.series}
-            </Badge>
-            <Badge className="bg-orange-900 hover:bg-orange-950">
-              {race.circuit}
-            </Badge>
+            <div className="flex gap-2">
+              <Badge className="bg-red-900 hover:bg-red-950">
+                {race.series}
+              </Badge>
+              <Badge className="bg-gray-500 hover:bg-gray-600">
+                {race.circuit}
+              </Badge>
+            </div>
           </div>
           <div className="flex flex-col justify-center items-center gap-2">
             <p className="text-white">Results</p>
-            <div className="grid grid-rows-2 grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-3">
               {race.results.map((person, index) =>
-                person in participantsNames ? (
-                  <ParticipantBox
-                    key={index}
-                    position={index + 1}
-                    className={
-                      {
-                        1: "border border-yellow-200 shadow shadow-yellow-500",
-                        2: "border border-gray-300",
-                        3: "border border-amber-700",
-                      }[index + 1] || ""
-                    }
-                  >
-                    <div className="flex justify-center items-center gap-2">
-                      <Avatar className="w-8 h-8">
-                        <AvatarImage
-                          src={
-                            Object.entries(participantsNames).find(
-                              (u) => u[1]?.id == person
-                            )?.[1]?.image || ""
-                          }
-                        />
-                      </Avatar>
-                      {
+                index % 2 == 0 ? (
+                  <div key={index} className="h-[36px]">
+                    <ParticipantWithPosition
+                      position={index + 1}
+                      name={
                         Object.entries(participantsNames).find(
                           (u) => u[1]?.id == person
-                        )?.[1]?.name
+                        )?.[1]?.name || person
                       }
-                    </div>
-                  </ParticipantBox>
+                      avatar={
+                        Object.entries(participantsNames).find(
+                          (u) => u[1]?.id == person
+                        )?.[1]?.image || ""
+                      }
+                    />
+                  </div>
                 ) : (
-                  <ParticipantBox
-                    key={index}
-                    position={index + 1}
-                    className={
-                      {
-                        1: "border border-yellow-200 shadow shadow-yellow-500",
-                        2: "border border-gray-300",
-                        3: "border border-amber-700",
-                      }[index + 1] || ""
-                    }
-                  >
-                    {person}
-                  </ParticipantBox>
+                  <div key={index} className="mt-3 h-[36px]">
+                    <ParticipantWithPosition
+                      position={index + 1}
+                      name={
+                        Object.entries(participantsNames).find(
+                          (u) => u[1]?.id == person
+                        )?.[1]?.name || person
+                      }
+                      avatar={
+                        Object.entries(participantsNames).find(
+                          (u) => u[1]?.id == person
+                        )?.[1]?.image || ""
+                      }
+                    />
+                  </div>
                 )
               )}
             </div>
           </div>
         </div>
       ) : (
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-10">
           <div className="flex flex-col justify-center items-center gap-6">
             <Badge
               className={
                 {
-                  BEFORE: "bg-cyan-600 hover:bg-cyan-700",
-                  ONGOING: "bg-red-600 hover:bg-red-700",
-                  ENDED: "bg-gray-600 hover:bg-gray-700",
+                  BEFORE: "bg-green-800 hover:bg-green-900",
+                  ONGOING: "bg-red-700 hover:bg-red-700",
+                  ENDED: "bg-zinc-800 hover:bg-zinc-900",
                 }[race.status]
               }
             >
               {race.status}
             </Badge>
-            <p className="text-4xl text-white">{race.name}</p>
+            <p className="text-4xl text-white">{race.name.toUpperCase()}</p>
             <div className="flex gap-1">
-              <Badge className="bg-rose-900 hover:bg-rose-950">
+              <Badge className="bg-red-900 hover:bg-red-950">
                 {race.series}
               </Badge>
-              <Badge className="bg-orange-900 hover:bg-orange-950">
+              <Badge className="bg-gray-500 hover:bg-gray-600">
                 {race.circuit}
               </Badge>
             </div>
-            <p className="text-white">{race.description}</p>
+            <p className="text-white w-full">{race.description}</p>
           </div>
-          <div>
-            <div className="flex gap-2">
-              {session?.user?.email == race.author.email &&
-                !race.leagueId &&
-                race.status == RaceStatus.BEFORE && (
-                  <DeleteParticipantFromRaceDialog
-                    race={race}
-                    invites={race.invites}
-                  />
+          <div className="flex flex-col gap-2">
+            <p className="text-white">Kierowcy:</p>
+            <div className="p-3">
+              <div className="flex flex-wrap text-white gap-2">
+                {race.leagueId ? (
+                  (await getChampionship(race.leagueId)).participants.map(
+                    (u) => (
+                      <Participant
+                        key={u.id}
+                        avatar={u.user.image ?? ""}
+                        name={u.user.name || ""}
+                      />
+                    )
+                  )
+                ) : (
+                  <>
+                    {race.participants.map((p) => {
+                      const user = participantsNames[p];
+                      return (
+                        <Participant
+                          key={p}
+                          avatar={user?.image ?? ""}
+                          name={user?.name || p}
+                        />
+                      );
+                    })}
+                    {race.invites.map((i) =>
+                      i.user ? (
+                        <Participant
+                          key={i.id}
+                          name={i.user.name!}
+                          avatar={i.user.image ?? ""}
+                        />
+                      ) : (
+                        <Participant
+                          key={i.id}
+                          name={i.userName ?? i.userEmail}
+                        />
+                      )
+                    )}
+                  </>
                 )}
-              <p className="text-white">Participants:</p>
-            </div>
-            <div className="flex flex-wrap text-white gap-2">
-              {race.leagueId ? (
-                (await getChampionship(race.leagueId)).participants.map((u) => (
-                  <ParticipantBox key={u.id}>
-                    <div className="flex justify-center items-center gap-2">
-                      <Avatar className="w-8 h-8">
-                        <AvatarImage src={u.user.image!} />
-                      </Avatar>
-                      {u.user.name}
-                    </div>
-                  </ParticipantBox>
-                ))
-              ) : (
-                <>
-                  {Object.entries(participantsNames).map(([id, user]) => (
-                    <ParticipantBox key={id}>
-                      {user ? (
-                        <div className="flex justify-center items-center gap-2">
-                          <Avatar className="w-8 h-8">
-                            <AvatarImage src={user.image ?? ""} />
-                          </Avatar>
-                          {user.name}
-                        </div>
-                      ) : (
-                        id
-                      )}
-                    </ParticipantBox>
-                  ))}
-                  {race.invites.map((i) => (
-                    <ParticipantBox key={i.id}>
-                      {i.user ? (
-                        <div className="flex justify-center items-center gap-2">
-                          <Avatar className="w-8 h-8">
-                            <AvatarImage src={i.user.image || ""} />
-                          </Avatar>
-                          {i.user.name}
-                        </div>
-                      ) : (
-                        i.userName || i.userEmail
-                      )}
-                    </ParticipantBox>
-                  ))}
-                </>
-              )}
+              </div>
             </div>
           </div>
         </div>
-      )}
-      {race.leagueId && (
-        <LinkButton href={`/championships/${race.leagueId}/standings`}>
-          <Table width={20} height={20} /> Standings
-        </LinkButton>
       )}
     </div>
   );
