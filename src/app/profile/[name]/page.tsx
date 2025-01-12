@@ -59,7 +59,7 @@ const ProfilepPage = async () => {
               <p className="text-white">Zostałeś zaproszony do:</p>
               <div className="bg-white h-px w-3/4"></div>
             </div>
-            <div>
+            <div className="flex flex-col items-center gap-2">
               {invites.map((invite) => (
                 <Invite
                   key={invite.userEmail}

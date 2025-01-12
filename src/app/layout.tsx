@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import SessionProvider from "./SessionProvider";
 import Navbar from "../components/organisms/Navbar/Navbar";
+import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,6 +24,7 @@ export default function RootLayout({
           <div className="flex flex-col py-10 gap-24 h-screen w-screen max-w-[816px]">
             <Navbar />
             <main className="self-strech">{children}</main>
+            <Toaster />
           </div>
         </SessionProvider>
       </body>

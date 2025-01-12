@@ -6,7 +6,6 @@ import prisma from "@/lib/db/prisma";
 import { cache } from "react";
 import { isRaceAuthor, isValidObjectId } from "@/src/actions/actions";
 import { RaceStatus } from "@prisma/client";
-import { deleteInvite } from "../../profile/actions";
 
 export const deleteRace = async (raceId: string) => {
   if (!(await isValidObjectId(raceId))) notFound();
@@ -19,9 +18,9 @@ export const deleteRace = async (raceId: string) => {
     },
   });
 
-  if (!race) return;
+  if (!race) return { error: "Coś poszło nie tak" };
 
-  if (!(await isRaceAuthor(raceId))) return;
+  if (!(await isRaceAuthor(raceId))) return { error: "Coś poszło nie tak" };
 
   await prisma.race.delete({ where: { id: raceId } });
 

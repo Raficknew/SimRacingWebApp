@@ -1,36 +1,14 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/src/app/api/auth/[...nextauth]/auth";
-import DeleteRaceButton from "@/src/app/races/[id]/DeleteRaceButton/DeleteRaceButton";
-import {
-  changeStatus,
-  createInviteToRace,
-  deleteRace,
-  getRace,
-} from "./actions";
-import RaceResultDialog from "@/src/components/organisms/RaceResultDialog/RaceResultDialog";
+import { getRace } from "./actions";
 import { redirect } from "next/navigation";
-import { RaceStatus } from "@prisma/client";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { Clock2, Settings, Trophy } from "lucide-react";
 import dayjs from "dayjs";
 import { Badge } from "@/components/ui/badge";
 import { getParticipantsNames } from "@/src/components/organisms/RaceResultDialog/actions";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { getChampionship } from "../../championships/[id]/actions";
-import ChangeStatusForRaceButton from "./ChangeStatusForRaceButton/ChangeStatusForRaceButton";
-import InviteToRaceBar from "@/src/components/molecules/InviteToRaceBar/InviteToRaceBar";
-import DeleteParticipantFromRaceDialog from "@/src/components/organisms/DeleteParticipantFromRaceDialog/DeleteParticipantFromRaceDialog";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import Link from "next/link";
 import Participant from "@/src/components/atoms/Patricipant/Patricipant";
 import ParticipantWithPosition from "@/src/components/atoms/ParticipantWithPosition/ParticipantWithPosition";
-import "dayjs/locale/pl";
+import RaceTopBar from "@/src/components/organisms/RaceTopBar/RaceTopBar";
 
 type RacePageProps = {
   params: {
@@ -39,7 +17,6 @@ type RacePageProps = {
 };
 
 const RacePage: React.FC<RacePageProps> = async ({ params: { id } }) => {
-  const session = await getServerSession(authOptions);
   const race = await getRace(id);
 
   if (!race) redirect("/");
@@ -54,99 +31,9 @@ const RacePage: React.FC<RacePageProps> = async ({ params: { id } }) => {
     existingParticipants ?? []
   );
 
-  dayjs.locale("pl");
   return (
     <div className="flex flex-col bg-custom-gradient rounded-sm p-8 min-h-[630px] gap-20">
-      <div className="flex flex-col gap-2">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Avatar className="size-8">
-              <AvatarImage src={race.author.image ?? ""} />
-            </Avatar>
-            <p className="text-sm text-white">{race.author.name}</p>
-          </div>
-          <div className="flex self-stretch flex-wrap justify-center items-center gap-2 text-white px-3 py-0.5 rounded-full">
-            <Clock2 className="size-6" />
-            <p>{race.raceHour}</p>
-            <p>{dayjs(race.raceDate).format("DD MMMM YYYY")}</p>
-          </div>
-          <div className="w-[104px] flex justify-end">
-            {session?.user?.email == race.author.email && (
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Settings className="text-white cursor-pointer size-6" />
-                </DialogTrigger>
-                <DialogContent>
-                  <Tabs defaultValue="general" className="w-[400px]">
-                    <DialogHeader>
-                      <DialogTitle>
-                        <TabsList className="bg-white">
-                          <TabsTrigger value="general">Ogólne</TabsTrigger>
-                          {race.status !== RaceStatus.ENDED && (
-                            <TabsTrigger value="drivers">
-                              Zarządzaj kierowcami
-                            </TabsTrigger>
-                          )}
-                          {race.status === RaceStatus.ENDED &&
-                            race.results.length == 0 &&
-                            race.participants.length + race.invites.length >=
-                              2 && (
-                              <TabsTrigger value="score">
-                                Dodaj wynik
-                              </TabsTrigger>
-                            )}
-                        </TabsList>
-                      </DialogTitle>
-                    </DialogHeader>
-                    <TabsContent value="general">
-                      <div className="flex flex-col gap-4">
-                        {race.status == RaceStatus.BEFORE && !race.leagueId && (
-                          <InviteToRaceBar
-                            id={id}
-                            createInviteToRace={createInviteToRace}
-                          />
-                        )}
-                        {race.status !== RaceStatus.ENDED && (
-                          <ChangeStatusForRaceButton
-                            raceID={race.id}
-                            ChangeStatus={changeStatus}
-                          />
-                        )}
-                        <DeleteRaceButton
-                          raceID={race.id}
-                          DeleteRace={deleteRace}
-                        />
-                      </div>
-                    </TabsContent>
-                    <TabsContent value="drivers">
-                      <DeleteParticipantFromRaceDialog
-                        race={race}
-                        invites={race.invites}
-                      />
-                    </TabsContent>
-                    <TabsContent value="score">
-                      <RaceResultDialog
-                        key={race.id}
-                        race={race}
-                        invites={race.invites}
-                      />
-                    </TabsContent>
-                  </Tabs>
-                </DialogContent>
-              </Dialog>
-            )}
-          </div>
-        </div>
-        {race.league && (
-          <Link
-            href={`/championships/${race.leagueId}/standings`}
-            className="flex gap-2 *:text-[#FFA750] self-center cursor-pointer"
-          >
-            <Trophy className="size-6" />
-            <p>{race.league.name}</p>
-          </Link>
-        )}
-      </div>
+      <RaceTopBar race={race} />
       {race.results.length > 1 ? (
         <div className="flex flex-col items-center gap-3">
           <Badge className="bg-gray-600 hover:bg-gray-700">{race.status}</Badge>

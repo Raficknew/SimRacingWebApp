@@ -18,7 +18,7 @@ const Invite: React.FC<InviteProps> = ({
   DeleteInvite,
 }) => {
   return (
-    <div className="flex  gap-2 p-2 items-center bg-[#303030] rounded-lg">
+    <div className="flex w-full gap-2 p-2 items-center bg-[#303030] rounded-lg">
       <p className="text-sm text-pretty text-white">
         {invite.league?.name ?? invite.race?.name}
       </p>

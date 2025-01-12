@@ -40,7 +40,7 @@ export const deleteLeague = cache(async (leagueId: string) => {
 
   const league = prisma.league.findUnique({ where: { id: leagueId } });
 
-  if (!league) return;
+  if (!league) return { error: "Coś poszło nie tak" };
 
   await prisma.league.delete({ where: { id: leagueId } });
 
@@ -76,7 +76,7 @@ export const createInviteToLeague = cache(
     );
 
     if (isUserInvited || isUserInLeague)
-      return { error: "Użytkownik jest już zaproszony" };
+      return { error: "Użytkownik jest już w lidze" };
 
     await prisma.invite.create({
       data: { userEmail: userEmail, leagueId: league.id },

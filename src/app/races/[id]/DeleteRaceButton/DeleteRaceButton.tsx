@@ -2,19 +2,30 @@
 
 import { Button } from "@/components/ui/button";
 import { Trash } from "lucide-react";
+import { toast } from "sonner";
 
 type DeleteRaceButtonProps = {
   raceID: string;
-  DeleteRace: (raceID: string) => Promise<void>;
+  deleteRace: (raceID: string) => Promise<{ error: string } | undefined>;
 };
 
 const DeleteRaceButton: React.FC<DeleteRaceButtonProps> = ({
   raceID,
-  DeleteRace,
+  deleteRace,
 }) => {
+  async function handleDeleteRace() {
+    const result = await deleteRace(raceID);
+
+    result?.error
+      ? toast.warning(result.error, { richColors: true, duration: 2000 })
+      : toast.success("Wyścig został usunięty", {
+          richColors: true,
+          duration: 2000,
+        });
+  }
   return (
     <Button
-      onClick={async () => await DeleteRace(raceID)}
+      onClick={handleDeleteRace}
       className="bg-red-900 text-white cursor-pointer hover:bg-red-950 flex gap-2"
     >
       <Trash className="w-4 h-4" />

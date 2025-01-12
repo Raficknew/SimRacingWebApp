@@ -48,9 +48,9 @@ const RaceForm: React.FC<RaceFormProps> = ({ createRace, leagueId }) => {
   });
 
   function onSubmit(values: RaceFormType) {
-    (values.name =
-      values.name.charAt(0).toUpperCase() + values.name.slice(1).toLowerCase()),
-      createRace(values, leagueId ?? "");
+    values.name =
+      values.name.charAt(0).toUpperCase() + values.name.slice(1).toLowerCase();
+    createRace(values, leagueId ?? "");
   }
 
   return (

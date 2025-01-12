@@ -11,6 +11,7 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   userEmail: z.string().min(2).max(50),
@@ -30,7 +31,13 @@ const InviteToLeagueBar: React.FC<InviteToLeagueBarProps> = ({
 }) => {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const result = await createInvite(values.userEmail, id);
-    alert(result?.error);
+
+    result?.error
+      ? toast.error(result.error, { richColors: true, duration: 2000 })
+      : toast.success("Użytkownik został zaproszony", {
+          richColors: true,
+          duration: 2000,
+        });
   }
 
   const form = useForm<z.infer<typeof formSchema>>({

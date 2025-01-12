@@ -37,6 +37,4 @@ export async function createRace(raceData: RaceFormType) {
 
   revalidatePath("/races/create-race");
   redirect("/");
-
-  // ! toast to add
 }
