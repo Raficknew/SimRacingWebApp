@@ -18,15 +18,19 @@ const formSchema = z.object({
 
 type InviteToLeagueBarProps = {
   id: string;
-  createInvite: (userEmail: string, id: string) => Promise<void>;
+  createInvite: (
+    userEmail: string,
+    id: string
+  ) => Promise<{ error: string } | undefined>;
 };
 
 const InviteToLeagueBar: React.FC<InviteToLeagueBarProps> = ({
   createInvite,
   id,
 }) => {
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    createInvite(values.userEmail, id);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const result = await createInvite(values.userEmail, id);
+    alert(result?.error);
   }
 
   const form = useForm<z.infer<typeof formSchema>>({

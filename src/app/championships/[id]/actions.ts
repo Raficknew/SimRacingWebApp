@@ -71,13 +71,12 @@ export const createInviteToLeague = cache(
       (invite) => invite.userEmail === userEmail
     );
 
-    if (isUserInvited) return;
-
     const isUserInLeague = league.participants.some(
       (participant) => participant.user.name === user.name
     );
 
-    if (isUserInLeague) return;
+    if (isUserInvited || isUserInLeague)
+      return { error: "Użytkownik jest już zaproszony" };
 
     await prisma.invite.create({
       data: { userEmail: userEmail, leagueId: league.id },
