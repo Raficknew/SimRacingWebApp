@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import prisma from "@/lib/db/prisma";
 import { isInviteReciever } from "@/src/actions/actions";
+import { error } from "console";
 
 export const deleteInvite = async (
   inviteId: string,
@@ -15,9 +16,10 @@ export const deleteInvite = async (
     include: { user: { select: { name: true } } },
   });
 
-  if (!invite) return;
+  if (!invite) return { error: "Coś poszło nie tak" };
 
-  if (!(await isInviteReciever(invite.id))) return;
+  if (!(await isInviteReciever(invite.id)))
+    return { error: "Coś poszło nie tak" };
 
   await prisma.invite.delete({ where: { id: inviteId } });
 
@@ -33,13 +35,14 @@ export const deleteInvite = async (
 export const acceptInvite = async (userEmail: string, inviteId: string) => {
   const user = await prisma.user.findUnique({ where: { email: userEmail } });
 
-  if (!user) return;
+  if (!user) return { error: "Coś poszło nie tak" };
 
   const invite = await prisma.invite.findUnique({ where: { id: inviteId } });
 
-  if (!invite) return;
+  if (!invite) return { error: "Coś poszło nie tak" };
 
-  if (!(await isInviteReciever(inviteId))) return;
+  if (!(await isInviteReciever(inviteId)))
+    return { error: "Coś poszło nie tak" };
 
   if (user.email && invite.raceId) {
     await prisma.race.update({

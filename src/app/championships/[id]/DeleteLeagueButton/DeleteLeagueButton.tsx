@@ -5,7 +5,7 @@ import { toast } from "sonner";
 
 interface DeleteLeagueButtonProps {
   leagueId: string;
-  deleteLeague: (leagueId: string) => Promise<{ error: string } | undefined>;
+  deleteLeague: (leagueId: string) => Promise<{ error: string } | void>;
 }
 
 const DeleteLeagueButton: React.FC<DeleteLeagueButtonProps> = ({

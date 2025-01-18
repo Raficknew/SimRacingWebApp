@@ -6,7 +6,7 @@ import { toast } from "sonner";
 
 type DeleteRaceButtonProps = {
   raceID: string;
-  deleteRace: (raceID: string) => Promise<{ error: string } | undefined>;
+  deleteRace: (raceID: string) => Promise<{ error: string } | void>;
 };
 
 const DeleteRaceButton: React.FC<DeleteRaceButtonProps> = ({

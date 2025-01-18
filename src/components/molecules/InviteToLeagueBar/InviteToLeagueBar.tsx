@@ -12,6 +12,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { toast } from "sonner";
+import { DialogClose } from "@radix-ui/react-dialog";
 
 const formSchema = z.object({
   userEmail: z.string().min(2).max(50),
@@ -22,7 +23,7 @@ type InviteToLeagueBarProps = {
   createInvite: (
     userEmail: string,
     id: string
-  ) => Promise<{ error: string } | undefined>;
+  ) => Promise<{ error: string } | void>;
 };
 
 const InviteToLeagueBar: React.FC<InviteToLeagueBarProps> = ({
@@ -62,9 +63,11 @@ const InviteToLeagueBar: React.FC<InviteToLeagueBarProps> = ({
             </FormItem>
           )}
         />
-        <Button className="w-1/4 bg-custom-gradient" type="submit">
-          Wyślij
-        </Button>
+        <DialogClose className="w-1/4">
+          <Button className="w-full bg-custom-gradient" type="submit">
+            Wyślij
+          </Button>
+        </DialogClose>
       </form>
     </Form>
   );

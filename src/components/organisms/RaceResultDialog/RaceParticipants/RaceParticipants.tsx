@@ -7,12 +7,16 @@ import { Reorder } from "framer-motion";
 import { User } from "@prisma/client";
 import DraggableParticipant from "./DraggableParticipant/DraggableParticipant";
 import { DialogClose } from "@radix-ui/react-dialog";
+import { toast } from "sonner";
 
 interface RaceParticipantsProps {
   raceId: string;
   participantsList: string[];
   participantNames: Record<string, User | null>;
-  setResults: (raceID: string, participants: string[]) => Promise<void>;
+  setResults: (
+    raceID: string,
+    participants: string[]
+  ) => Promise<{ error: string } | void>;
 }
 
 const RaceParticipants: React.FC<RaceParticipantsProps> = ({
@@ -22,6 +26,13 @@ const RaceParticipants: React.FC<RaceParticipantsProps> = ({
   setResults,
 }) => {
   const [participants, SetParticipants] = useState(participantsList);
+
+  async function handleSetResults(raceId: string, participants: string[]) {
+    const result = await setResults(raceId, participants);
+    result?.error
+      ? toast.error(result.error, { richColors: true, duration: 2000 })
+      : toast.success("Zapisano wynik", { richColors: true, duration: 2000 });
+  }
 
   return (
     <>
@@ -59,7 +70,7 @@ const RaceParticipants: React.FC<RaceParticipantsProps> = ({
         <DialogClose>
           <Button
             className="bg-red-900 text-white cursor-pointer hover:bg-red-950 "
-            onClick={() => setResults(raceId, participants)}
+            onClick={() => handleSetResults(raceId, participants)}
           >
             Zapisz
           </Button>

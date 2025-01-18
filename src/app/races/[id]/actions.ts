@@ -6,6 +6,7 @@ import prisma from "@/lib/db/prisma";
 import { cache } from "react";
 import { isRaceAuthor, isValidObjectId } from "@/src/actions/actions";
 import { RaceStatus } from "@prisma/client";
+import { error } from "console";
 
 export const deleteRace = async (raceId: string) => {
   if (!(await isValidObjectId(raceId))) notFound();
@@ -58,19 +59,24 @@ export const createInviteToRace = cache(
       },
     });
 
-    if (!race) return;
+    if (!race) return { error: "Coś poszło nie tak" };
 
-    if (!(await isRaceAuthor(race.id))) return;
+    if (!(await isRaceAuthor(race.id))) return { error: "Coś poszło nie tak" };
 
-    const isUserInvited = race?.invites.some(
+    const isUserInvited = race.invites.some(
       (invite) => invite.userEmail === userEmail || invite.userName === userName
     );
 
-    if (isUserInvited) return;
+    const user = await prisma.user.findUnique({ where: { email: userEmail } });
 
-    const isUserInEvent = race?.participants.includes(userEmail);
+    let isUserInEvent = false;
 
-    if (isUserInEvent) return;
+    if (user) {
+      isUserInEvent = race.participants.includes(user.id);
+    }
+
+    if (isUserInvited || isUserInEvent)
+      return { error: "Użytkownik jest już w wyścigu" };
 
     await prisma.invite.create({
       data: {
@@ -86,7 +92,7 @@ export const createInviteToRace = cache(
 );
 
 export const changeStatus = async (raceId: string) => {
-  if (!raceId) return;
+  if (!raceId) return { error: "Coś poszło nie tak" };
 
   if (!(await isValidObjectId(raceId))) notFound();
 
@@ -98,11 +104,11 @@ export const changeStatus = async (raceId: string) => {
     },
   });
 
-  if (!race) return;
+  if (!race) return { error: "Coś poszło nie tak" };
 
-  if (race.status === RaceStatus.ENDED) return;
+  if (race.status === RaceStatus.ENDED) return { error: "Coś poszło nie tak" };
 
-  if (!(await isRaceAuthor(raceId))) return;
+  if (!(await isRaceAuthor(raceId))) return { error: "Coś poszło nie tak" };
 
   if (race.status === RaceStatus.BEFORE) {
     await prisma.race.update({
@@ -122,10 +128,13 @@ export const changeStatus = async (raceId: string) => {
 
 export const DeleteParticipantFromRace = cache(
   async (raceID: string, participantID: string) => {
-    if (!raceID) return;
+    if (!raceID || !participantID) return { error: "Coś poszło nie tak" };
 
-    if (!(await isValidObjectId(raceID))) notFound();
-    if (!(await isValidObjectId(participantID))) notFound();
+    if (
+      !(await isValidObjectId(raceID)) ||
+      !(await isValidObjectId(participantID))
+    )
+      notFound();
 
     const race = await prisma.race.findUnique({
       where: { id: raceID },
@@ -157,6 +166,7 @@ export const DeleteParticipantFromRace = cache(
 
 export const DeleteInvitedParticipant = cache(
   async (raceID: string, inviteID: string) => {
+    if (!raceID || !inviteID) return { error: "Coś poszło nie tak" };
     if (!(await isValidObjectId(raceID))) notFound();
     if (!(await isValidObjectId(inviteID))) notFound();
 
