@@ -1,4 +1,4 @@
-import prisma from "@/lib/db/prisma";
+import { prisma } from "@/lib/db/prisma";
 import RaceCard from "@/src/components/molecules/RaceCard/RaceCard";
 import SearchBar from "@/src/components/organisms/SearchBar/SearchBar";
 import { getServerSession } from "next-auth";

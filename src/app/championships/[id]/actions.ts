@@ -1,7 +1,7 @@
 "use server";
 
 import { notFound, redirect } from "next/navigation";
-import prisma from "@/lib/db/prisma";
+import { prisma } from "@/lib/db/prisma";
 import { cache } from "react";
 import { isLeagueAuthor, isValidObjectId } from "@/src/actions/actions";
 import { revalidatePath } from "next/cache";

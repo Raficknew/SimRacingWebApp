@@ -1,5 +1,5 @@
 import { getServerSession } from "next-auth";
-import prisma from "@/lib/db/prisma";
+import { prisma } from "@/lib/db/prisma";
 import RaceCard from "@/src/components/molecules/RaceCard/RaceCard";
 import Link from "next/link";
 import LinkButton from "../components/atoms/LinkButton/LinkButton";

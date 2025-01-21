@@ -2,11 +2,10 @@
 
 import { revalidatePath } from "next/cache";
 import { notFound, redirect } from "next/navigation";
-import prisma from "@/lib/db/prisma";
+import { prisma } from "@/lib/db/prisma";
 import { cache } from "react";
 import { isRaceAuthor, isValidObjectId } from "@/src/actions/actions";
 import { RaceStatus } from "@prisma/client";
-import { error } from "console";
 
 export const deleteRace = async (raceId: string) => {
   if (!(await isValidObjectId(raceId))) notFound();

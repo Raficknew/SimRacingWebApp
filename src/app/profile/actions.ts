@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import prisma from "@/lib/db/prisma";
+import { prisma } from "@/lib/db/prisma";
 import { isInviteReciever } from "@/src/actions/actions";
 import { error } from "console";
 

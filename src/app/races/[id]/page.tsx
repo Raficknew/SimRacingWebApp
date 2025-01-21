@@ -1,8 +1,5 @@
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/src/app/api/auth/[...nextauth]/auth";
 import { getRace } from "./actions";
 import { redirect } from "next/navigation";
-import dayjs from "dayjs";
 import { Badge } from "@/components/ui/badge";
 import { getParticipantsNames } from "@/src/components/organisms/RaceResultDialog/actions";
 import { getChampionship } from "../../championships/[id]/actions";

@@ -7,7 +7,7 @@ import {
 } from "@/src/components/organisms/RaceForm/r";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import prisma from "@/lib/db/prisma";
+import { prisma } from "@/lib/db/prisma";
 import { revalidatePath } from "next/cache";
 
 export const createLeagueRace = async (
