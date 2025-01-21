@@ -29,8 +29,8 @@ export const getParticipantsNames = cache(async (ids: string[]) => {
 });
 
 export const setResults = async (raceID: string, participants: string[]) => {
-  if (!(await isValidObjectId(raceID))) return;
-  if (!(await isRaceAuthor(raceID))) return;
+  if (!(await isValidObjectId(raceID))) return { error: "Coś poszło nie tak" };
+  if (!(await isRaceAuthor(raceID))) return { error: "Coś poszło nie tak" };
 
   await prisma.race.update({
     where: { id: raceID },

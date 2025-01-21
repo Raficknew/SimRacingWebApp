@@ -30,10 +30,14 @@ import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { Series, RaceStatus } from "@prisma/client";
 import { RaceFormSchema, RaceFormType } from "./r";
+import { toast } from "sonner";
 
 interface RaceFormProps {
   leagueId?: string | null;
-  createRace: (data: RaceFormType, leagueId: string) => Promise<void>;
+  createRace: (
+    data: RaceFormType,
+    leagueId: string
+  ) => Promise<{ error: string } | void>;
 }
 
 const RaceForm: React.FC<RaceFormProps> = ({ createRace, leagueId }) => {
@@ -47,10 +51,19 @@ const RaceForm: React.FC<RaceFormProps> = ({ createRace, leagueId }) => {
     },
   });
 
-  function onSubmit(values: RaceFormType) {
-    (values.name =
-      values.name.charAt(0).toUpperCase() + values.name.slice(1).toLowerCase()),
-      createRace(values, leagueId ?? "");
+  async function onSubmit(values: RaceFormType) {
+    values.name =
+      values.name.charAt(0).toUpperCase() + values.name.slice(1).toLowerCase();
+    const createRacePromise = createRace(values, leagueId ?? "");
+
+    toast.promise(createRacePromise, {
+      loading: "Tworzenie wyścigu...",
+      success: "Utworzono wyścig",
+      error: "Coś poszło nie tak",
+    });
+
+    const result = await createRacePromise;
+    result?.error && toast.error(result.error);
   }
 
   return (

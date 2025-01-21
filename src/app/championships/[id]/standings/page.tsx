@@ -31,6 +31,7 @@ import LinkButton from "@/src/components/atoms/LinkButton/LinkButton";
 import DeleteLeagueButton from "../DeleteLeagueButton/DeleteLeagueButton";
 import bg from "@/src/assets/8ec323bd-ab9b-43a6-88df-51951fe44f6b.jpg";
 import InviteToLeagueBar from "@/src/components/molecules/InviteToLeagueBar/InviteToLeagueBar";
+import CustomBackground from "@/src/components/atoms/CustomBackground/CustomBackground";
 
 type StandingsPageProps = {
   params: {
@@ -154,17 +155,7 @@ const StandingsPage: React.FC<StandingsPageProps> = async ({
           </TableBody>
         </Table>
       </div>
-      <div>
-        <div
-          className="absolute top-0 left-0 z-[-2] min-h-screen w-full bg-cover bg-center flex justify-center items-center"
-          style={{
-            backgroundImage: `url(${bg.src})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        ></div>
-        <div className="absolute top-0 left-0 z-[-1] min-h-screen w-full bg-cover bg-center flex justify-center items-center bg-black opacity-30"></div>
-      </div>
+      <CustomBackground bg={bg.src} />
     </div>
   );
 };

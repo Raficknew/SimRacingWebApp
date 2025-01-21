@@ -36,11 +36,11 @@ export const getChampionshipAuthor = cache(async (id: string) => {
 
 export const deleteLeague = cache(async (leagueId: string) => {
   if (!(await isValidObjectId(leagueId))) notFound();
-  if (!(await isLeagueAuthor(leagueId))) return;
+  if (!(await isLeagueAuthor(leagueId))) return { error: "Coś poszło nie tak" };
 
   const league = prisma.league.findUnique({ where: { id: leagueId } });
 
-  if (!league) return;
+  if (!league) return { error: "Coś poszło nie tak" };
 
   await prisma.league.delete({ where: { id: leagueId } });
 
@@ -51,11 +51,11 @@ export const deleteLeague = cache(async (leagueId: string) => {
 export const createInviteToLeague = cache(
   async (userEmail: string, id: string) => {
     if (!(await isValidObjectId(id))) notFound();
-    if (!(await isLeagueAuthor(id))) return;
+    if (!(await isLeagueAuthor(id))) return { error: "Coś poszło nie tak" };
 
     const user = await prisma.user.findUnique({ where: { email: userEmail } });
 
-    if (!user) return;
+    if (!user) return { error: "Coś poszło nie tak" };
 
     const league = await prisma.league.findUnique({
       where: { id: id },
@@ -65,19 +65,18 @@ export const createInviteToLeague = cache(
       },
     });
 
-    if (!league) return;
+    if (!league) return { error: "Coś poszło nie tak" };
 
     const isUserInvited = league?.invites.some(
       (invite) => invite.userEmail === userEmail
     );
 
-    if (isUserInvited) return;
-
     const isUserInLeague = league.participants.some(
       (participant) => participant.user.name === user.name
     );
 
-    if (isUserInLeague) return;
+    if (isUserInvited || isUserInLeague)
+      return { error: "Użytkownik jest już w lidze" };
 
     await prisma.invite.create({
       data: { userEmail: userEmail, leagueId: league.id },

@@ -14,9 +14,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { leagueFormSchema, leagueFormType } from "./l";
 import { Textarea } from "@/components/ui/textarea";
+import { toast } from "sonner";
 
 interface LeagueFormProps {
-  createLeague: (data: leagueFormType) => Promise<void>;
+  createLeague: (data: leagueFormType) => Promise<{ error: string } | void>;
 }
 
 const LeagueForm: React.FC<LeagueFormProps> = ({ createLeague }) => {
@@ -28,8 +29,17 @@ const LeagueForm: React.FC<LeagueFormProps> = ({ createLeague }) => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof leagueFormSchema>) {
-    createLeague(values);
+  async function onSubmit(values: z.infer<typeof leagueFormSchema>) {
+    const leaguePromise = createLeague(values);
+
+    toast.promise(leaguePromise, {
+      loading: "Tworzenie ligi...",
+      success: "Liga utworzona",
+      error: "Coś poszło nie tak",
+    });
+
+    const result = await leaguePromise;
+    result?.error && toast.error(result.error);
   }
 
   return (

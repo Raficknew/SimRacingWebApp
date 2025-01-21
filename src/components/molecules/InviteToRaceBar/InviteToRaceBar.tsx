@@ -11,6 +11,8 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
+import { DialogClose } from "@radix-ui/react-dialog";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   userEmail: z.string().min(3).max(50),
@@ -23,15 +25,22 @@ type InviteToRaceBarProps = {
     userEmail: string,
     id: string,
     userName?: string
-  ) => Promise<void>;
+  ) => Promise<{ error: string } | void>;
 };
 
 const InviteToRaceBar: React.FC<InviteToRaceBarProps> = ({
   createInviteToRace,
   id,
 }) => {
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    createInviteToRace(values.userEmail, id, values.userName);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const result = await createInviteToRace(
+      values.userEmail,
+      id,
+      values.userName
+    );
+    result?.error
+      ? toast.error(result.error)
+      : toast.success("Zaproszenie zostało wysłane");
   }
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -68,9 +77,11 @@ const InviteToRaceBar: React.FC<InviteToRaceBarProps> = ({
             </FormItem>
           )}
         />
-        <Button className="bg-custom-gradient" type="submit">
-          Zaproś
-        </Button>
+        <DialogClose>
+          <Button className="bg-custom-gradient" type="submit">
+            Zaproś
+          </Button>
+        </DialogClose>
       </form>
     </Form>
   );
