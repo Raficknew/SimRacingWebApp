@@ -3,6 +3,7 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/src/app/api/auth/[...nextauth]/auth";
 import { ObjectId } from "mongodb";
+import { prisma } from "@/lib/db/prisma";
 
 export async function isValidObjectId(id: string) {
   return ObjectId.isValid(id) && new ObjectId(id).toString() === id;
@@ -11,7 +12,7 @@ export async function isValidObjectId(id: string) {
 export async function isRaceAuthor(raceId: string) {
   if (!raceId) return false;
 
-  const race = await prisma?.race.findUnique({
+  const race = await prisma.race.findUnique({
     where: { id: raceId },
     include: { author: { select: { email: true } } },
   });
