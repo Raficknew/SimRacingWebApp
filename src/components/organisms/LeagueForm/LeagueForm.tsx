@@ -30,16 +30,9 @@ const LeagueForm: React.FC<LeagueFormProps> = ({ createLeague }) => {
   });
 
   async function onSubmit(values: z.infer<typeof leagueFormSchema>) {
-    const leaguePromise = createLeague(values);
+    const result = await createLeague(values);
 
-    toast.promise(leaguePromise, {
-      loading: "Tworzenie ligi...",
-      success: "Liga utworzona",
-      error: "Coś poszło nie tak",
-    });
-
-    const result = await leaguePromise;
-    result?.error && toast.error(result.error);
+    result?.error ? toast.error(result.error) : toast.success("Liga utworzona");
   }
 
   return (

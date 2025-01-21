@@ -54,16 +54,11 @@ const RaceForm: React.FC<RaceFormProps> = ({ createRace, leagueId }) => {
   async function onSubmit(values: RaceFormType) {
     values.name =
       values.name.charAt(0).toUpperCase() + values.name.slice(1).toLowerCase();
-    const createRacePromise = createRace(values, leagueId ?? "");
+    const result = await createRace(values, leagueId ?? "");
 
-    toast.promise(createRacePromise, {
-      loading: "Tworzenie wyścigu...",
-      success: "Utworzono wyścig",
-      error: "Coś poszło nie tak",
-    });
-
-    const result = await createRacePromise;
-    result?.error && toast.error(result.error);
+    result?.error
+      ? toast.error(result.error)
+      : toast.success("Utworzono wyścig");
   }
 
   return (
