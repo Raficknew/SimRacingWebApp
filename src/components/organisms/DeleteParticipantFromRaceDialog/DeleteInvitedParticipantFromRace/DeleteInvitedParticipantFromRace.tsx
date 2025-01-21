@@ -22,11 +22,8 @@ const DeleteInvitedParticipantFromRace: React.FC<
   ) {
     const result = await DeleteInvitedParticipant(raceID, inviteID);
     result?.error
-      ? toast.error(result.error, { richColors: true, duration: 2000 })
-      : toast.success("Usunięto zaproszenie", {
-          richColors: true,
-          duration: 2000,
-        });
+      ? toast.error(result.error)
+      : toast.success("Usunięto zaproszenie");
   }
   return (
     <DialogClose>

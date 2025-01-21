@@ -14,7 +14,8 @@ export const createLeagueRace = async (
   raceData: RaceFormType,
   leagueId: string
 ) => {
-  if (!RaceFormSchema.safeParse(raceData).success) return;
+  if (!RaceFormSchema.safeParse(raceData).success)
+    return { error: "Coś poszło nie tak" };
 
   const session = await getServerSession(authOptions);
 
@@ -22,13 +23,13 @@ export const createLeagueRace = async (
 
   const useremail = session.user?.email;
 
-  if (!useremail) return;
+  if (!useremail) return { error: "Coś poszło nie tak" };
 
   const user = await prisma.user.findUnique({
     where: { email: useremail },
   });
 
-  if (!user || !raceData) return;
+  if (!user || !raceData) return { error: "Coś poszło nie tak" };
 
   const leagueParticipants = await prisma.leagueParticipant.findMany({
     where: { leagueId: leagueId },

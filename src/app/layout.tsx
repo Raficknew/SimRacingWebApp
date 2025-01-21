@@ -24,7 +24,7 @@ export default function RootLayout({
           <div className="flex flex-col py-10 gap-24 h-screen w-screen max-w-[816px]">
             <Navbar />
             <main className="self-strech">{children}</main>
-            <Toaster />
+            <Toaster richColors duration={2000} />
           </div>
         </SessionProvider>
       </body>

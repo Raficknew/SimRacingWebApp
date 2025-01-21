@@ -14,11 +14,8 @@ const ChangeStatusForRaceButton: React.FC<ChangeStatusForRaceButtonProps> = ({
   async function handleChangeStatus(raceID: string) {
     const result = await ChangeStatus(raceID);
     result?.error
-      ? toast.error(result.error, { richColors: true, duration: 2000 })
-      : toast.success("Status wyścigu został zmieniony", {
-          richColors: true,
-          duration: 2000,
-        });
+      ? toast.error(result.error)
+      : toast.success("Status wyścigu został zmieniony");
   }
 
   return (

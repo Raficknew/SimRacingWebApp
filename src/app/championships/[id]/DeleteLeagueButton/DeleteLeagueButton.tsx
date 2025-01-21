@@ -16,11 +16,8 @@ const DeleteLeagueButton: React.FC<DeleteLeagueButtonProps> = ({
     const result = await deleteLeague(leagueId);
 
     result?.error
-      ? toast.error(result.error, { richColors: true, duration: 2000 })
-      : toast.success("Liga została usunięta", {
-          richColors: true,
-          duration: 2000,
-        });
+      ? toast.error(result.error)
+      : toast.success("Liga została usunięta");
   }
 
   return (

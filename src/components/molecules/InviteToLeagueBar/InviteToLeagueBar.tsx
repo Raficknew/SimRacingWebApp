@@ -34,11 +34,8 @@ const InviteToLeagueBar: React.FC<InviteToLeagueBarProps> = ({
     const result = await createInvite(values.userEmail, id);
 
     result?.error
-      ? toast.error(result.error, { richColors: true, duration: 2000 })
-      : toast.success("Użytkownik został zaproszony", {
-          richColors: true,
-          duration: 2000,
-        });
+      ? toast.error(result.error)
+      : toast.success("Użytkownik został zaproszony");
   }
 
   const form = useForm<z.infer<typeof formSchema>>({

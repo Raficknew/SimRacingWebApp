@@ -24,21 +24,15 @@ const Invite: React.FC<InviteProps> = ({
   async function handleAcceptInvite(userEmail: string, inviteId: string) {
     const result = await AcceptInvite(userEmail, inviteId);
     result?.error
-      ? toast.error(result.error, { richColors: true, duration: 2000 })
-      : toast.success("Zaakcepotowano zaproszenie", {
-          richColors: true,
-          duration: 2000,
-        });
+      ? toast.error(result.error)
+      : toast.success("Zaakcepotowano zaproszenie");
   }
 
   async function handleDeleteInvite(inviteId: string) {
     const result = await DeleteInvite(invite.id);
     result?.error
-      ? toast.error(result.error, { richColors: true, duration: 2000 })
-      : toast.success("Odrzucono zaproszenie", {
-          richColors: true,
-          duration: 2000,
-        });
+      ? toast.error(result.error)
+      : toast.success("Odrzucono zaproszenie");
   }
 
   return (

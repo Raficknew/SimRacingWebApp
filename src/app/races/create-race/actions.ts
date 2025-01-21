@@ -11,7 +11,9 @@ import {
 import { revalidatePath } from "next/cache";
 
 export async function createRace(raceData: RaceFormType) {
-  if (!RaceFormSchema.safeParse(raceData).success) return;
+  if (!RaceFormSchema.safeParse(raceData).success)
+    return { error: "Coś poszło nie tak" };
+  if (!raceData) return { error: "Coś poszło nie tak" };
 
   const session = await getServerSession(authOptions);
 
@@ -19,14 +21,13 @@ export async function createRace(raceData: RaceFormType) {
 
   const useremail = session.user?.email;
 
-  if (!useremail) return;
+  if (!useremail) return { error: "Coś poszło nie tak" };
 
   const user = await prisma.user.findUnique({
     where: { email: useremail },
   });
 
-  if (!user) return;
-  if (!raceData) return;
+  if (!user) return { error: "Coś poszło nie tak" };
 
   await prisma.race.create({
     data: {

@@ -39,11 +39,8 @@ const InviteToRaceBar: React.FC<InviteToRaceBarProps> = ({
       values.userName
     );
     result?.error
-      ? toast.error(result.error, { richColors: true, duration: 2000 })
-      : toast.success("Zaproszenie zostało wysłane", {
-          richColors: true,
-          duration: 2000,
-        });
+      ? toast.error(result.error)
+      : toast.success("Zaproszenie zostało wysłane");
   }
 
   const form = useForm<z.infer<typeof formSchema>>({

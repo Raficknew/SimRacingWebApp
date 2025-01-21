@@ -143,12 +143,12 @@ export const DeleteParticipantFromRace = cache(
       },
     });
 
-    if (!race) return;
+    if (!race) return { error: "Coś poszło nie tak" };
 
     if (race.status === RaceStatus.ENDED || race.status === RaceStatus.ONGOING)
       return;
 
-    if (!(await isRaceAuthor(raceID))) return;
+    if (!(await isRaceAuthor(raceID))) return { error: "Coś poszło nie tak" };
 
     race.participants = race.participants.filter((p) => p !== participantID);
 
@@ -177,12 +177,12 @@ export const DeleteInvitedParticipant = cache(
       },
     });
 
-    if (!race) return;
+    if (!race) return { error: "Coś poszło nie tak" };
 
     if (race.status === RaceStatus.ENDED || race.status === RaceStatus.ONGOING)
-      return;
+      return { error: "Coś poszło nie tak" };
 
-    if (!(await isRaceAuthor(raceID))) return;
+    if (!(await isRaceAuthor(raceID))) return { error: "Coś poszło nie tak" };
 
     await prisma.invite.delete({ where: { id: inviteID } });
 

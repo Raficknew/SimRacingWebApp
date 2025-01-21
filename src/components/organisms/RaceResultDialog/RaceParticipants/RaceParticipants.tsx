@@ -29,9 +29,7 @@ const RaceParticipants: React.FC<RaceParticipantsProps> = ({
 
   async function handleSetResults(raceId: string, participants: string[]) {
     const result = await setResults(raceId, participants);
-    result?.error
-      ? toast.error(result.error, { richColors: true, duration: 2000 })
-      : toast.success("Zapisano wynik", { richColors: true, duration: 2000 });
+    result?.error ? toast.error(result.error) : toast.success("Zapisano wynik");
   }
 
   return (

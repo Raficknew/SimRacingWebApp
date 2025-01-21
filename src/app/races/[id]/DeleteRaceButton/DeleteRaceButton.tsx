@@ -17,11 +17,8 @@ const DeleteRaceButton: React.FC<DeleteRaceButtonProps> = ({
     const result = await deleteRace(raceID);
 
     result?.error
-      ? toast.warning(result.error, { richColors: true, duration: 2000 })
-      : toast.success("Wyścig został usunięty", {
-          richColors: true,
-          duration: 2000,
-        });
+      ? toast.warning(result.error)
+      : toast.success("Wyścig został usunięty");
   }
   return (
     <Button
