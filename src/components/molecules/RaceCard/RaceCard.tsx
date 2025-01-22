@@ -4,6 +4,8 @@ import { Badge } from "@/components/ui/badge";
 import { Series, type Race } from "@prisma/client";
 import dayjs from "dayjs";
 import "dayjs/locale/pl";
+import one from "@/src/assets/1.webp";
+import Image from "next/image";
 
 type Author = {
   name: string | null;
@@ -18,16 +20,18 @@ type RaceCardProps = {
 const RaceCard: React.FC<RaceCardProps> = ({ race, author }) => {
   dayjs.locale("pl");
   return (
-    <div className="bg-slate-400 p-1 rounded-lg text-white">
+    <div className="p-2 rounded-lg text-white relative overflow-hidden">
       <div className="flex self-stretch justify-between items-center">
-        {race.series === Series.GT3HYPERCAR ? (
-          <div className="flex items-center gap-1">
-            <Badge>GT3</Badge>
-            <Badge>HYPERCAR</Badge>
-          </div>
-        ) : (
-          <Badge>{race.series}</Badge>
-        )}
+        <div className="*:bg-red-950">
+          {race.series === Series.GT3HYPERCAR ? (
+            <div className="flex items-center gap-1 ">
+              <Badge>GT3</Badge>
+              <Badge>HYPERCAR</Badge>
+            </div>
+          ) : (
+            <Badge>{race.series}</Badge>
+          )}
+        </div>
         <div className="flex justify-end items-center gap-2">
           {author && (
             <>
@@ -55,6 +59,14 @@ const RaceCard: React.FC<RaceCardProps> = ({ race, author }) => {
           <p>{race.raceHour}</p>
           <p>{dayjs(race.raceDate).format("DD MMM YYYY")}</p>
         </div>
+      </div>
+      <div>
+        <Image
+          className="absolute top-0 left-0 w-full h-full object-cover -z-10  "
+          src={one}
+          alt="one"
+        />
+        <div className="absolute top-0 left-0 w-full h-full object-cover -z-10 bg-black opacity-40"></div>
       </div>
     </div>
   );
